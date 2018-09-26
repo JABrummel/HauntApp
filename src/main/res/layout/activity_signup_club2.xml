@@ -34,13 +34,22 @@
         android:hint="Club Bio"
         android:inputType="textMultiLine" />
 
-    <TextView
-        android:id="@+id/textView2"
+    <ImageView
+        android:id="@+id/iv_profphoto"
+        android:layout_width="102dp"
+        android:layout_height="73dp"
+        android:layout_alignParentStart="true"
+        android:layout_alignParentTop="true"
+        android:layout_marginStart="38dp"
+        android:layout_marginTop="217dp"
+        app:srcCompat="@android:drawable/ic_menu_upload" />
+
+    <Button
+        android:id="@+id/button_upload"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_alignParentEnd="true"
         android:layout_alignParentTop="true"
-        android:layout_marginEnd="146dp"
-        android:layout_marginTop="228dp"
-        android:text="TextView" />
+        android:layout_marginTop="234dp"
+        android:layout_toEndOf="@+id/iv_profphoto"
+        android:text="Upload Profile Picture" />
 </RelativeLayout>
