@@ -29,7 +29,7 @@
         android:layout_height="wrap_content"
         android:layout_alignParentBottom="true"
         android:layout_centerHorizontal="true"
-        android:layout_marginBottom="176dp"
+        android:layout_marginBottom="221dp"
         android:ems="10"
         android:hint="Club Bio"
         android:inputType="textMultiLine" />
@@ -50,6 +50,34 @@
         android:layout_height="wrap_content"
         android:layout_alignParentTop="true"
         android:layout_marginTop="234dp"
+        android:padding="10dp"
         android:layout_toEndOf="@+id/iv_profphoto"
+        android:background="@android:color/white"
         android:text="Upload Profile Picture" />
+
+    <Button
+        android:id="@+id/button_createacc"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_alignParentBottom="true"
+        android:layout_alignParentEnd="true"
+        android:layout_marginBottom="29dp"
+        android:layout_marginEnd="48dp"
+        android:background="#FFDD74"
+        android:onClick="createAccount"
+        android:text="Create Account"
+        android:padding="10dp"
+        android:textColor="@android:color/white" />
+
+    <Button
+        android:id="@+id/button_goBack"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_alignParentStart="true"
+        android:layout_alignTop="@+id/button_createacc"
+        android:layout_marginStart="73dp"
+        android:background="@android:color/white"
+        android:onClick="goBack"
+        android:text="Go Back"
+        android:textColor="@android:color/darker_gray" />
 </RelativeLayout>

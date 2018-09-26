@@ -48,5 +48,9 @@ public class signup_club2 extends AppCompatActivity {
 
         }
     }
+
+    protected void goBack(View v) {}
+
+    protected void createAccount(View v) {}
 }
 
