@@ -1,5 +1,7 @@
 package models;
 
+import java.sql.Blob;
+
 public class Club {
     private String facultyEmail;
     private String clubEmail;
@@ -43,7 +45,7 @@ public class Club {
         this.clubName = clubName;
     }
 
-    public int getPhoto() {
+    public byte getPhoto() {
         return photo;
     }
 

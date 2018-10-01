@@ -3,15 +3,23 @@ package com.example.jessb.haunt;
 import android.content.Intent;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
+import android.util.Log;
 import android.view.View;
 import android.widget.Button;
 
+import sql.DatabaseHelper;
+
 public class UserType extends AppCompatActivity {
+
+    //Database helper
+    DatabaseHelper db;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_user_type);
+
+        db = new DatabaseHelper(getApplicationContext());
 
     }
 
