@@ -25,7 +25,9 @@
         <activity android:name=".login_student" />
         <activity android:name=".login_club" />
         <activity android:name=".signup_club" />
-        <activity android:name=".signup_club2"></activity>
+        <activity android:name=".signup_club2" />
+        <activity android:name=".ListedEvents" />
+        <activity android:name=".CreateEvent"></activity>
     </application>
 
 </manifest>
