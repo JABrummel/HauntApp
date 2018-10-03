@@ -9,7 +9,8 @@
     <LinearLayout
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:orientation="vertical">
+        android:orientation="vertical"
+        android:layout_marginTop="20dp">
 
         <ImageView
             android:layout_width="189dp"
@@ -76,9 +77,198 @@
                 android:hint="End Time"/>
 
         </LinearLayout>
+        <LinearLayout
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content">
 
 
 
+            <RadioGroup
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:orientation="horizontal"
+                android:id="@+id/rg_campus"
+                android:layout_marginTop="30dp"
+                android:layout_marginLeft="30dp">
+
+                <RadioButton
+                    android:id="@+id/rb_marietta"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text="Marietta" />
+                <RadioButton
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:id="@+id/rb_kennesaw"
+                    android:layout_marginLeft="70dp"
+                    android:text="Kennesaw"/>
+            </RadioGroup>
+
+        </LinearLayout>
+        <LinearLayout
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="20dp"
+            android:layout_marginLeft="40dp">
+
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="Location"
+                android:textColor="@android:color/darker_gray" />
+
+            <Spinner
+                android:id="@+id/spinner_locations"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:hint="building" />
+        </LinearLayout>
+
+        <EditText
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:hint="Room Number If Applicable"
+            android:layout_marginLeft="40dp"
+            android:id="@+id/et_roomnumber"/>
+
+        <ImageView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_gravity="center"
+            android:layout_marginTop="20dp"
+            android:layout_marginBottom="10dp"
+            app:srcCompat="@drawable/button_selectcategories" />
+
+        <RadioGroup
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginLeft="30dp"
+            android:id="@+id/rg_categories"
+            android:layout_marginTop="30dp">
+
+            <RadioButton
+                android:id="@+id/rb_competition"
+                android:layout_width="match_parent"
+                android:layout_marginTop="10dp"
+                android:button="@drawable/custom_rb_competition"
+                android:layout_height="40dp"
+                android:text="Competition" />
+            <RadioButton
+                android:id="@+id/rb_food"
+                android:layout_width="match_parent"
+                android:layout_height="40dp"
+                android:layout_marginTop="10dp"
+                android:button="@drawable/custom_rb_food"
+                android:text="Food" />
+            <RadioButton
+                android:id="@+id/rb_athletics"
+                android:layout_width="match_parent"
+                android:layout_marginTop="10dp"
+                android:button="@drawable/custom_rb_athletics"
+                android:layout_height="40dp"
+                android:text="Athletics" />
+            <RadioButton
+                android:id="@+id/rb_academics"
+                android:layout_width="match_parent"
+                android:layout_height="40dp"
+                android:layout_marginTop="10dp"
+                android:button="@drawable/custom_rb_academics"
+                android:text="Academics" />
+            <RadioButton
+                android:id="@+id/rb_entertainment"
+                android:layout_width="match_parent"
+                android:layout_height="40dp"
+                android:layout_marginTop="10dp"
+                android:button="@drawable/custom_rb_entertainment"
+                android:text="Entertainment" />
+
+        </RadioGroup>
+
+        <ImageView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_gravity="center"
+            android:layout_marginTop="20dp"
+            android:layout_marginBottom="10dp"
+            app:srcCompat="@drawable/button_selectsubcategories"/>
+
+        <CheckBox
+            android:layout_width="match_parent"
+            android:id="@+id/cb_liveperformance"
+            android:layout_marginLeft="30dp"
+            android:onClick="checkBoxClick"
+            android:text="Live Performance"
+            android:layout_marginTop="10dp"
+            android:button="@drawable/custom_cb_live"
+            android:layout_height="wrap_content" />
+        <CheckBox
+            android:layout_width="match_parent"
+            android:layout_marginLeft="30dp"
+            android:id="@+id/cb_steam"
+            android:onClick="checkBoxClick"
+            android:text="STEAM"
+            android:layout_marginTop="10dp"
+            android:button="@drawable/custom_cb_steam"
+            android:layout_height="wrap_content" />
+        <CheckBox
+            android:layout_width="match_parent"
+            android:id="@+id/cb_art"
+            android:onClick="checkBoxClick"
+            android:layout_marginLeft="30dp"
+            android:layout_marginTop="10dp"
+            android:text="Literature and Art"
+            android:button="@drawable/custom_cb_lit"
+            android:layout_height="wrap_content" />
+        <CheckBox
+            android:layout_width="match_parent"
+            android:id="@+id/cb_giveaways"
+            android:text="Giveaways"
+            android:onClick="checkBoxClick"
+            android:layout_marginTop="10dp"
+            android:layout_marginLeft="30dp"
+            android:button="@drawable/custom_cb_giveaways"
+            android:layout_height="wrap_content" />
+        <CheckBox
+            android:layout_width="match_parent"
+            android:id="@+id/cb_music"
+            android:layout_marginTop="10dp"
+            android:text="Music"
+            android:onClick="checkBoxClick"
+            android:layout_marginLeft="30dp"
+            android:button="@drawable/custom_cb_music"
+            android:layout_height="wrap_content" />
+        <CheckBox
+            android:layout_width="match_parent"
+            android:id="@+id/cb_boardgames"
+            android:text="Boardgames"
+            android:onClick="checkBoxClick"
+            android:layout_marginTop="10dp"
+            android:layout_marginLeft="30dp"
+            android:button="@drawable/custom_cb_boardgames"
+            android:layout_height="wrap_content" />
+
+        <LinearLayout
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginBottom="40dp">
+            <Button
+                android:layout_width="wrap_content"
+                android:layout_marginTop="20dp"
+                android:layout_marginLeft="100dp"
+                android:layout_height="wrap_content"
+                android:onClick="cancel"
+                android:background="@android:color/transparent"
+                android:text="Cancel"
+                android:textColor="@android:color/darker_gray"/>
+            <Button
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="20dp"
+                android:layout_marginLeft="20dp"
+                android:background="#FFDD74"
+                android:text="Save"
+                android:textColor="@android:color/white"/>
+        </LinearLayout>
 
     </LinearLayout>
 
