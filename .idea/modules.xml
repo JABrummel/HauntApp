@@ -2,8 +2,7 @@
 <project version="4">
   <component name="ProjectModuleManager">
     <modules>
-      <module fileurl="file://$PROJECT_DIR$/../Haunt.iml" filepath="$PROJECT_DIR$/../Haunt.iml" />
-      <module fileurl="file://$PROJECT_DIR$/app.iml" filepath="$PROJECT_DIR$/app.iml" />
+      <module fileurl="file://$PROJECT_DIR$/HauntApp.iml" filepath="$PROJECT_DIR$/HauntApp.iml" />
     </modules>
   </component>
 </project>
