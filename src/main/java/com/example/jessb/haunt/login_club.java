@@ -20,6 +20,11 @@ public class login_club extends AppCompatActivity {
         EditText pw = findViewById(R.id.et_password);
         String username = user.getText().toString();
         String password = pw.getText().toString();
+        if(username.equals("1") && password.equals("1")) {
+            Intent i = new Intent(this, ListedEvents.class);
+            i.putExtra("user", "club");
+            startActivity(i);
+        }
     }
 
     protected void goBack(View v) {

@@ -44,6 +44,7 @@ public class signup_club extends AppCompatActivity {
         i.putExtra("advisor", advisorText);
 
         startActivity(i);
+        this.overridePendingTransition(0,0);
 
 
     }
