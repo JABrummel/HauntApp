@@ -42,7 +42,7 @@ public class CreateEvent extends AppCompatActivity implements OnItemSelectedList
     RadioGroup selectedCampus; //Kennesaw vs Marietta
     RadioGroup mainCategories; //The 5 main categories
     String mainCategory; //chosen main category
-    Vector<String> subCategories; //all of the subcategories chose
+    Vector<String> subCategories = new Vector<String>(); //all of the subcategories chose
     DatePickerDialog.OnDateSetListener dateSetListener; //listener for sellecting the date
     TimePickerDialog.OnTimeSetListener startTimeSetListener; //listener for selecting start time
     TimePickerDialog.OnTimeSetListener endTimeSetListener; //listener for selecting end time
@@ -130,7 +130,10 @@ public class CreateEvent extends AppCompatActivity implements OnItemSelectedList
         startTimeSetListener = new TimePickerDialog.OnTimeSetListener() {
             @Override
             public void onTimeSet(TimePicker view, int hourOfDay, int minute) {
-                startTime.setText(hourOfDay + ": " + minute);
+                if(minute > 10)
+                    startTime.setText(hourOfDay + ": " + minute);
+                else
+                    startTime.setText(hourOfDay + ": 0" + minute);
             }
         };
 
@@ -151,7 +154,11 @@ public class CreateEvent extends AppCompatActivity implements OnItemSelectedList
         endTimeSetListener = new TimePickerDialog.OnTimeSetListener() {
             @Override
             public void onTimeSet(TimePicker view, int hourOfDay, int minute) {
+                if(minute > 10)
                 endTime.setText(hourOfDay + ": " + minute);
+                else
+                    endTime.setText(hourOfDay + ": 0" + minute);
+
             }
         };
 
