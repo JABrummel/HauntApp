@@ -6,12 +6,21 @@ import android.os.Bundle;
 import android.view.View;
 import android.widget.EditText;
 
-public class login_club extends AppCompatActivity {
+import java.util.List;
 
+import models.Club;
+
+import sql.DatabaseHelper;
+
+public class login_club extends AppCompatActivity {
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_login_club);
+        DatabaseHelper db = new DatabaseHelper(getApplicationContext());
+        db.checkUser("jbrummel");
+        db.checkClub("jvice");
+
 
     }
 

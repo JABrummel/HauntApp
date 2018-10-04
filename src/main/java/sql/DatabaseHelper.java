@@ -88,8 +88,7 @@ public class DatabaseHelper extends SQLiteOpenHelper {
     private String CREATE_CLUB_TABLE = "CREATE TABLE " + TABLE_CLUB + "("
             + COLUMN_CLUBID + " INTEGER PRIMARY KEY ," + COLUMN_FACULTYEMAIL + " TEXT,"
             + COLUMN_CLUBNAME + " TEXT," + COLUMN_PHOTO + " BLOB," + COLUMN_USERNAME + " TEXT,"
-            + COLUMN_CLUBEMAIL + " TEXT," + COLUMN_PASSWORD + " TEXT," + COLUMN_ROLE + " TEXT," + COLUMN_USER_ID
-            + " INTEGER NOT NULL," + "FOREIGN KEY(" + COLUMN_USER_ID + ") REFERENCES " + TABLE_USER + "(ID) " + ")";
+            + COLUMN_CLUBEMAIL + " TEXT," + COLUMN_PASSWORD + " TEXT," + COLUMN_ROLE + " TEXT"  + ")";
 
     private String CREATE_EVENTS_TABLE = "CREATE TABLE " + TABLE_EVENTS + "("
             + COLUMN_EVENTID + " INTEGER PRIMARY KEY ," + COLUMN_EVENTNAME + " TEXT,"
@@ -123,26 +122,30 @@ public class DatabaseHelper extends SQLiteOpenHelper {
         //Default user values
         db.execSQL("insert into User (username, email, password, role) values ('jvice1', 'jvice1@kennesaw.edu', 'test', 'admin')");
         db.execSQL("insert into User (username, email, password, role) values ('jbrummel', 'jbrummel@kennesaw.edu', 'test', 'admin')");
+        db.execSQL("insert into User (username, email, password, role) values ('ebell', 'ebell@kennesaw.edu', 'test', 'admin')");
 
         db.execSQL(CREATE_CLUB_TABLE);
+        db.execSQL("insert into Club (facultyEmail, clubName, photo, username, clubEmail, password, role) values ('jvice@kennesaw.edu', 'Club Penguin', " +
+                "null, 'jvice', 'cp@kennesaw.edu', 'test', 'club')");
         db.execSQL(CREATE_EVENTS_TABLE);
         db.execSQL(CREATE_EVENT_CATEGORIES_TABLE);
         db.execSQL(CREATE_CATEGORY_TABLE);
 
-        db.execSQL("insert into Category(categoryID, photo) values ('0, null')");
-        db.execSQL("insert into Category(categoryID, photo) values ('1, null')");
-        db.execSQL("insert into Category(categoryID, photo) values ('2, null')");
-        db.execSQL("insert into Category(categoryID, photo) values ('3, null')");
-        db.execSQL("insert into Category(categoryID, photo) values ('4, null')");
-        db.execSQL("insert into Category(categoryID, photo) values ('5, null')");
-        db.execSQL("insert into Category(categoryID, photo) values ('6, null')");
-        db.execSQL("insert into Category(categoryID, photo) values ('7, null')");
-        db.execSQL("insert into Category(categoryID, photo) values ('8, null')");
-        db.execSQL("insert into Category(categoryID, photo) values ('9, null')");
-        db.execSQL("insert into Category(categoryID, photo) values ('10, null')");
+        db.execSQL("insert into Category(categoryID, photo) values ('1', 'null')");
+        db.execSQL("insert into Category(categoryID, photo) values ('2', 'null')");
+        db.execSQL("insert into Category(categoryID, photo) values ('3', 'null')");
+        db.execSQL("insert into Category(categoryID, photo) values ('4', 'null')");
+        db.execSQL("insert into Category(categoryID, photo) values ('5', 'null')");
+        db.execSQL("insert into Category(categoryID, photo) values ('6', 'null')");
+        db.execSQL("insert into Category(categoryID, photo) values ('7', 'null')");
+        db.execSQL("insert into Category(categoryID, photo) values ('8', 'null')");
+        db.execSQL("insert into Category(categoryID, photo) values ('9', 'null')");
+        db.execSQL("insert into Category(categoryID, photo) values ('10', 'null')");
+        db.execSQL("insert into Category(categoryID, photo) values ('11', 'null')");
 
         db.execSQL(CREATE_ACCOUNT_APPROVAL_TABLE);
         db.execSQL(CREATE_LOCATION_TABLE);
+
     }
 
     public void onUpgrade(SQLiteDatabase db, int oldVersion, int newVersion){
@@ -415,7 +418,7 @@ public class DatabaseHelper extends SQLiteOpenHelper {
         int cursorCount = cursor.getCount();
         cursor.close();
         db.close();
-
+        System.out.println(cursorCount);
         return cursorCount > 0;
     }
     public boolean checkUser(String username, String password){
@@ -439,6 +442,52 @@ public class DatabaseHelper extends SQLiteOpenHelper {
         db.close();
 
         return cursorCount > 0;
+    }
+    public boolean checkClub(String username){
+        String[] columns = {
+                COLUMN_CLUBID
+        };
+        SQLiteDatabase db = this.getReadableDatabase();
+
+        String selection = COLUMN_USERNAME + " = ?";
+        String[] selectionArgs = {username};
+
+        Cursor cursor = db.query(TABLE_CLUB,
+                columns,
+                selection,
+                selectionArgs,
+                null,
+                null,
+                null);
+        int cursorCount = cursor.getCount();
+        cursor.close();
+        db.close();
+        System.out.println(cursorCount);
+        return cursorCount > 0;
+    }
+    public Club findClub (String username){
+        String query = "SELECT * FROM " + TABLE_CLUB + " WHERE " + COLUMN_USERNAME +
+                " = \"" + username + "\"";
+        SQLiteDatabase db = this.getWritableDatabase();
+        Cursor c = db.rawQuery(query,null);;
+        Club club = new Club();
+        if (c.moveToFirst()) {
+
+                c.moveToFirst();
+                club.setClubID(c.getInt((c.getColumnIndex(COLUMN_CLUBID))));
+                club.setUserID(c.getInt((c.getColumnIndex(COLUMN_USER_ID))));
+                club.setFacultyEmail(c.getString((c.getColumnIndex(COLUMN_FACULTYEMAIL))));
+                club.setClubEmail(c.getString((c.getColumnIndex(COLUMN_CLUBEMAIL))));
+                club.setClubName(c.getString((c.getColumnIndex(COLUMN_CLUBNAME))));
+                club.setUsername(c.getString((c.getColumnIndex(COLUMN_USERNAME))));
+//                club.setPhoto(c.getBlob((c.getColumnIndex(COLUMN_PHOTO)))); Gotta figure out how pictures are saved properly into DB more
+                club.setPassword(c.getString((c.getColumnIndex(COLUMN_EMAIL))));
+                club.setRole(c.getString((c.getColumnIndex(COLUMN_ROLE))));
+
+               c.close();
+            } else { club = null; }
+        System.out.println(query);
+        return club;
     }
     //endregion
 }

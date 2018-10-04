@@ -18,8 +18,7 @@ public class UserType extends AppCompatActivity {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_user_type);
-
-        db = new DatabaseHelper(getApplicationContext());
+        //db = new DatabaseHelper(getApplicationContext());
 
     }
 
