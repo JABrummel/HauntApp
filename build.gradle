@@ -1,7 +1,7 @@
 apply plugin: 'com.android.application'
 buildscript {
     repositories {
-        google() 
+        google()
         jcenter()
     }
     dependencies {
@@ -16,6 +16,7 @@ allprojects {
 }
 android {
     compileSdkVersion 28
+    buildToolsVersion '28.0.3'
     defaultConfig {
         applicationId "com.example.jessb.haunt"
         minSdkVersion 15

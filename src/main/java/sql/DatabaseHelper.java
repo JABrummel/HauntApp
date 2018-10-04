@@ -60,12 +60,11 @@ public class DatabaseHelper extends SQLiteOpenHelper {
     private static final String COLUMN_ROOMNUMBER = "roomNumber";
 
     /*EVENTCATEGORIES TABLE*/
-    private static final String COLUMN_CATEGORYID = "categoryID"; //CATEGORY SHARES THIS
-    private static final String COLUMN_CATEGORYTYPE = "categoryType";
+    //EventID
+    //CATEGORY ID
 
     /*CATEGORY*/
-
-    //CATEGORY ID
+    private static final String COLUMN_CATEGORYID = "categoryID"; //CATEGORY SHARES THIS
     //IMAGE COLUMN
 
     /*ACCOUNTAPPROVAL TABLE*/
@@ -100,8 +99,8 @@ public class DatabaseHelper extends SQLiteOpenHelper {
             + "FOREIGN KEY(" + COLUMN_CLUBID + ") REFERENCES " + TABLE_CLUB + "(clubID) " +")";
 
     private String CREATE_EVENT_CATEGORIES_TABLE = "CREATE TABLE " + TABLE_EVENTCATEGORIES + "("
-            + COLUMN_EVENTID + " INTEGER PRIMARY KEY ," + COLUMN_CATEGORYID + " INTEGER,"
-            + COLUMN_CATEGORYTYPE + " TEXT," + "FOREIGN KEY(" + COLUMN_CATEGORYID + ") REFERENCES " + TABLE_CATEGORY + "(categoryID)," +
+            + COLUMN_EVENTID + " INTEGER," + COLUMN_CATEGORYID + " INTEGER,"
+            + "FOREIGN KEY(" + COLUMN_CATEGORYID + ") REFERENCES " + TABLE_CATEGORY + "(categoryID)," +
             "FOREIGN KEY(" + COLUMN_EVENTID + ") REFERENCES " + TABLE_EVENTS + "(eventID)" + ")";
 
     private String CREATE_CATEGORY_TABLE = "CREATE TABLE " + TABLE_CATEGORY + "("
@@ -129,6 +128,19 @@ public class DatabaseHelper extends SQLiteOpenHelper {
         db.execSQL(CREATE_EVENTS_TABLE);
         db.execSQL(CREATE_EVENT_CATEGORIES_TABLE);
         db.execSQL(CREATE_CATEGORY_TABLE);
+
+        db.execSQL("insert into Category(categoryID, photo) values ('0, null')");
+        db.execSQL("insert into Category(categoryID, photo) values ('1, null')");
+        db.execSQL("insert into Category(categoryID, photo) values ('2, null')");
+        db.execSQL("insert into Category(categoryID, photo) values ('3, null')");
+        db.execSQL("insert into Category(categoryID, photo) values ('4, null')");
+        db.execSQL("insert into Category(categoryID, photo) values ('5, null')");
+        db.execSQL("insert into Category(categoryID, photo) values ('6, null')");
+        db.execSQL("insert into Category(categoryID, photo) values ('7, null')");
+        db.execSQL("insert into Category(categoryID, photo) values ('8, null')");
+        db.execSQL("insert into Category(categoryID, photo) values ('9, null')");
+        db.execSQL("insert into Category(categoryID, photo) values ('10, null')");
+
         db.execSQL(CREATE_ACCOUNT_APPROVAL_TABLE);
         db.execSQL(CREATE_LOCATION_TABLE);
     }
@@ -200,7 +212,6 @@ public class DatabaseHelper extends SQLiteOpenHelper {
         ContentValues values = new ContentValues();
         values.put(COLUMN_EVENTID, ec.getEventID());
         values.put(COLUMN_CATEGORYID, ec.getCategoryID());
-        values.put(COLUMN_CATEGORYTYPE, ec.getCategoryType());
 
         db.insert(TABLE_EVENTCATEGORIES, null, values);
         db.close();
