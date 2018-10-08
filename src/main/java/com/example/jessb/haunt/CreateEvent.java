@@ -37,6 +37,20 @@ public class CreateEvent extends AppCompatActivity  {
     TextView eventName;
     TextView eventBio;
     EditText roomNumber;
+    final int CAT_COMPETITION =1;
+    final int CAT_FOOD =2;
+    final int CAT_ATHLETICS=3;
+    final int CAT_ACADEMICS=4;
+    final int CAT_ENTERTAINMENT=5;
+    final int CAT_LIVEPERFORMANCE=6;
+    final int CAT_STEAM=7;
+    final int CAT_LITART=8;
+    final int CAT_GIVEAWAYS=9;
+    final int CAT_MUSIC=10;
+    final int CAT_BOARDGAMES=11;
+    Vector<Integer> subCategories = new Vector<Integer>(); //all of the subcategories chose
+    int mainCategory; //chosen main category
+
     int myYear;
     int myMonth;
     int myDay;
@@ -47,8 +61,6 @@ public class CreateEvent extends AppCompatActivity  {
     String building;
     RadioGroup selectedCampus; //Kennesaw vs Marietta
     RadioGroup mainCategories; //The 5 main categories
-    String mainCategory; //chosen main category
-    Vector<String> subCategories = new Vector<String>(); //all of the subcategories chose
     DatePickerDialog.OnDateSetListener dateSetListener; //listener for sellecting the date
     TimePickerDialog.OnTimeSetListener startTimeSetListener; //listener for selecting start time
     TimePickerDialog.OnTimeSetListener endTimeSetListener; //listener for selecting end time
@@ -121,19 +133,19 @@ public class CreateEvent extends AppCompatActivity  {
             public void onCheckedChanged(RadioGroup group, int checkedId) {
                 switch(checkedId) {
                     case R.id.rb_competition:
-                        mainCategory = "competition";
+                        mainCategory = CAT_COMPETITION;
                         break;
                     case R.id.rb_food:
-                        mainCategory = "food";
+                        mainCategory = CAT_FOOD;
                         break;
                     case R.id.rb_athletics:
-                        mainCategory = "athletics";
+                        mainCategory = CAT_ATHLETICS;
                         break;
                     case R.id.rb_academics:
-                        mainCategory = "academics";
+                        mainCategory = CAT_ACADEMICS;
                         break;
                     case R.id.rb_entertainment:
-                        mainCategory = "entertainment";
+                        mainCategory = CAT_ENTERTAINMENT;
                         break;
                 }
             }
@@ -250,44 +262,44 @@ public class CreateEvent extends AppCompatActivity  {
         if(cb.isChecked())
         switch(checkboxId) {
             case R.id.cb_liveperformance:
-                subCategories.add("Live Performance");
+                subCategories.add(CAT_LIVEPERFORMANCE);
                 break;
             case R.id.cb_steam:
-                subCategories.add("STEAM");
+                subCategories.add(CAT_STEAM);
                 break;
             case R.id.cb_art:
-                subCategories.add("Literature And Arts");
+                subCategories.add(CAT_LITART);
                 break;
             case R.id.cb_giveaways:
-                subCategories.add("Giveaways");
+                subCategories.add(CAT_GIVEAWAYS);
                 break;
             case R.id.cb_music:
-                subCategories.add("Music");
+                subCategories.add(CAT_MUSIC);
                 break;
             case R.id.cb_boardgames:
-                subCategories.add("Boardgames");
+                subCategories.add(CAT_BOARDGAMES);
                 break;
         }
 
         else
             switch(checkboxId) {
                 case R.id.cb_liveperformance:
-                    subCategories.remove("Live Performance");
+                    subCategories.remove(CAT_LIVEPERFORMANCE);
                     break;
                 case R.id.cb_steam:
-                    subCategories.remove("STEAM");
+                    subCategories.remove(CAT_STEAM);
                     break;
                 case R.id.cb_art:
-                    subCategories.remove("Literature And Arts");
+                    subCategories.remove(CAT_LITART);
                     break;
                 case R.id.cb_giveaways:
-                    subCategories.remove("Giveaways");
+                    subCategories.remove(CAT_GIVEAWAYS);
                     break;
                 case R.id.cb_music:
-                    subCategories.remove("Music");
+                    subCategories.remove(CAT_MUSIC);
                     break;
                 case R.id.cb_boardgames:
-                    subCategories.remove("Boardgames");
+                    subCategories.remove(CAT_BOARDGAMES);
                     break;
             }
 
