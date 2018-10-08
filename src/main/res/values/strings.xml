@@ -15,4 +15,6 @@
         completions."
     </string>
     <string name="title_activity_listed_events">activity_listed_events</string>
+    <string name="title_activity_event_view">EventView</string>
+    <string name="title_activity_asdf">asdf</string>
 </resources>

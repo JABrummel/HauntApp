@@ -7,7 +7,7 @@
     tools:context=".EventView">
 
     <ImageView
-        android:id="@+id/imageView9"
+        android:id="@+id/iv_clubphoto"
         android:layout_width="80dp"
         android:layout_height="70dp"
         android:layout_alignParentStart="true"
@@ -23,6 +23,7 @@
         android:layout_alignParentStart="true"
         android:layout_alignParentTop="true"
         android:layout_marginTop="12dp"
+        android:onClick="goBack"
         android:background="@android:color/transparent"
         android:text="X" />
 
@@ -67,20 +68,12 @@
         android:text="campus" />
 
     <TextView
-        android:id="@+id/tv_room"
+        android:id="@+id/tv_building"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_alignParentEnd="true"
         android:layout_alignTop="@+id/tv_campus"
-        android:layout_marginEnd="58dp"
-        android:text="room" />
-
-    <TextView
-        android:id="@+id/tv_building"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_alignTop="@+id/tv_campus"
-        android:layout_centerHorizontal="true"
+        android:layout_marginEnd="105dp"
         android:text="building" />
 
     <TextView
@@ -97,7 +90,7 @@
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_centerVertical="true"
-        android:layout_toEndOf="@+id/imageView9"
+        android:layout_toEndOf="@+id/iv_clubphoto"
         android:text="x:xx - x.xx" />
 
     <TextView
