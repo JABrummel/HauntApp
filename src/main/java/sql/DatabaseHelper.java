@@ -17,7 +17,7 @@ public class DatabaseHelper extends SQLiteOpenHelper {
 
     private static final String LOG = DatabaseHelper.class.getName();
     //DB version
-    private static final int DATABASE_VERSION = 3;
+    private static final int DATABASE_VERSION = 6;
 
     private static DatabaseHelper sInstance;
     private final Context ctx;
@@ -66,6 +66,7 @@ public class DatabaseHelper extends SQLiteOpenHelper {
 
     /*EVENTCATEGORIES TABLE*/
     //EventID
+    private static final String COLUMN_CATEGORYNAME = "categoryName";
     //CATEGORY ID
 
     /*CATEGORY*/
@@ -98,11 +99,10 @@ public class DatabaseHelper extends SQLiteOpenHelper {
     private String CREATE_EVENTS_TABLE = "CREATE TABLE " + TABLE_EVENTS + "("
             + COLUMN_EVENTID + " INTEGER PRIMARY KEY ," + COLUMN_EVENTNAME + " TEXT,"
             + COLUMN_LOCATION + " TEXT," + COLUMN_STARTTIME + " TEXT," + COLUMN_ENDTIME + " TEXT," + COLUMN_DATE + " INTEGER,"
-            + COLUMN_BIO + " TEXT," + COLUMN_PHOTO + " BLOB," + COLUMN_CLUBID + " INTEGER,"
-            + COLUMN_ROOMNUMBER + " INTEGER" + ")";
+            + COLUMN_BIO + " TEXT,"  + COLUMN_PHOTO + " BLOB" + ")";
 
     private String CREATE_EVENT_CATEGORIES_TABLE = "CREATE TABLE " + TABLE_EVENTCATEGORIES + "("
-            + COLUMN_EVENTID + " INTEGER," + COLUMN_CATEGORYID + " INTEGER" + ")";
+            + COLUMN_EVENTID + " INTEGER," + COLUMN_CATEGORYNAME + " TEXT," + COLUMN_CATEGORYID + " INTEGER" + ")";
 
     private String CREATE_CATEGORY_TABLE = "CREATE TABLE " + TABLE_CATEGORY + "("
             + COLUMN_CATEGORYID + " INTEGER PRIMARY KEY ," + COLUMN_PHOTO + " BLOB" + ")";
@@ -149,17 +149,17 @@ public class DatabaseHelper extends SQLiteOpenHelper {
         db.execSQL(CREATE_EVENT_CATEGORIES_TABLE);
         db.execSQL(CREATE_CATEGORY_TABLE);
 
-        db.execSQL("insert into Category(categoryID, photo) values ('1', 'null')");
-        db.execSQL("insert into Category(categoryID, photo) values ('2', 'null')");
-        db.execSQL("insert into Category(categoryID, photo) values ('3', 'null')");
-        db.execSQL("insert into Category(categoryID, photo) values ('4', 'null')");
-        db.execSQL("insert into Category(categoryID, photo) values ('5', 'null')");
-        db.execSQL("insert into Category(categoryID, photo) values ('6', 'null')");
-        db.execSQL("insert into Category(categoryID, photo) values ('7', 'null')");
-        db.execSQL("insert into Category(categoryID, photo) values ('8', 'null')");
-        db.execSQL("insert into Category(categoryID, photo) values ('9', 'null')");
-        db.execSQL("insert into Category(categoryID, photo) values ('10', 'null')");
-        db.execSQL("insert into Category(categoryID, photo) values ('11', 'null')");
+        db.execSQL("insert into Category(categoryID, photo) values ('1', null)");
+        db.execSQL("insert into Category(categoryID, photo) values ('2', null)");
+        db.execSQL("insert into Category(categoryID, photo) values ('3', null)");
+        db.execSQL("insert into Category(categoryID, photo) values ('4', null)");
+        db.execSQL("insert into Category(categoryID, photo) values ('5', null)");
+        db.execSQL("insert into Category(categoryID, photo) values ('6', null)");
+        db.execSQL("insert into Category(categoryID, photo) values ('7', null)");
+        db.execSQL("insert into Category(categoryID, photo) values ('8', null)");
+        db.execSQL("insert into Category(categoryID, photo) values ('9', null)");
+        db.execSQL("insert into Category(categoryID, photo) values ('10', null)");
+        db.execSQL("insert into Category(categoryID, photo) values ('11', null)");
 
         db.execSQL(CREATE_ACCOUNT_APPROVAL_TABLE);
         db.execSQL(CREATE_LOCATION_TABLE);
@@ -208,7 +208,7 @@ public class DatabaseHelper extends SQLiteOpenHelper {
         db.close();
     }
 
-    public void addEvents(Events events){
+    public long addEvents(Events events){
         SQLiteDatabase db = this.getWritableDatabase();
 
         ContentValues values = new ContentValues();
@@ -219,22 +219,21 @@ public class DatabaseHelper extends SQLiteOpenHelper {
         values.put(COLUMN_DATE, events.getDate());
         values.put(COLUMN_BIO, events.getBio());
         values.put(COLUMN_PHOTO, events.getPhoto());
-        values.put(COLUMN_CLUBID, events.getClubID());
-        values.put(COLUMN_ROOMNUMBER, events.getRoomNumber());
 
         Log.d("DatabaseHelper", "Adding " + events + " to " + TABLE_EVENTS);
 
-        db.insert(TABLE_EVENTS, null, values);
+        long result = db.insert(TABLE_EVENTS, null, values);
         db.close();
+        return result;
     }
 
-    public void addEventCategories(EventCategories ec)
+    public void addEventCategories(long id, int catId)
     {
         SQLiteDatabase db = this.getWritableDatabase();
 
         ContentValues values = new ContentValues();
-        values.put(COLUMN_EVENTID, ec.getEventID());
-        values.put(COLUMN_CATEGORYID, ec.getCategoryID());
+        values.put(COLUMN_EVENTID, id);
+        values.put(COLUMN_CATEGORYID, catId);
 
         db.insert(TABLE_EVENTCATEGORIES, null, values);
         db.close();
@@ -360,12 +359,20 @@ public class DatabaseHelper extends SQLiteOpenHelper {
 
     public Cursor getEvent(String name) {
         String query = "SELECT " + COLUMN_EVENTID + " FROM " + TABLE_EVENTS +
-                " WHERE " + COLUMN_EVENTNAME + " = " + name + "'";
+                " WHERE " + COLUMN_EVENTNAME + " = '" + name + "'";
         SQLiteDatabase db = this.getReadableDatabase();
         Cursor cursor = db.rawQuery(query, null);
-        cursor.close();
         return cursor;
+    }
 
+    public Cursor getEvent(String name, String location, String startTime, String endTime, String date, String bio){
+        String query = "SELECT " + COLUMN_EVENTID + " FROM " + TABLE_EVENTS +
+                " WHERE " + COLUMN_EVENTNAME + " = '" + name + "' AND " + COLUMN_LOCATION  + " = '" + location + "' AND "
+                + COLUMN_STARTTIME + " = '" + startTime + "' AND " + COLUMN_ENDTIME + " = '" + endTime + "' AND " + COLUMN_DATE +
+                " = '" + date + "' AND " + COLUMN_BIO + " = '" + bio + "'";
+        SQLiteDatabase db = this.getReadableDatabase();
+        Cursor cursor = db.rawQuery(query, null);
+        return cursor;
     }
 
     //region Update/Delete Methods

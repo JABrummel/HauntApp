@@ -28,6 +28,7 @@ import java.util.List;
 import java.util.Vector;
 
 import models.Events;
+import sql.DatabaseHelper;
 
 public class CreateEvent extends AppCompatActivity  {
 
@@ -238,6 +239,7 @@ public class CreateEvent extends AppCompatActivity  {
     }
 
     protected void save(View v){
+        DatabaseHelper db = DatabaseHelper.getInstance(getApplicationContext());
         String eventNameValue = eventName.getText().toString();
         String eventBioValue = eventBio.getText().toString();
         String roomNumberValue = roomNumber.getText().toString();
@@ -245,10 +247,16 @@ public class CreateEvent extends AppCompatActivity  {
         newEvent.setEventName(eventNameValue);
         newEvent.setBio(eventBioValue);
         newEvent.setLocation(location);
+        long insert = db.addEvents(newEvent);
+        for (int i = 0; i < subCategories.size(); i ++)
+        {
+            db.addEventCategories(insert, subCategories.get(i));
+        }
+        db.addEventCategories(insert, mainCategory);
         System.out.println(newEvent);
-//        Intent i = new Intent(this, ListedEvents.class);
-//        i.putExtra("user", "club");
-//        startActivity(i);
+        Intent i = new Intent(this, ListedEvents.class);
+        i.putExtra("user", "club");
+        startActivity(i);
     }
 
 

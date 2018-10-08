@@ -1,6 +1,8 @@
 package models;
 
-public class Events {
+import java.io.Serializable;
+
+public class Events implements Serializable {
     private int eventID;
     private String eventName;
     private String location;
