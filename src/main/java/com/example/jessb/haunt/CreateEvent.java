@@ -13,6 +13,7 @@ import android.widget.AdapterView;
 import android.widget.ArrayAdapter;
 import android.widget.CheckBox;
 import android.widget.DatePicker;
+import android.widget.EditText;
 import android.widget.RadioGroup;
 import android.widget.Spinner;
 import android.widget.TextView;
@@ -28,13 +29,14 @@ import java.util.Vector;
 
 import models.Events;
 
-public class CreateEvent extends AppCompatActivity implements OnItemSelectedListener {
+public class CreateEvent extends AppCompatActivity  {
 
     TextView datePicked; //shows the date of the event
     TextView startTime; //shows the start time of the event
     TextView endTime; //shows the end time of the event
     TextView eventName;
     TextView eventBio;
+    EditText roomNumber;
     int myYear;
     int myMonth;
     int myDay;
@@ -42,6 +44,7 @@ public class CreateEvent extends AppCompatActivity implements OnItemSelectedList
     int endHour;
     int startMin;
     int endMin;
+    String building;
     RadioGroup selectedCampus; //Kennesaw vs Marietta
     RadioGroup mainCategories; //The 5 main categories
     String mainCategory; //chosen main category
@@ -69,6 +72,7 @@ public class CreateEvent extends AppCompatActivity implements OnItemSelectedList
         locationSpinner=(Spinner)findViewById(R.id.spinner_locations);
         eventName = findViewById(R.id.tv_eventName);
         eventBio = findViewById(R.id.tv_eventBio);
+        roomNumber = findViewById(R.id.et_roomnumber);
 
 
 
@@ -82,6 +86,22 @@ public class CreateEvent extends AppCompatActivity implements OnItemSelectedList
                 android.R.layout.simple_spinner_item, kennesawLocations);
                 kennesawAdapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
 
+        //The following functions are for the dropdown
+        locationSpinner.setOnItemSelectedListener(new OnItemSelectedListener() {
+            @Override
+            public void onItemSelected(AdapterView<?> parent, View view, int position, long id) {
+                // On selecting a spinner item
+                building = parent.getItemAtPosition(position).toString();
+
+                // Showing selected spinner item
+                Toast.makeText(parent.getContext(), "Selected: " + building, Toast.LENGTH_LONG).show();
+            }
+
+            @Override
+            public void onNothingSelected(AdapterView<?> parent) {
+
+            }
+        });
          //Radiogroup for the two campus locations
         selectedCampus.setOnCheckedChangeListener(new RadioGroup.OnCheckedChangeListener() {
             @Override
@@ -208,27 +228,18 @@ public class CreateEvent extends AppCompatActivity implements OnItemSelectedList
     protected void save(View v){
         String eventNameValue = eventName.getText().toString();
         String eventBioValue = eventBio.getText().toString();
+        String roomNumberValue = roomNumber.getText().toString();
+        String location = roomNumberValue + " " + building;
         newEvent.setEventName(eventNameValue);
         newEvent.setBio(eventBioValue);
+        newEvent.setLocation(location);
         System.out.println(newEvent);
 //        Intent i = new Intent(this, ListedEvents.class);
 //        i.putExtra("user", "club");
 //        startActivity(i);
     }
 
-    //The following functions are for the dropdown
-    @Override
-    public void onItemSelected(AdapterView<?> parent, View view, int position, long id) {
-        // On selecting a spinner item
-        String building = parent.getItemAtPosition(position).toString();
 
-        // Showing selected spinner item
-        Toast.makeText(parent.getContext(), "Selected: " + building, Toast.LENGTH_LONG).show();
-         newEvent.setLocation(building);
-    }
-    public void onNothingSelected(AdapterView<?> arg0) {
-        // TODO Auto-generated method stub
-    }
 
 
     //monitors the checkbox clicks
