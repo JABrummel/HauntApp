@@ -1,13 +1,12 @@
 package models;
 
-import java.util.Date;
-
 public class Events {
     private int eventID;
     private String eventName;
-    private int locationID;
-    private String time;
-    private int date;
+    private String location;
+    private String startTime;
+    private String endTime;
+    private String date;
     private String bio;
     private byte photo;
     private int clubID;
@@ -29,27 +28,36 @@ public class Events {
         this.eventName = eventName;
     }
 
-    public int getLocationID() {
-        return locationID;
+    public String getLocation() {
+        return location;
     }
 
-    public void setLocationID(int locationID) {
-        this.locationID = locationID;
+    public void setLocation(String location) {
+        this.location = location;
     }
 
-    public String getTime() {
-        return time;
+    public String getStartTime() {
+        return startTime;
     }
 
-    public void setTime(String time) {
-        this.time = time;
+    public void setStartTime(String time) {
+        this.startTime = time;
     }
 
-    public int getDate() {
+    public String getEndTime() {
+        return endTime;
+    }
+
+    public void setEndTime(String endTime) {
+        this.endTime = endTime;
+    }
+
+
+    public String getDate() {
         return date;
     }
 
-    public void setDate(int date) {
+    public void setDate(String date) {
         this.date = date;
     }
 

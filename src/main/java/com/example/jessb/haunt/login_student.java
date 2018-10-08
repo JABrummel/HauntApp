@@ -1,5 +1,7 @@
 package com.example.jessb.haunt;
 
+import android.app.Activity;
+import android.app.AppComponentFactory;
 import android.content.Intent;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
