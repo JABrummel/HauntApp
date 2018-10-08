@@ -3,6 +3,7 @@ package sql;
 import android.content.ContentValues;
 import android.content.Context;
 import android.database.Cursor;
+import android.database.SQLException;
 import android.database.sqlite.SQLiteDatabase;
 import android.database.sqlite.SQLiteOpenHelper;
 import android.util.Log;
@@ -16,7 +17,10 @@ public class DatabaseHelper extends SQLiteOpenHelper {
 
     private static final String LOG = DatabaseHelper.class.getName();
     //DB version
-    private static final int DATABASE_VERSION = 1;
+    private static final int DATABASE_VERSION = 3;
+
+    private static DatabaseHelper sInstance;
+    private final Context ctx;
 
     //DB Name
     private static final String DATABASE_NAME = "Haunt.db";
@@ -51,8 +55,9 @@ public class DatabaseHelper extends SQLiteOpenHelper {
     /*EVENTS TABLE*/
     private static final String COLUMN_EVENTID = "eventID"; //EVENT CATEGORY SHARES THIS
     private static final String COLUMN_EVENTNAME = "eventName";
-    private static final String COLUMN_LOCATIONID = "locationID";
-    private static final String COLUMN_TIME = "time";
+    private static final String COLUMN_LOCATION = "location";
+    private static final String COLUMN_STARTTIME = "startTime";
+    private static final String COLUMN_ENDTIME = "endTime";
     private static final String COLUMN_DATE = "date";
     private static final String COLUMN_BIO = "bio";
     //PHOTO COLUMN
@@ -92,29 +97,34 @@ public class DatabaseHelper extends SQLiteOpenHelper {
 
     private String CREATE_EVENTS_TABLE = "CREATE TABLE " + TABLE_EVENTS + "("
             + COLUMN_EVENTID + " INTEGER PRIMARY KEY ," + COLUMN_EVENTNAME + " TEXT,"
-            + COLUMN_LOCATIONID + " INTEGER," + COLUMN_TIME + " TEXT," + COLUMN_DATE + " INTEGER,"
+            + COLUMN_LOCATION + " TEXT," + COLUMN_STARTTIME + " TEXT," + COLUMN_ENDTIME + " TEXT," + COLUMN_DATE + " INTEGER,"
             + COLUMN_BIO + " TEXT," + COLUMN_PHOTO + " BLOB," + COLUMN_CLUBID + " INTEGER,"
-            + COLUMN_ROOMNUMBER + " INTEGER," + "FOREIGN KEY(" + COLUMN_LOCATIONID + ") REFERENCES " + TABLE_LOCATION + "(ID), "
-            + "FOREIGN KEY(" + COLUMN_CLUBID + ") REFERENCES " + TABLE_CLUB + "(clubID) " +")";
+            + COLUMN_ROOMNUMBER + " INTEGER" + ")";
 
     private String CREATE_EVENT_CATEGORIES_TABLE = "CREATE TABLE " + TABLE_EVENTCATEGORIES + "("
-            + COLUMN_EVENTID + " INTEGER," + COLUMN_CATEGORYID + " INTEGER,"
-            + "FOREIGN KEY(" + COLUMN_CATEGORYID + ") REFERENCES " + TABLE_CATEGORY + "(categoryID)," +
-            "FOREIGN KEY(" + COLUMN_EVENTID + ") REFERENCES " + TABLE_EVENTS + "(eventID)" + ")";
+            + COLUMN_EVENTID + " INTEGER," + COLUMN_CATEGORYID + " INTEGER" + ")";
 
     private String CREATE_CATEGORY_TABLE = "CREATE TABLE " + TABLE_CATEGORY + "("
             + COLUMN_CATEGORYID + " INTEGER PRIMARY KEY ," + COLUMN_PHOTO + " BLOB" + ")";
 
     private String CREATE_ACCOUNT_APPROVAL_TABLE = "CREATE TABLE " + TABLE_ACCOUNT_APPROVAL + "("
             + COLUMN_CLUBID +  " INTEGER PRIMARY KEY ," + COLUMN_ISAPPROVED + " INTEGER,"
-            + COLUMN_REASON + " TEXT," + "FOREIGN KEY(" + COLUMN_CLUBID + ") REFERENCES " + TABLE_CLUB + "(clubID)" + ")";
+            + COLUMN_REASON + " TEXT" + ")";
 
     private String CREATE_LOCATION_TABLE = "CREATE TABLE " + TABLE_LOCATION + "("
             + COLUMN_ADDRESS + " TEXT," + COLUMN_NAME + " TEXT," + COLUMN_CAMPUS + " TEXT" + ")";
     //endregion
 
+    public static synchronized DatabaseHelper getInstance(Context context){
+        if (sInstance == null) {
+            sInstance = new DatabaseHelper(context.getApplicationContext());
+        }
+        return sInstance;
+    }
+
     public DatabaseHelper(Context context) {
         super(context, DATABASE_NAME, null, DATABASE_VERSION);
+        this.ctx = context;
     }
 
     public void onCreate(SQLiteDatabase db){
@@ -125,8 +135,16 @@ public class DatabaseHelper extends SQLiteOpenHelper {
         db.execSQL("insert into User (username, email, password, role) values ('ebell', 'ebell@kennesaw.edu', 'test', 'admin')");
 
         db.execSQL(CREATE_CLUB_TABLE);
-        db.execSQL("insert into Club (facultyEmail, clubName, photo, username, clubEmail, password, role) values ('jvice@kennesaw.edu', 'Club Penguin', " +
-                "null, 'jvice', 'cp@kennesaw.edu', 'test', 'club')");
+        try {
+            db.execSQL("insert into Club (facultyEmail, clubName, photo, username, clubEmail, password, role) values ('jvice@kennesaw.edu', 'Club Penguin', " +
+                    "null, 'jvice', 'cp@kennesaw.edu', 'test', 'club')");
+            db.execSQL("insert into Club (facultyEmail, clubName, photo, username, clubEmail, password, role) values ('frodgers@kennesaw.edu', 'Chess Club', " +
+                    "null, 'frodgers', 'chessclub@kennesaw.edu', 'chess', 'club')");
+            db.execSQL("insert into Club (facultyEmail, clubName, photo, username, clubEmail, password, role) values ('george@kennesaw.edu', 'Chess Club', " +
+                    "null, 'george', 'chessclub@kennesaw.edu', 'chess', 'club')");
+        } catch (SQLException e){
+            System.out.print(e);
+        }
         db.execSQL(CREATE_EVENTS_TABLE);
         db.execSQL(CREATE_EVENT_CATEGORIES_TABLE);
         db.execSQL(CREATE_CATEGORY_TABLE);
@@ -178,7 +196,6 @@ public class DatabaseHelper extends SQLiteOpenHelper {
         SQLiteDatabase db = this.getWritableDatabase();
 
         ContentValues values = new ContentValues();
-        values.put(COLUMN_USER_ID, club.getUserID());
         values.put(COLUMN_FACULTYEMAIL, club.getFacultyEmail());
         values.put(COLUMN_PHOTO, club.getPhoto());
         values.put(COLUMN_CLUBNAME, club.getClubName());
@@ -196,13 +213,16 @@ public class DatabaseHelper extends SQLiteOpenHelper {
 
         ContentValues values = new ContentValues();
         values.put(COLUMN_EVENTNAME, events.getEventName());
-        values.put(COLUMN_LOCATIONID, events.getLocationID());
-        values.put(COLUMN_TIME, events.getTime());
+        values.put(COLUMN_LOCATION, events.getLocation());
+        values.put(COLUMN_STARTTIME, events.getStartTime());
+        values.put(COLUMN_ENDTIME, events.getEndTime());
         values.put(COLUMN_DATE, events.getDate());
         values.put(COLUMN_BIO, events.getBio());
         values.put(COLUMN_PHOTO, events.getPhoto());
         values.put(COLUMN_CLUBID, events.getClubID());
         values.put(COLUMN_ROOMNUMBER, events.getRoomNumber());
+
+        Log.d("DatabaseHelper", "Adding " + events + " to " + TABLE_EVENTS);
 
         db.insert(TABLE_EVENTS, null, values);
         db.close();
@@ -255,26 +275,33 @@ public class DatabaseHelper extends SQLiteOpenHelper {
     }
     //endregion
 
-    public List<User> getAllUsers() {
-        List<User> users = new ArrayList<>();
-        String selectQuery = "SELECT * FROM " + TABLE_USER;
+//    public List<User> getAllUsers() {
+//        List<User> users = new ArrayList<>();
+//        String selectQuery = "SELECT * FROM " + TABLE_USER;
+//
+//        Log.e(LOG, selectQuery);
+//        SQLiteDatabase db = this.getReadableDatabase();
+//        Cursor c = db.rawQuery(selectQuery, null);
+//
+//        if (c.moveToFirst()) {
+//            do {
+//                User user = new User();
+//                user.setUserID(c.getInt((c.getColumnIndex(COLUMN_USER_ID))));
+//                user.setEmail(c.getString((c.getColumnIndex(COLUMN_EMAIL))));
+//                user.setPassword(c.getString((c.getColumnIndex(COLUMN_EMAIL))));
+//                user.setRole(c.getString((c.getColumnIndex(COLUMN_ROLE))));
+//
+//                users.add(user);
+//            } while (c.moveToNext());
+//        }
+//        return users;
+//    }
 
-        Log.e(LOG, selectQuery);
-        SQLiteDatabase db = this.getReadableDatabase();
-        Cursor c = db.rawQuery(selectQuery, null);
-
-        if (c.moveToFirst()) {
-            do {
-                User user = new User();
-                user.setUserID(c.getInt((c.getColumnIndex(COLUMN_USER_ID))));
-                user.setEmail(c.getString((c.getColumnIndex(COLUMN_EMAIL))));
-                user.setPassword(c.getString((c.getColumnIndex(COLUMN_EMAIL))));
-                user.setRole(c.getString((c.getColumnIndex(COLUMN_ROLE))));
-
-                users.add(user);
-            } while (c.moveToNext());
-        }
-        return users;
+    public Cursor getEvents(){
+        SQLiteDatabase db = this.getWritableDatabase();
+        String query = "SELECT * FROM " + TABLE_EVENTS;
+        Cursor events = db.rawQuery(query, null);
+        return events;
     }
 
     public List<Club> getAllClubs() {
@@ -317,11 +344,12 @@ public class DatabaseHelper extends SQLiteOpenHelper {
                 event.setClubID(c.getInt((c.getColumnIndex(COLUMN_CLUBID))));
                 event.setEventName(c.getString((c.getColumnIndex(COLUMN_EVENTNAME))));
                 event.setEventID(c.getInt((c.getColumnIndex(COLUMN_EVENTID))));
-                event.setLocationID(c.getInt((c.getColumnIndex(COLUMN_LOCATIONID))));
-                event.setTime(c.getString((c.getColumnIndex(COLUMN_TIME))));
-                event.setDate(c.getInt((c.getColumnIndex(COLUMN_DATE))));
+                event.setLocation(c.getString((c.getColumnIndex(COLUMN_LOCATION))));
+                event.setStartTime(c.getString((c.getColumnIndex(COLUMN_STARTTIME))));
+                event.setEndTime(c.getString((c.getColumnIndex(COLUMN_ENDTIME))));
+                event.setDate(c.getString((c.getColumnIndex(COLUMN_DATE))));
                 event.setBio(c.getString((c.getColumnIndex(COLUMN_BIO))));
-//                event.setPhoto(c.getBlob((c.getColumnIndex(COLUMN_PHOTO)))); Gotta figure out how pictures are saved properly into DB more
+                //event.setPhoto(c.getBlob((c.getColumnIndex(COLUMN_PHOTO)))); //Gotta figure out how pictures are saved properly into DB more
                 event.setRoomNumber(c.getInt((c.getColumnIndex(COLUMN_ROOMNUMBER))));
 
                 events.add(event);
@@ -330,15 +358,14 @@ public class DatabaseHelper extends SQLiteOpenHelper {
         return events;
     }
 
-    public int getEventCount() {
-        String countQuery = "SELECT * FROM " + TABLE_EVENTS;
+    public Cursor getEvent(String name) {
+        String query = "SELECT " + COLUMN_EVENTID + " FROM " + TABLE_EVENTS +
+                " WHERE " + COLUMN_EVENTNAME + " = " + name + "'";
         SQLiteDatabase db = this.getReadableDatabase();
-        Cursor cursor = db.rawQuery(countQuery, null);
-
-        int count = cursor.getCount();
+        Cursor cursor = db.rawQuery(query, null);
         cursor.close();
+        return cursor;
 
-        return count;
     }
 
     //region Update/Delete Methods
@@ -361,8 +388,9 @@ public class DatabaseHelper extends SQLiteOpenHelper {
 
         ContentValues values = new ContentValues();
         values.put(COLUMN_EVENTNAME, events.getEventName());
-        values.put(COLUMN_LOCATIONID, events.getLocationID());
-        values.put(COLUMN_TIME, events.getTime());
+        values.put(COLUMN_LOCATION, events.getLocation());
+        values.put(COLUMN_STARTTIME, events.getStartTime());
+        values.put(COLUMN_ENDTIME, events.getEndTime());
         values.put(COLUMN_DATE, events.getDate());
         values.put(COLUMN_BIO, events.getBio());
         values.put(COLUMN_PHOTO, events.getPhoto());
@@ -428,7 +456,7 @@ public class DatabaseHelper extends SQLiteOpenHelper {
         SQLiteDatabase db = this.getReadableDatabase();
 
         String selection = COLUMN_USERNAME + " = ?" + " AND " + COLUMN_PASSWORD + " = ?";
-        String[] selectionArgs = {username};
+        String[] selectionArgs = {username , password};
 
         Cursor cursor = db.query(TABLE_USER,
                 columns,
@@ -441,16 +469,16 @@ public class DatabaseHelper extends SQLiteOpenHelper {
         cursor.close();
         db.close();
 
-        return cursorCount > 0;
+        return cursorCount > 0; 
     }
-    public boolean checkClub(String username){
+    public boolean checkClub(String username, String password){
         String[] columns = {
                 COLUMN_CLUBID
         };
         SQLiteDatabase db = this.getReadableDatabase();
 
-        String selection = COLUMN_USERNAME + " = ?";
-        String[] selectionArgs = {username};
+        String selection = COLUMN_USERNAME + " = ?" + " AND " + COLUMN_PASSWORD + " = ?";
+        String[] selectionArgs = {username, password};
 
         Cursor cursor = db.query(TABLE_CLUB,
                 columns,
@@ -465,29 +493,14 @@ public class DatabaseHelper extends SQLiteOpenHelper {
         System.out.println(cursorCount);
         return cursorCount > 0;
     }
-    public Club findClub (String username){
-        String query = "SELECT * FROM " + TABLE_CLUB + " WHERE " + COLUMN_USERNAME +
-                " = \"" + username + "\"";
+    public Cursor getAllClub (){
         SQLiteDatabase db = this.getWritableDatabase();
-        Cursor c = db.rawQuery(query,null);;
-        Club club = new Club();
-        if (c.moveToFirst()) {
+        Cursor query = db.rawQuery("SELECT * FROM " + TABLE_CLUB, null);
+        return query;
 
-                c.moveToFirst();
-                club.setClubID(c.getInt((c.getColumnIndex(COLUMN_CLUBID))));
-                club.setUserID(c.getInt((c.getColumnIndex(COLUMN_USER_ID))));
-                club.setFacultyEmail(c.getString((c.getColumnIndex(COLUMN_FACULTYEMAIL))));
-                club.setClubEmail(c.getString((c.getColumnIndex(COLUMN_CLUBEMAIL))));
-                club.setClubName(c.getString((c.getColumnIndex(COLUMN_CLUBNAME))));
-                club.setUsername(c.getString((c.getColumnIndex(COLUMN_USERNAME))));
-//                club.setPhoto(c.getBlob((c.getColumnIndex(COLUMN_PHOTO)))); Gotta figure out how pictures are saved properly into DB more
-                club.setPassword(c.getString((c.getColumnIndex(COLUMN_EMAIL))));
-                club.setRole(c.getString((c.getColumnIndex(COLUMN_ROLE))));
-
-               c.close();
-            } else { club = null; }
-        System.out.println(query);
-        return club;
     }
+    //endregion
+
+    //region insert methods
     //endregion
 }

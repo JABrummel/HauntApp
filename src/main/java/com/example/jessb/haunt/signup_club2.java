@@ -51,6 +51,9 @@ public class signup_club2 extends AppCompatActivity {
 
     protected void goBack(View v) {}
 
-    protected void createAccount(View v) {}
+    protected void createAccount(View v) {
+        Intent intent = new Intent(signup_club2.this, ListedEvents.class);
+        startActivity(intent);
+    }
 }
 

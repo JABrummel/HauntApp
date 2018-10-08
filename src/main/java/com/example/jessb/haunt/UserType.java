@@ -11,14 +11,12 @@ import sql.DatabaseHelper;
 
 public class UserType extends AppCompatActivity {
 
-    //Database helper
     DatabaseHelper db;
-
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_user_type);
-        //db = new DatabaseHelper(getApplicationContext());
+        db = DatabaseHelper.getInstance(getApplicationContext());
 
     }
 

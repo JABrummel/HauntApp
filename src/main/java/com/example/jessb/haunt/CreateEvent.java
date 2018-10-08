@@ -19,26 +19,29 @@ import android.widget.TextView;
 import android.widget.TimePicker;
 import android.widget.Toast;
 
+import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.Calendar;
 import java.util.List;
 import java.util.Vector;
 
+import models.Events;
+
 public class CreateEvent extends AppCompatActivity implements OnItemSelectedListener {
 
     TextView datePicked; //shows the date of the event
     TextView startTime; //shows the start time of the event
     TextView endTime; //shows the end time of the event
-    int year;
-    int month;
-    int day;
+    TextView eventName;
+    TextView eventBio;
+    int myYear;
+    int myMonth;
+    int myDay;
     int startHour;
     int endHour;
     int startMin;
     int endMin;
-    String startTimeVal;
-    String endTimeVal;
     RadioGroup selectedCampus; //Kennesaw vs Marietta
     RadioGroup mainCategories; //The 5 main categories
     String mainCategory; //chosen main category
@@ -52,7 +55,7 @@ public class CreateEvent extends AppCompatActivity implements OnItemSelectedList
     List <String>kennesawLocations = new ArrayList(Arrays.asList("The Commons", "Sturgis Library", "Kennesaw Hall", "Siegal Student Recreation",
     "Convocation Center", "Bailey Performance Center", "Arboretum"));
     Spinner locationSpinner; //Drop down for buildings
-    String building;
+    Events newEvent = new Events();
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -64,6 +67,9 @@ public class CreateEvent extends AppCompatActivity implements OnItemSelectedList
         selectedCampus= (RadioGroup)findViewById(R.id.rg_campus);
         mainCategories=(RadioGroup)findViewById(R.id.rg_categories);
         locationSpinner=(Spinner)findViewById(R.id.spinner_locations);
+        eventName = findViewById(R.id.tv_eventName);
+        eventBio = findViewById(R.id.tv_eventBio);
+
 
 
         //setup for marietta location dropdown
@@ -124,13 +130,16 @@ public class CreateEvent extends AppCompatActivity implements OnItemSelectedList
                         startTimeSetListener, startHour, startMin,true);
                 startDialog.getWindow().setBackgroundDrawable(new ColorDrawable(Color.TRANSPARENT));
                 startDialog.show();
+
             }
         });
 
         startTimeSetListener = new TimePickerDialog.OnTimeSetListener() {
             @Override
             public void onTimeSet(TimePicker view, int hourOfDay, int minute) {
-                startTime.setText(hourOfDay + ": " + minute);
+                startTime.setText(hourOfDay + ":" + minute);
+                String currentTime = startTime.getText().toString();
+                newEvent.setStartTime(currentTime);
             }
         };
 
@@ -151,7 +160,10 @@ public class CreateEvent extends AppCompatActivity implements OnItemSelectedList
         endTimeSetListener = new TimePickerDialog.OnTimeSetListener() {
             @Override
             public void onTimeSet(TimePicker view, int hourOfDay, int minute) {
-                endTime.setText(hourOfDay + ": " + minute);
+                endTime.setText(hourOfDay + ":" + minute);
+                String endTimeValue  = endTime.getText().toString();
+                newEvent.setEndTime(endTimeValue);
+
             }
         };
 
@@ -160,13 +172,13 @@ public class CreateEvent extends AppCompatActivity implements OnItemSelectedList
             @Override
             public void onClick(View v) {
                 Calendar calendar = Calendar.getInstance();
-                 year = calendar.get(Calendar.YEAR);
-                 month = calendar.get(Calendar.MONTH);
-                 day = calendar.get(Calendar.DAY_OF_MONTH);
+                 myYear = calendar.get(Calendar.YEAR);
+                 myMonth = calendar.get(Calendar.MONTH);
+                 myDay = calendar.get(Calendar.DAY_OF_MONTH);
 
                 DatePickerDialog dpDialog = new DatePickerDialog(CreateEvent.this,
                         android.R.style.Theme_Holo_Light_Dialog_MinWidth,
-                        dateSetListener, year, month, day);
+                        dateSetListener, myYear, myMonth, myDay);
                 dpDialog.getWindow().setBackgroundDrawable(new ColorDrawable(Color.TRANSPARENT));
                 dpDialog.show();
             }
@@ -175,7 +187,10 @@ public class CreateEvent extends AppCompatActivity implements OnItemSelectedList
         dateSetListener = new DatePickerDialog.OnDateSetListener() {
             @Override
             public void onDateSet(DatePicker view, int year, int month, int dayOfMonth) {
+                SimpleDateFormat format = new SimpleDateFormat("yyyy-MM-dd");
                 datePicked.setText(month+1 + "/" + dayOfMonth + "/" + year);
+                String date = datePicked.getText().toString();
+                newEvent.setDate(date);
             }
         };
 
@@ -190,6 +205,17 @@ public class CreateEvent extends AppCompatActivity implements OnItemSelectedList
         startActivity(i);
     }
 
+    protected void save(View v){
+        String eventNameValue = eventName.getText().toString();
+        String eventBioValue = eventBio.getText().toString();
+        newEvent.setEventName(eventNameValue);
+        newEvent.setBio(eventBioValue);
+        System.out.println(newEvent);
+//        Intent i = new Intent(this, ListedEvents.class);
+//        i.putExtra("user", "club");
+//        startActivity(i);
+    }
+
     //The following functions are for the dropdown
     @Override
     public void onItemSelected(AdapterView<?> parent, View view, int position, long id) {
@@ -198,6 +224,7 @@ public class CreateEvent extends AppCompatActivity implements OnItemSelectedList
 
         // Showing selected spinner item
         Toast.makeText(parent.getContext(), "Selected: " + building, Toast.LENGTH_LONG).show();
+         newEvent.setLocation(building);
     }
     public void onNothingSelected(AdapterView<?> arg0) {
         // TODO Auto-generated method stub
