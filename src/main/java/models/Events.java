@@ -10,7 +10,7 @@ public class Events implements Serializable {
     private String endTime;
     private String date;
     private String bio;
-    private byte photo;
+    private byte[] photo;
     private int clubID;
     private int roomNumber;
 
@@ -71,11 +71,11 @@ public class Events implements Serializable {
         this.bio = bio;
     }
 
-    public int getPhoto() {
+    public byte[] getPhoto() {
         return photo;
     }
 
-    public void setPhoto(byte photo) {
+    public void setPhoto(byte[] photo) {
         this.photo = photo;
     }
 

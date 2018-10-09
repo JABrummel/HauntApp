@@ -74,7 +74,7 @@ public class ListedEvents extends AppCompatActivity {
             mevent.setEndTime(data.getString(4));
             mevent.setDate(data.getString(5));
             mevent.setBio(data.getString(6));
-            //mevent.setPhoto(data.getString(7));
+            mevent.setPhoto(data.getBlob(7));
         }
         ListAdapter adapter = new ArrayAdapter<>(this, android.R.layout.simple_list_item_1, eventData);
         mListView.setAdapter(adapter);

@@ -1,11 +1,12 @@
 package models;
 
+import java.io.Serializable;
 import java.sql.Blob;
 
-public class Club {
+public class Club implements Serializable {
     private String facultyEmail;
     private String clubEmail;
-    private byte photo;
+    private byte[] photo;
     private int clubID;
     private int userID;
     private String clubName;
@@ -45,11 +46,11 @@ public class Club {
         this.clubName = clubName;
     }
 
-    public byte getPhoto() {
+    public byte[] getPhoto() {
         return photo;
     }
 
-    public void setPhoto(byte photo) {
+    public void setPhoto(byte[] photo) {
         this.photo = photo;
     }
 

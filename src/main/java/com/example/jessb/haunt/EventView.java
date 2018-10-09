@@ -1,6 +1,8 @@
 package com.example.jessb.haunt;
 
 import android.content.Intent;
+import android.graphics.Bitmap;
+import android.graphics.BitmapFactory;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.view.View;
@@ -48,10 +50,12 @@ public class EventView extends AppCompatActivity {
         clubName.setText("Hosted by: " + mEvent.getEventName());
         location.setText(mEvent.getLocation());
         dateHolder.setText(mEvent.getDate());
-        //clubPhoto.setImageURI(mEvent.getPhoto());
-
-
-
+        clubPhoto.setImageBitmap(convertToBitmap(mEvent.getPhoto()));
+    }
+    private Bitmap convertToBitmap(byte[] b){
+        if (b != null)
+            return BitmapFactory.decodeByteArray(b, 0, b.length);
+        else return null;
     }
 
     protected void goBack(View v) {

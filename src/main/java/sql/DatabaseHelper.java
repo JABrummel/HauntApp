@@ -196,12 +196,11 @@ public class DatabaseHelper extends SQLiteOpenHelper {
         SQLiteDatabase db = this.getWritableDatabase();
 
         ContentValues values = new ContentValues();
-        values.put(COLUMN_FACULTYEMAIL, club.getFacultyEmail());
-        values.put(COLUMN_PHOTO, club.getPhoto());
         values.put(COLUMN_CLUBNAME, club.getClubName());
+        values.put(COLUMN_PHOTO, club.getPhoto());
         values.put(COLUMN_USERNAME, club.getUsername());
+        values.put(COLUMN_CLUBEMAIL, club.getClubEmail());
         values.put(COLUMN_PASSWORD, club.getPassword());
-        values.put(COLUMN_EMAIL, club.getClubEmail());
         values.put(COLUMN_ROLE, club.getRole());
 
         db.insert(TABLE_CLUB, null, values);

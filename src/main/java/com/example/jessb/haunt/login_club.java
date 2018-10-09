@@ -33,9 +33,9 @@ public class login_club extends AppCompatActivity {
             StringBuffer buffer = new StringBuffer();
             while (res.moveToNext()) {
                 buffer.append("ID: " + res.getString(0) + "\n");
-                buffer.append("Faculty Email: " + res.getString(1) + "\n");
+                //buffer.append("Faculty Email: " + res.getString(1) + "\n");
                 buffer.append("Club Name: " + res.getString(2) + "\n");
-                buffer.append("Photo: " + res.getString(3) + "\n");
+               // buffer.append("Photo: " + res.getString(3) + "\n");
                 buffer.append("UserName: " + res.getString(4) + "\n");
                 buffer.append("Email: " + res.getString(5) + "\n");
                 buffer.append("Password: " + res.getString(6) + "\n");
