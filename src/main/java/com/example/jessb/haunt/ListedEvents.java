@@ -5,6 +5,7 @@ import android.database.Cursor;
 import android.support.design.widget.FloatingActionButton;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
+import android.util.EventLog;
 import android.util.Log;
 import android.view.View;
 import android.widget.AdapterView;
@@ -14,17 +15,21 @@ import android.widget.ListAdapter;
 import android.widget.ListView;
 import android.widget.Toast;
 
+import java.io.Serializable;
 import java.util.ArrayList;
 
 import models.Club;
 import models.Events;
 import sql.DatabaseHelper;
 
-public class ListedEvents extends AppCompatActivity {
+public class ListedEvents extends AppCompatActivity implements Serializable {
 
     DatabaseHelper db;
     Events mevent = new Events();
+    ArrayList<Events> events = new ArrayList<Events>();
     private ListView mListView;
+    int userId;
+    String userType;
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -34,16 +39,17 @@ public class ListedEvents extends AppCompatActivity {
         FloatingActionButton moreButton = findViewById(R.id.button_more);
         FloatingActionButton addButton = findViewById(R.id.button_add);
         Intent lastActivity = getIntent();
-        String usertype = lastActivity.getStringExtra("user");
+         userType = lastActivity.getStringExtra("userType");
+         userId = lastActivity.getIntExtra("userId", 0);
         populateEvents();
 
-        if(usertype.equals("student")) {
+        if(userType.equals("student")) {
 
             addButton.hide();
             moreButton.hide();
         }
 
-        if(usertype.equals("club")) {
+        if(userType.equals("club")) {
             addButton.setOnClickListener(new View.OnClickListener() {
                 @Override
                 public void onClick(View v) {
@@ -58,23 +64,24 @@ public class ListedEvents extends AppCompatActivity {
 
     protected void createEvent(){
         Intent newEvent = new Intent(this, CreateEvent.class);
+        newEvent.putExtra("userType", "club");
+        newEvent.putExtra("userId", userId);
         startActivity(newEvent);
     }
     private void populateEvents() {
         Log.d("Databasehelper", "populateEvents: Displaying data in view");
         Cursor data = db.getEvents();
         ArrayList<String> eventData = new ArrayList<>();
+        Events tmp = new Events();
         while(data.moveToNext()){
             //get the value from column 1 (Event Name)
             //then add to the array list
+            events.add(new Events(data.getString(1), data.getString(2),
+                    data.getString(3), data.getString(4),data.getString(5),
+                    data.getString(6), data.getBlob(7)
+                    ));
             eventData.add(data.getString(1));
-            mevent.setEventName(data.getString(1));
-            mevent.setLocation(data.getString(2));
-            mevent.setStartTime(data.getString(3));
-            mevent.setEndTime(data.getString(4));
-            mevent.setDate(data.getString(5));
-            mevent.setBio(data.getString(6));
-            mevent.setPhoto(data.getBlob(7));
+//
         }
         ListAdapter adapter = new ArrayAdapter<>(this, android.R.layout.simple_list_item_1, eventData);
         mListView.setAdapter(adapter);
@@ -83,20 +90,29 @@ public class ListedEvents extends AppCompatActivity {
             @Override
             public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
                 String eventName = parent.getItemAtPosition(position).toString();
-                Log.d("Listed Events", "onItemClick: You clicked on " + eventName);
-
+                int index = position;
+//
+                Log.i("eventview_looker", "1. eventName: " + eventName);
                 Cursor data = db.getEvent(eventName);
                 int eventId = -1;
                 while(data.moveToNext()){
                     eventId = data.getInt(0);
                 }
                 if(eventId > -1){
-                    Log.d("Listed Events", "ID is : " + eventId);
+//                    Log.d("Listed Events", "ID is : " + eventId);
+                    Log.i("eventview_looker", "2. Id is:" + eventId);
                     Intent intent = new Intent(ListedEvents.this, EventView.class);
 //                    intent.putExtra("id", eventId);
 //                    intent.putExtra("eventName", eventName);
-                    mevent.setEventID(eventId);
+                    mevent = (Events)events.get(index);
+                    Log.i("eventview_looker", "3. event being sent: " + mevent.getEventName());
+
+                    for(int i= 0; i< events.size(); i++) {
+                        Log.i("eventview_looker", events.get(i).getEventName());
+                    }
                     intent.putExtra("event_object", mevent);
+                    intent.putExtra("userType", userType);
+                    intent.putExtra("userId", userId);
                     startActivity(intent);
                 } else {
                     Toast.makeText(getApplicationContext(), "No ID associated with name", Toast.LENGTH_SHORT);

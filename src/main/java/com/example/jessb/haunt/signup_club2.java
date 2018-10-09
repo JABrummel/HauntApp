@@ -8,6 +8,7 @@ import android.provider.MediaStore;
 import android.support.annotation.Nullable;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
+import android.util.Log;
 import android.view.View;
 import android.widget.Button;
 import android.widget.ImageView;
@@ -107,6 +108,7 @@ public class signup_club2 extends AppCompatActivity {
     private void addClub() {
         getPhotoValue();
         club.setPhoto(photo);
+        Log.i("eventview_looker", "in signup: " + photo);
         //System.out.println(photo);
         db.addClub(club);
     }

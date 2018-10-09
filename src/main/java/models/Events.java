@@ -14,6 +14,19 @@ public class Events implements Serializable {
     private int clubID;
     private int roomNumber;
 
+    public Events() {}
+    public Events(String eName, String locat, String starttime, String endtime,
+                  String dateStr, String biog, byte[] photoData) {
+        eventName = eName;
+        location = locat;
+        startTime = starttime;
+        endTime = endtime;
+        date = dateStr;
+        bio = biog;
+        photo = photoData;
+
+    };
+
     public int getEventID() {
         return eventID;
     }

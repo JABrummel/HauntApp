@@ -3,23 +3,32 @@ package com.example.jessb.haunt;
 import android.app.DatePickerDialog;
 import android.app.TimePickerDialog;
 import android.content.Intent;
+import android.database.Cursor;
+import android.graphics.Bitmap;
+import android.graphics.BitmapFactory;
 import android.graphics.Color;
 import android.graphics.drawable.ColorDrawable;
+import android.net.Uri;
+import android.support.annotation.Nullable;
 import android.support.v7.app.AppCompatActivity;
+import android.util.Log;
 import android.widget.AdapterView.OnItemSelectedListener;
 import android.os.Bundle;
 import android.view.View;
 import android.widget.AdapterView;
 import android.widget.ArrayAdapter;
+import android.widget.Button;
 import android.widget.CheckBox;
 import android.widget.DatePicker;
 import android.widget.EditText;
+import android.widget.ImageView;
 import android.widget.RadioGroup;
 import android.widget.Spinner;
 import android.widget.TextView;
 import android.widget.TimePicker;
 import android.widget.Toast;
 
+import java.io.ByteArrayOutputStream;
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.Arrays;
@@ -35,9 +44,14 @@ public class CreateEvent extends AppCompatActivity  {
     TextView datePicked; //shows the date of the event
     TextView startTime; //shows the start time of the event
     TextView endTime; //shows the end time of the event
-    TextView eventName;
-    TextView eventBio;
+    EditText eventName;
+    EditText eventBio;
     EditText roomNumber;
+    Button uploadButton;
+    ImageView profImage;
+    private Bitmap bp;
+    private byte[] photo;
+    private static final int PICK_IMAGE = 100;
     final int CAT_COMPETITION =1;
     final int CAT_FOOD =2;
     final int CAT_ATHLETICS=3;
@@ -72,6 +86,7 @@ public class CreateEvent extends AppCompatActivity  {
     "Convocation Center", "Bailey Performance Center", "Arboretum"));
     Spinner locationSpinner; //Drop down for buildings
     Events newEvent = new Events();
+    int userId;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -83,11 +98,14 @@ public class CreateEvent extends AppCompatActivity  {
         selectedCampus= (RadioGroup)findViewById(R.id.rg_campus);
         mainCategories=(RadioGroup)findViewById(R.id.rg_categories);
         locationSpinner=(Spinner)findViewById(R.id.spinner_locations);
-        eventName = findViewById(R.id.tv_eventName);
-        eventBio = findViewById(R.id.tv_eventBio);
-        roomNumber = findViewById(R.id.et_roomnumber);
+        eventName = (EditText) findViewById(R.id.tv_eventName);
+        eventBio = (EditText) findViewById(R.id.tv_eventBio);
+        roomNumber = (EditText) findViewById(R.id.et_roomnumber);
+        uploadButton = (Button)findViewById(R.id.upload_img);
+        profImage=(ImageView)findViewById(R.id.event_image);
 
-
+        Intent lastActivity = getIntent();
+        userId = lastActivity.getIntExtra("userId", 0);
 
         //setup for marietta location dropdown
         final ArrayAdapter<String> mariettaAdapter = new ArrayAdapter<String>(this,
@@ -170,8 +188,15 @@ public class CreateEvent extends AppCompatActivity  {
         startTimeSetListener = new TimePickerDialog.OnTimeSetListener() {
             @Override
             public void onTimeSet(TimePicker view, int hourOfDay, int minute) {
-                startTime.setText(hourOfDay + ":" + minute);
-                String currentTime = startTime.getText().toString();
+                String currentTime;
+                if(minute > 10) {
+                    startTime.setText(hourOfDay + ":" + minute);
+                     currentTime = startTime.getText().toString();
+                }
+                else {
+                    startTime.setText(hourOfDay + ":0" + minute);
+                    currentTime = startTime.getText().toString();
+                }
                 newEvent.setStartTime(currentTime);
             }
         };
@@ -193,8 +218,17 @@ public class CreateEvent extends AppCompatActivity  {
         endTimeSetListener = new TimePickerDialog.OnTimeSetListener() {
             @Override
             public void onTimeSet(TimePicker view, int hourOfDay, int minute) {
-                endTime.setText(hourOfDay + ":" + minute);
-                String endTimeValue  = endTime.getText().toString();
+
+                String endTimeValue;
+                if(minute > 10) {
+                    endTime.setText(hourOfDay + ":" + minute);
+                    endTimeValue = endTime.getText().toString();
+                }
+                else {
+                    endTime.setText(hourOfDay + ":0" + minute);
+                    endTimeValue = endTime.getText().toString();
+
+                }
                 newEvent.setEndTime(endTimeValue);
 
             }
@@ -228,13 +262,75 @@ public class CreateEvent extends AppCompatActivity  {
         };
 
 
+        uploadButton.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                selectImage();
+            }
+        });
+    }
 
+    public void selectImage(){
+        Intent photoPickerIntent = new Intent(Intent.ACTION_PICK);
+        photoPickerIntent.setType("image/*");
+        startActivityForResult(photoPickerIntent, 2);
+    }
+
+    @Override
+    protected void onActivityResult(int requestCode, int resultCode, @Nullable Intent data) {
+        switch(requestCode){
+            case 2:
+                if(resultCode == RESULT_OK) {
+                    Uri chosenImage = data.getData();
+                    if (chosenImage != null) {
+                        bp = decodeUri(chosenImage, 300);
+                        profImage.setImageBitmap(bp);
+                    }
+                }
+        }
+//        super.onActivityResult(requestCode, resultCode, data);
+    }
+
+    protected Bitmap decodeUri(Uri selectedImage, int REQUIRED_SIZE){
+        try {
+            BitmapFactory.Options o = new BitmapFactory.Options();
+            o.inJustDecodeBounds = true;
+            BitmapFactory.decodeStream(getContentResolver().openInputStream(selectedImage), null, o);
+            int width_tmp = o.outWidth, height_tmp = o.outHeight;
+            int scale = 1;
+            while (true){
+                if (width_tmp / 2 < REQUIRED_SIZE || height_tmp / 2 < REQUIRED_SIZE) {
+                    break;
+                }
+                width_tmp /= 2;
+                height_tmp /= 2;
+                scale *= 2;
+            }
+
+            BitmapFactory.Options o2 = new BitmapFactory.Options();
+            o2.inSampleSize = scale;
+            return BitmapFactory.decodeStream(getContentResolver().openInputStream(selectedImage), null, o2);
+        } catch (Exception e){
+            e.printStackTrace();
+        }
+        return null;
+    }
+
+    private byte[] profileImage(Bitmap b){
+        ByteArrayOutputStream bos = new ByteArrayOutputStream();
+        b.compress(Bitmap.CompressFormat.PNG, 0, bos);
+        return bos.toByteArray();
+    }
+
+    private void getPhotoValue(){
+        photo = profileImage(bp);
     }
 
     //cancels the create event
     protected void cancel(View v) {
         Intent i = new Intent(this, ListedEvents.class);
-        i.putExtra("user", "club");
+        i.putExtra("userType", "club");
+        i.putExtra("userId", userId);
         startActivity(i);
     }
 
@@ -247,6 +343,16 @@ public class CreateEvent extends AppCompatActivity  {
         newEvent.setEventName(eventNameValue);
         newEvent.setBio(eventBioValue);
         newEvent.setLocation(location);
+        getPhotoValue();
+        Log.i("eventview_looker", "in Create Event: " + photo);
+        newEvent.setPhoto(photo);
+
+//        Cursor userData = db.getClub(userId, 0);
+//        while(userData.moveToNext()) {
+//            newEvent.setPhoto(userData.getBlob(4));
+//        }
+
+
         long insert = db.addEvents(newEvent);
         for (int i = 0; i < subCategories.size(); i ++)
         {
@@ -254,10 +360,13 @@ public class CreateEvent extends AppCompatActivity  {
         }
         db.addEventCategories(insert, mainCategory);
         System.out.println(newEvent);
-        Intent i = new Intent(this, ListedEvents.class);
-        i.putExtra("user", "club");
-        startActivity(i);
-    }
+
+            Intent i = new Intent(this, ListedEvents.class);
+            i.putExtra("userType", "club");
+            i.putExtra("userId", userId);
+
+        startActivity(i);}
+
 
 
 

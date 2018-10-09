@@ -2,7 +2,10 @@ package com.example.jessb.haunt;
 
 import android.app.Activity;
 import android.app.AppComponentFactory;
+import android.content.DialogInterface;
 import android.content.Intent;
+import android.os.Build;
+import android.support.v7.app.AlertDialog;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.view.View;
@@ -31,5 +34,23 @@ public class login_student extends AppCompatActivity {
             i.putExtra("user", "student");
             startActivity(i);
         }
+        else checkEntries();
+    }
+    protected void checkEntries() {
+        AlertDialog.Builder builder;
+        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.LOLLIPOP) {
+            builder = new AlertDialog.Builder(this, android.R.style.Theme_Material_Dialog_Alert);
+        } else {
+            builder = new AlertDialog.Builder(this);
+        }
+        builder.setTitle("Invalid Entry")
+                .setMessage("Username or Password is incorrect")
+                .setPositiveButton(android.R.string.yes, new DialogInterface.OnClickListener() {
+                    public void onClick(DialogInterface dialog, int which) {
+
+                    }
+                })
+                .setIcon(android.R.drawable.ic_dialog_alert)
+                .show();
     }
 }

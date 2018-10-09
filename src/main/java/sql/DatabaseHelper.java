@@ -477,6 +477,26 @@ public class DatabaseHelper extends SQLiteOpenHelper {
 
         return cursorCount > 0; 
     }
+
+    public Cursor getClub(String username) {
+        String query = "SELECT " + COLUMN_CLUBID + " FROM " + TABLE_CLUB +
+                " WHERE " + COLUMN_USERNAME + " = '" + username + "'";
+        SQLiteDatabase db = this.getReadableDatabase();
+        Cursor cursor = db.rawQuery(query, null);
+        return cursor;
+    }
+
+    public Cursor getClub(int clubId, int x) {
+        String club = "" + clubId + " ";
+        String query = "SELECT " + COLUMN_CLUBID + " FROM " + TABLE_CLUB +
+                " WHERE " + COLUMN_CLUBID + " = '" + club + "'";
+        SQLiteDatabase db = this.getReadableDatabase();
+        Cursor cursor = db.rawQuery(query, null);
+        return cursor;
+    }
+
+
+
     public boolean checkClub(String username, String password){
         String[] columns = {
                 COLUMN_CLUBID

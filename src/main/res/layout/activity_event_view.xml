@@ -8,12 +8,12 @@
 
     <ImageView
         android:id="@+id/iv_clubphoto"
-        android:layout_width="80dp"
-        android:layout_height="70dp"
-        android:layout_alignParentStart="true"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
         android:layout_alignParentTop="true"
-        android:layout_marginStart="122dp"
+        android:layout_centerHorizontal="true"
         android:layout_marginTop="32dp"
+        android:paddingBottom="30dp"
         app:srcCompat="@android:drawable/ic_menu_gallery" />
 
     <Button
@@ -31,10 +31,10 @@
         android:id="@+id/tv_eventName"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_alignParentStart="true"
-        android:layout_alignParentTop="true"
-        android:layout_marginStart="100dp"
-        android:layout_marginTop="119dp"
+
+        android:layout_centerHorizontal="true"
+
+        android:layout_below="@id/iv_clubphoto"
         android:text="event name"
         android:textSize="24sp" />
 
@@ -42,38 +42,28 @@
         android:id="@+id/icon_holder"
         android:layout_width="match_parent"
         android:layout_height="40dp"
-        android:layout_alignParentStart="true"
-        android:layout_alignParentTop="true"
+        android:layout_below="@id/tv_eventName"
         android:layout_marginTop="160dp"
-        android:background="@android:color/darker_gray">
+        android:background="@android:color/white">
 
     </LinearLayout>
 
-    <TextView
-        android:id="@+id/tv_clubname"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_alignParentTop="true"
-        android:layout_centerHorizontal="true"
-        android:layout_marginTop="212dp"
-        android:text="Hosted By: club name" />
-
-    <TextView
-        android:id="@+id/tv_campus"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_alignParentTop="true"
-        android:layout_marginTop="252dp"
-        android:layout_toEndOf="@+id/button_cancel"
-        android:text="campus" />
+    <!--<TextView-->
+        <!--android:id="@+id/tv_clubname"-->
+        <!--android:layout_width="wrap_content"-->
+        <!--android:layout_height="wrap_content"-->
+        <!--android:layout_alignParentTop="true"-->
+        <!--android:layout_centerHorizontal="true"-->
+        <!--android:layout_marginTop="212dp"-->
+        <!--android:text="Hosted By: club name" />-->
 
     <TextView
         android:id="@+id/tv_building"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_alignParentEnd="true"
-        android:layout_alignTop="@+id/tv_campus"
-        android:layout_marginEnd="105dp"
+        android:layout_alignParentTop="true"
+        android:layout_centerHorizontal="true"
+        android:layout_marginTop="246dp"
         android:text="building" />
 
     <TextView
@@ -89,8 +79,9 @@
         android:id="@+id/tv_time"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
+        android:layout_toRightOf="@id/tv_date"
         android:layout_centerVertical="true"
-        android:layout_toEndOf="@+id/iv_clubphoto"
+        android:paddingLeft="40dp"
         android:text="x:xx - x.xx" />
 
     <TextView
@@ -98,8 +89,9 @@
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_alignParentBottom="true"
-        android:layout_marginBottom="246dp"
-        android:layout_toEndOf="@+id/button_cancel"
+        android:layout_alignParentStart="true"
+        android:layout_marginBottom="240dp"
+        android:layout_marginStart="64dp"
         android:text="bio" />
 
 </RelativeLayout>
