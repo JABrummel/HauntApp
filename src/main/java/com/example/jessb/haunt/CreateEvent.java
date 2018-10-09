@@ -343,6 +343,7 @@ public class CreateEvent extends AppCompatActivity  {
         newEvent.setEventName(eventNameValue);
         newEvent.setBio(eventBioValue);
         newEvent.setLocation(location);
+        newEvent.setClubID(userId);
         getPhotoValue();
         Log.i("eventview_looker", "in Create Event: " + photo);
         newEvent.setPhoto(photo);

@@ -109,7 +109,6 @@ public class signup_club2 extends AppCompatActivity {
         getPhotoValue();
         club.setPhoto(photo);
         Log.i("eventview_looker", "in signup: " + photo);
-        //System.out.println(photo);
         db.addClub(club);
     }
 

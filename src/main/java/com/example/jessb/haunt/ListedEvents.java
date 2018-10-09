@@ -34,6 +34,7 @@ public class ListedEvents extends AppCompatActivity implements Serializable {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_listed_events);
+        Toast.makeText(getApplicationContext(), "ONCREATE CALLED", Toast.LENGTH_SHORT).show();
         mListView = findViewById(R.id.listView);
         db = DatabaseHelper.getInstance(getApplicationContext());
         FloatingActionButton moreButton = findViewById(R.id.button_more);
@@ -78,7 +79,7 @@ public class ListedEvents extends AppCompatActivity implements Serializable {
             //then add to the array list
             events.add(new Events(data.getString(1), data.getString(2),
                     data.getString(3), data.getString(4),data.getString(5),
-                    data.getString(6), data.getBlob(7)
+                    data.getString(6), data.getBlob(7), data.getInt(8)
                     ));
             eventData.add(data.getString(1));
 //

@@ -48,14 +48,14 @@
 
     </LinearLayout>
 
-    <!--<TextView-->
-        <!--android:id="@+id/tv_clubname"-->
-        <!--android:layout_width="wrap_content"-->
-        <!--android:layout_height="wrap_content"-->
-        <!--android:layout_alignParentTop="true"-->
-        <!--android:layout_centerHorizontal="true"-->
-        <!--android:layout_marginTop="212dp"-->
-        <!--android:text="Hosted By: club name" />-->
+    <TextView
+        android:id="@+id/tv_clubname"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_alignParentTop="true"
+        android:layout_centerHorizontal="true"
+        android:layout_marginTop="212dp"
+        android:text="Hosted By: club name" />
 
     <TextView
         android:id="@+id/tv_building"
@@ -93,5 +93,16 @@
         android:layout_marginBottom="240dp"
         android:layout_marginStart="64dp"
         android:text="bio" />
+
+    <Button
+        android:id="@+id/button_delete"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_alignStart="@+id/tv_date"
+        android:layout_alignParentBottom="true"
+        android:layout_marginStart="62dp"
+        android:layout_marginBottom="17dp"
+        android:text="Delete Event"
+        android:onClick="deleteEvent"/>
 
 </RelativeLayout>
