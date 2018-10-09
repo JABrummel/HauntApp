@@ -43,7 +43,7 @@
         android:layout_width="match_parent"
         android:layout_height="40dp"
         android:layout_below="@id/tv_eventName"
-        android:layout_marginTop="160dp"
+        android:layout_marginTop="130dp"
         android:background="@android:color/white">
 
     </LinearLayout>

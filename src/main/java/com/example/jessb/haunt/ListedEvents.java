@@ -1,8 +1,11 @@
 package com.example.jessb.haunt;
 
+import android.content.DialogInterface;
 import android.content.Intent;
 import android.database.Cursor;
+import android.os.Build;
 import android.support.design.widget.FloatingActionButton;
+import android.support.v7.app.AlertDialog;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.util.EventLog;
@@ -42,6 +45,13 @@ public class ListedEvents extends AppCompatActivity implements Serializable {
          userType = lastActivity.getStringExtra("userType");
          userId = lastActivity.getIntExtra("userId", 0);
         populateEvents();
+
+        moreButton.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+               logout();
+            }
+        });
 
         if(userType.equals("student")) {
 
@@ -120,5 +130,29 @@ public class ListedEvents extends AppCompatActivity implements Serializable {
                 }
             }
         });
+    }
+
+    protected void logout() {
+        AlertDialog.Builder builder;
+        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.LOLLIPOP) {
+            builder = new AlertDialog.Builder(this, android.R.style.Theme_Material_Dialog_Alert);
+        } else {
+            builder = new AlertDialog.Builder(this);
+        }
+        builder.setTitle("Want to Logout?")
+                .setMessage("Logging out will return you to the usertype screen")
+                .setPositiveButton("Logout", new DialogInterface.OnClickListener() {
+                    public void onClick(DialogInterface dialog, int which) {
+                        Intent i = new Intent(ListedEvents.this, UserType.class);
+                        startActivity(i);
+                    }
+                }).setNegativeButton(android.R.string.cancel, new DialogInterface.OnClickListener(){
+                    public void onClick(DialogInterface dialog, int which) {
+                        //do nothing
+                    }
+
+        })
+                .setIcon(android.R.drawable.ic_dialog_alert)
+                .show();
     }
 }
