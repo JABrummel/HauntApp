@@ -3,7 +3,7 @@ package models;
 import java.io.Serializable;
 
 public class Events implements Serializable {
-    private int eventID;
+    private int eventId;
     private String eventName;
     private String location;
     private String startTime;
@@ -15,8 +15,22 @@ public class Events implements Serializable {
     private int roomNumber;
 
     public Events() {}
+
+    public Events (int eventID, String eName, String locat, String starttime, String endtime,
+                   String dateStr, String biog, byte[] photoData, int  clubid) {
+        eventName = eName;
+        location = locat;
+        startTime = starttime;
+        endTime = endtime;
+        date = dateStr;
+        bio = biog;
+        photo = photoData;
+        clubID = clubid;
+        eventId = eventID;
+
+    }
     public Events(String eName, String locat, String starttime, String endtime,
-                  String dateStr, String biog, byte[] photoData, int     clubid) {
+                  String dateStr, String biog, byte[] photoData, int  clubid) {
         eventName = eName;
         location = locat;
         startTime = starttime;
@@ -29,11 +43,11 @@ public class Events implements Serializable {
     };
 
     public int getEventID() {
-        return eventID;
+        return eventId;
     }
 
     public void setEventID(int eventID) {
-        this.eventID = eventID;
+        this.eventId = eventID;
     }
 
     public String getEventName() {

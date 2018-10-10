@@ -273,35 +273,34 @@ public class DatabaseHelper extends SQLiteOpenHelper {
         db.insert(TABLE_ACCOUNT_APPROVAL, null, values);
         db.close();
     }
-    //endregion
 
-//    public List<User> getAllUsers() {
-//        List<User> users = new ArrayList<>();
-//        String selectQuery = "SELECT * FROM " + TABLE_USER;
-//
-//        Log.e(LOG, selectQuery);
-//        SQLiteDatabase db = this.getReadableDatabase();
-//        Cursor c = db.rawQuery(selectQuery, null);
-//
-//        if (c.moveToFirst()) {
-//            do {
-//                User user = new User();
-//                user.setUserID(c.getInt((c.getColumnIndex(COLUMN_USER_ID))));
-//                user.setEmail(c.getString((c.getColumnIndex(COLUMN_EMAIL))));
-//                user.setPassword(c.getString((c.getColumnIndex(COLUMN_EMAIL))));
-//                user.setRole(c.getString((c.getColumnIndex(COLUMN_ROLE))));
-//
-//                users.add(user);
-//            } while (c.moveToNext());
-//        }
-//        return users;
-//    }
 
     public Cursor getEvents(){
         SQLiteDatabase db = this.getWritableDatabase();
         String query = "SELECT * FROM " + TABLE_EVENTS;
         Cursor events = db.rawQuery(query, null);
         return events;
+    }
+
+
+//    private String CREATE_EVENT_CATEGORIES_TABLE = "CREATE TABLE " + TABLE_EVENTCATEGORIES + "("
+//            + COLUMN_EVENTID + " INTEGER," + COLUMN_CATEGORYNAME + " TEXT," + COLUMN_CATEGORYID + " INTEGER" + ")";
+
+
+    public ArrayList<Integer> getEventCategories(int eventId) {
+        ArrayList<Integer> categoryId = new ArrayList<Integer>();
+        String selectQuery =  "SELECT " + COLUMN_CATEGORYID + " FROM " + TABLE_EVENTCATEGORIES +
+                " WHERE " + COLUMN_EVENTID + " = '" + eventId + "'";
+        SQLiteDatabase db = this.getReadableDatabase();
+        Cursor c = db.rawQuery(selectQuery, null);
+
+        if(c.moveToFirst()) {
+            do {
+                Integer i = c.getInt(c.getColumnIndex(COLUMN_CATEGORYID));
+                categoryId.add(i);
+            } while (c.moveToNext());
+        }
+        return categoryId;
     }
 
     public List<Club> getAllClubs() {

@@ -355,6 +355,7 @@ public class CreateEvent extends AppCompatActivity  {
 
 
         long insert = db.addEvents(newEvent);
+        Log.i("CheckPrimaryKey", "eventId: " + insert);
         for (int i = 0; i < subCategories.size(); i ++)
         {
             db.addEventCategories(insert, subCategories.get(i));

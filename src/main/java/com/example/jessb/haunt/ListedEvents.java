@@ -37,7 +37,6 @@ public class ListedEvents extends AppCompatActivity implements Serializable {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_listed_events);
-        Toast.makeText(getApplicationContext(), "ONCREATE CALLED", Toast.LENGTH_SHORT).show();
         mListView = findViewById(R.id.listView);
         db = DatabaseHelper.getInstance(getApplicationContext());
         FloatingActionButton moreButton = findViewById(R.id.button_more);
@@ -110,11 +109,9 @@ public class ListedEvents extends AppCompatActivity implements Serializable {
                     eventId = data.getInt(0);
                 }
                 if(eventId > -1){
-//                    Log.d("Listed Events", "ID is : " + eventId);
                     Log.i("eventview_looker", "2. Id is:" + eventId);
                     Intent intent = new Intent(ListedEvents.this, EventView.class);
-//                    intent.putExtra("id", eventId);
-//                    intent.putExtra("eventName", eventName);
+
                     mevent = (Events)events.get(index);
                     Log.i("eventview_looker", "3. event being sent: " + mevent.getEventName());
 
@@ -124,6 +121,7 @@ public class ListedEvents extends AppCompatActivity implements Serializable {
                     intent.putExtra("event_object", mevent);
                     intent.putExtra("userType", userType);
                     intent.putExtra("userId", userId);
+                    intent.putExtra("eventId", index);
                     startActivity(intent);
                 } else {
                     Toast.makeText(getApplicationContext(), "No ID associated with name", Toast.LENGTH_SHORT);
