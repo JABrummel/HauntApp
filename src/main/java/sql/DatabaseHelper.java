@@ -7,6 +7,7 @@ import android.database.SQLException;
 import android.database.sqlite.SQLiteDatabase;
 import android.database.sqlite.SQLiteOpenHelper;
 import android.util.Log;
+import android.widget.Toast;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -17,7 +18,7 @@ public class DatabaseHelper extends SQLiteOpenHelper {
 
     private static final String LOG = DatabaseHelper.class.getName();
     //DB version
-    private static final int DATABASE_VERSION = 6;
+    private static final int DATABASE_VERSION = 7;
 
     private static DatabaseHelper sInstance;
     private final Context ctx;
@@ -99,7 +100,7 @@ public class DatabaseHelper extends SQLiteOpenHelper {
     private String CREATE_EVENTS_TABLE = "CREATE TABLE " + TABLE_EVENTS + "("
             + COLUMN_EVENTID + " INTEGER PRIMARY KEY ," + COLUMN_EVENTNAME + " TEXT,"
             + COLUMN_LOCATION + " TEXT," + COLUMN_STARTTIME + " TEXT," + COLUMN_ENDTIME + " TEXT," + COLUMN_DATE + " INTEGER,"
-            + COLUMN_BIO + " TEXT,"  + COLUMN_PHOTO + " BLOB" + ")";
+            + COLUMN_BIO + " TEXT,"  + COLUMN_PHOTO + " BLOB," + COLUMN_CLUBID + " INTEGER" + ")";
 
     private String CREATE_EVENT_CATEGORIES_TABLE = "CREATE TABLE " + TABLE_EVENTCATEGORIES + "("
             + COLUMN_EVENTID + " INTEGER," + COLUMN_CATEGORYNAME + " TEXT," + COLUMN_CATEGORYID + " INTEGER" + ")";
@@ -218,6 +219,7 @@ public class DatabaseHelper extends SQLiteOpenHelper {
         values.put(COLUMN_DATE, events.getDate());
         values.put(COLUMN_BIO, events.getBio());
         values.put(COLUMN_PHOTO, events.getPhoto());
+        values.put(COLUMN_CLUBID, events.getClubID());
 
         Log.d("DatabaseHelper", "Adding " + events + " to " + TABLE_EVENTS);
 
@@ -374,6 +376,14 @@ public class DatabaseHelper extends SQLiteOpenHelper {
         return cursor;
     }
 
+    public Cursor getClubName(int id){
+        String query = "SELECT " + COLUMN_CLUBNAME + " FROM " + TABLE_CLUB +
+                " WHERE " + COLUMN_CLUBID + " = '" + id + "'";
+        SQLiteDatabase db = this.getReadableDatabase();
+        Cursor cursor = db.rawQuery(query, null);
+        return cursor;
+    }
+
     //region Update/Delete Methods
     public int updateUser(User user){
         SQLiteDatabase db = this.getWritableDatabase();
@@ -425,10 +435,13 @@ public class DatabaseHelper extends SQLiteOpenHelper {
                 new String[] {String.valueOf(club.getClubID())});
     }
 
-    public void deleteEvent(Events event){
+    public void deleteEvent(int id, String name){
         SQLiteDatabase db = this.getWritableDatabase();
-        db.delete(TABLE_EVENTS, COLUMN_EVENTID + " = ?",
-                new String[] {String.valueOf(event)});
+        String query = "DELETE FROM " + TABLE_EVENTS + " WHERE " +
+                COLUMN_CLUBID + " = '" + id + "'" + " AND " + COLUMN_EVENTNAME + " = '" + name + "'";
+            db.execSQL(query);
+            db.close();
+
     }
     //endregion
 

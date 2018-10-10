@@ -16,7 +16,7 @@ public class Events implements Serializable {
 
     public Events() {}
     public Events(String eName, String locat, String starttime, String endtime,
-                  String dateStr, String biog, byte[] photoData) {
+                  String dateStr, String biog, byte[] photoData, int     clubid) {
         eventName = eName;
         location = locat;
         startTime = starttime;
@@ -24,6 +24,7 @@ public class Events implements Serializable {
         date = dateStr;
         bio = biog;
         photo = photoData;
+        clubID = clubid;
 
     };
 
