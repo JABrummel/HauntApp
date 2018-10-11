@@ -1,9 +1,12 @@
 package com.example.jessb.haunt;
 
+import android.content.DialogInterface;
 import android.content.Intent;
 import android.database.Cursor;
 import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
+import android.os.Build;
+import android.support.v7.app.AlertDialog;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.util.Log;
@@ -116,13 +119,37 @@ public class EventView extends AppCompatActivity implements Serializable {
     }
     protected void deleteEvent(View v)
     {
-        int clubid = mEvent.getClubID();
-        Intent goBack = new Intent(this, ListedEvents.class);
-        goBack.putExtra("userType", userType);
-        goBack.putExtra("userId", userId);
-        db.deleteEvent(clubid, mEvent.getEventName());
 
-        startActivity(goBack);
+        final Intent goBack = new Intent(this, ListedEvents.class);
+        AlertDialog.Builder builder;
+        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.LOLLIPOP) {
+            builder = new AlertDialog.Builder(this, android.R.style.Theme_Material_Dialog_Alert);
+        } else {
+            builder = new AlertDialog.Builder(this);
+        }
+        builder.setTitle("Are You Sure?")
+                .setMessage("You cannot retrieve the event after deleting.")
+                .setPositiveButton(android.R.string.yes, new DialogInterface.OnClickListener() {
+                    public void onClick(DialogInterface dialog, int which) {
+
+                        goBack.putExtra("userType", userType);
+                        goBack.putExtra("userId", userId);
+
+                        int clubid = mEvent.getClubID();
+                        db.deleteEvent(clubid, mEvent.getEventName());
+                        startActivity(goBack);
+                    }
+                }).setNegativeButton(android.R.string.cancel, new DialogInterface.OnClickListener() {
+                    @Override
+                    public void onClick(DialogInterface dialog, int which) {
+                        //do nothing
+                    }
+        })
+                .setIcon(android.R.drawable.ic_dialog_alert)
+                .show();
+
+
+
 
     }
 
