@@ -3,11 +3,13 @@ package com.example.jessb.haunt;
 import android.content.DialogInterface;
 import android.content.Intent;
 import android.os.Build;
+import android.os.VibrationEffect;
 import android.support.v7.app.AlertDialog;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.view.View;
 import android.widget.EditText;
+import android.os.Vibrator;
 
 public class login_admin extends AppCompatActivity {
 
@@ -54,5 +56,14 @@ public class login_admin extends AppCompatActivity {
                 })
                 .setIcon(android.R.drawable.ic_dialog_alert)
                 .show();
+        Vibrator vibrator = (Vibrator) getSystemService(this.VIBRATOR_SERVICE);
+        // Vibrate for 500 milliseconds
+        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.O) {
+            vibrator.vibrate(VibrationEffect.createOneShot(500,VibrationEffect.DEFAULT_AMPLITUDE));
+        }else{
+            //deprecated in API 26
+            vibrator.vibrate(500);
+        }
+
     }
 }
