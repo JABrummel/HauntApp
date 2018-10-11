@@ -29,9 +29,9 @@ public class login_student extends AppCompatActivity {
         EditText pw = findViewById(R.id.et_password);
         String username = user.getText().toString();
         String password = pw.getText().toString();
-        if(username.equals("1") && password.equals("1")) {
+        if(username.equals("student1") && password.equals("1")) {
             Intent i = new Intent(this, ListedEvents.class);
-            i.putExtra("user", "student");
+            i.putExtra("userType", "student");
             startActivity(i);
         }
         else checkEntries();

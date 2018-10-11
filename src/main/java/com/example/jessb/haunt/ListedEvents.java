@@ -53,10 +53,9 @@ public class ListedEvents extends AppCompatActivity implements Serializable {
             }
         });
 
-        if(userType.equals("student")) {
+        if(userType.equals("student") || userType.equals("admin")) {
 
             addButton.hide();
-            moreButton.hide();
         }
 
         if(userType.equals("club")) {

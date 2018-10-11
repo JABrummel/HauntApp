@@ -10,6 +10,7 @@ public class Events implements Serializable {
     private String endTime;
     private String date;
     private String bio;
+    private String categories;
     private byte[] photo;
     private int clubID;
     private int roomNumber;
@@ -122,4 +123,8 @@ public class Events implements Serializable {
     public void setRoomNumber(int roomNumber) {
         this.roomNumber = roomNumber;
     }
+
+    public String getCategories() {return categories;}
+
+    public void setCategories(String cat) { categories = cat;}
 }

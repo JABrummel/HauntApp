@@ -18,7 +18,7 @@ public class DatabaseHelper extends SQLiteOpenHelper {
 
     private static final String LOG = DatabaseHelper.class.getName();
     //DB version
-    private static final int DATABASE_VERSION = 7;
+    private static final int DATABASE_VERSION = 8;
 
     private static DatabaseHelper sInstance;
     private final Context ctx;
@@ -61,6 +61,7 @@ public class DatabaseHelper extends SQLiteOpenHelper {
     private static final String COLUMN_ENDTIME = "endTime";
     private static final String COLUMN_DATE = "date";
     private static final String COLUMN_BIO = "bio";
+    private static final String COLUMN_CATEGORIES = "categories";
     //PHOTO COLUMN
     //CLUB ID
     private static final String COLUMN_ROOMNUMBER = "roomNumber";
@@ -100,7 +101,7 @@ public class DatabaseHelper extends SQLiteOpenHelper {
     private String CREATE_EVENTS_TABLE = "CREATE TABLE " + TABLE_EVENTS + "("
             + COLUMN_EVENTID + " INTEGER PRIMARY KEY ," + COLUMN_EVENTNAME + " TEXT,"
             + COLUMN_LOCATION + " TEXT," + COLUMN_STARTTIME + " TEXT," + COLUMN_ENDTIME + " TEXT," + COLUMN_DATE + " INTEGER,"
-            + COLUMN_BIO + " TEXT,"  + COLUMN_PHOTO + " BLOB," + COLUMN_CLUBID + " INTEGER" + ")";
+            + COLUMN_BIO + " TEXT,"  + COLUMN_PHOTO + " BLOB," + COLUMN_CLUBID + " INTEGER," + COLUMN_CATEGORIES + " TEXT" + ")";
 
     private String CREATE_EVENT_CATEGORIES_TABLE = "CREATE TABLE " + TABLE_EVENTCATEGORIES + "("
             + COLUMN_EVENTID + " INTEGER," + COLUMN_CATEGORYNAME + " TEXT," + COLUMN_CATEGORYID + " INTEGER" + ")";
@@ -220,6 +221,7 @@ public class DatabaseHelper extends SQLiteOpenHelper {
         values.put(COLUMN_BIO, events.getBio());
         values.put(COLUMN_PHOTO, events.getPhoto());
         values.put(COLUMN_CLUBID, events.getClubID());
+        values.put(COLUMN_CATEGORIES, events.getCategories());
 
         Log.d("DatabaseHelper", "Adding " + events + " to " + TABLE_EVENTS);
 
@@ -228,27 +230,27 @@ public class DatabaseHelper extends SQLiteOpenHelper {
         return result;
     }
 
-    public void addEventCategories(long id, int catId)
-    {
-        SQLiteDatabase db = this.getWritableDatabase();
-
-        ContentValues values = new ContentValues();
-        values.put(COLUMN_EVENTID, id);
-        values.put(COLUMN_CATEGORYID, catId);
-
-        db.insert(TABLE_EVENTCATEGORIES, null, values);
-        db.close();
-    }
-
-    public void addCategory(Category category){
-        SQLiteDatabase db = this.getWritableDatabase();
-
-        ContentValues values = new ContentValues();
-        values.put(COLUMN_PHOTO, category.getImage());
-
-        db.insert(TABLE_CATEGORY, null, values);
-        db.close();
-    }
+//    public void addEventCategories(long id, int catId)
+//    {
+//        SQLiteDatabase db = this.getWritableDatabase();
+//
+//        ContentValues values = new ContentValues();
+//        values.put(COLUMN_EVENTID, id);
+//        values.put(COLUMN_CATEGORYID, catId);
+//
+//        db.insert(TABLE_EVENTCATEGORIES, null, values);
+//        db.close();
+//    }
+//
+//    public void addCategory(Category category){
+//        SQLiteDatabase db = this.getWritableDatabase();
+//
+//        ContentValues values = new ContentValues();
+//        values.put(COLUMN_PHOTO, category.getImage());
+//
+//        db.insert(TABLE_CATEGORY, null, values);
+//        db.close();
+//    }
 
     public void addLocation(Location location){
         SQLiteDatabase db = this.getWritableDatabase();
@@ -282,26 +284,41 @@ public class DatabaseHelper extends SQLiteOpenHelper {
         return events;
     }
 
+    public String getCategories(String eventN, int clubid) {
+        SQLiteDatabase db = this.getReadableDatabase();
+        String query = "SELECT " + COLUMN_CATEGORIES + " FROM " + TABLE_EVENTS +
+                " WHERE " + COLUMN_CLUBID + " = '" + clubid + "' AND " + COLUMN_EVENTNAME + " = '" + eventN + "'";
+        Cursor c = db.rawQuery(query, null);
+        String categories = "";
+        if(c.moveToFirst()) {
+            do {
+                categories = c.getString(c.getColumnIndex(COLUMN_CATEGORIES));
+            } while (c.moveToNext());
+        }
+
+        return categories;
+    }
+
 
 //    private String CREATE_EVENT_CATEGORIES_TABLE = "CREATE TABLE " + TABLE_EVENTCATEGORIES + "("
 //            + COLUMN_EVENTID + " INTEGER," + COLUMN_CATEGORYNAME + " TEXT," + COLUMN_CATEGORYID + " INTEGER" + ")";
 
-
-    public ArrayList<Integer> getEventCategories(int eventId) {
-        ArrayList<Integer> categoryId = new ArrayList<Integer>();
-        String selectQuery =  "SELECT " + COLUMN_CATEGORYID + " FROM " + TABLE_EVENTCATEGORIES +
-                " WHERE " + COLUMN_EVENTID + " = '" + eventId + "'";
-        SQLiteDatabase db = this.getReadableDatabase();
-        Cursor c = db.rawQuery(selectQuery, null);
-
-        if(c.moveToFirst()) {
-            do {
-                Integer i = c.getInt(c.getColumnIndex(COLUMN_CATEGORYID));
-                categoryId.add(i);
-            } while (c.moveToNext());
-        }
-        return categoryId;
-    }
+//
+//    public ArrayList<Integer> getEventCategories(int eventId) {
+//        ArrayList<Integer> categoryId = new ArrayList<Integer>();
+//        String selectQuery =  "SELECT " + COLUMN_CATEGORYID + " FROM " + TABLE_EVENTCATEGORIES +
+//                " WHERE " + COLUMN_EVENTID + " = '" + eventId + "'";
+//        SQLiteDatabase db = this.getReadableDatabase();
+//        Cursor c = db.rawQuery(selectQuery, null);
+//
+//        if(c.moveToFirst()) {
+//            do {
+//                Integer i = c.getInt(c.getColumnIndex(COLUMN_CATEGORYID));
+//                categoryId.add(i);
+//            } while (c.moveToNext());
+//        }
+//        return categoryId;
+//    }
 
     public List<Club> getAllClubs() {
         List<Club> clubs = new ArrayList<>();
@@ -398,41 +415,41 @@ public class DatabaseHelper extends SQLiteOpenHelper {
 
     }
 
-    public int updateEvent(Events events){
-        SQLiteDatabase db = this.getWritableDatabase();
-
-        ContentValues values = new ContentValues();
-        values.put(COLUMN_EVENTNAME, events.getEventName());
-        values.put(COLUMN_LOCATION, events.getLocation());
-        values.put(COLUMN_STARTTIME, events.getStartTime());
-        values.put(COLUMN_ENDTIME, events.getEndTime());
-        values.put(COLUMN_DATE, events.getDate());
-        values.put(COLUMN_BIO, events.getBio());
-        values.put(COLUMN_PHOTO, events.getPhoto());
-        values.put(COLUMN_CLUBID, events.getClubID());
-        values.put(COLUMN_ROOMNUMBER, events.getRoomNumber());
-
-        return db.update(TABLE_EVENTS, values, COLUMN_EVENTID + " = ?",
-                new String[] {String.valueOf(events.getEventID())});
-
-    }
-
-    public int updateClub(Club club){
-        SQLiteDatabase db = this.getWritableDatabase();
-
-        ContentValues values = new ContentValues();
-        values.put(COLUMN_USER_ID, club.getUserID());
-        values.put(COLUMN_FACULTYEMAIL, club.getFacultyEmail());
-        values.put(COLUMN_PHOTO, club.getPhoto());
-        values.put(COLUMN_CLUBNAME, club.getClubName());
-        values.put(COLUMN_USERNAME, club.getUsername());
-        values.put(COLUMN_PASSWORD, club.getPassword());
-        values.put(COLUMN_EMAIL, club.getClubEmail());
-        values.put(COLUMN_ROLE, club.getRole());
-
-        return db.update(TABLE_CLUB, values, COLUMN_CLUBID + " = ?",
-                new String[] {String.valueOf(club.getClubID())});
-    }
+//    public int updateEvent(Events events){
+//        SQLiteDatabase db = this.getWritableDatabase();
+//
+//        ContentValues values = new ContentValues();
+//        values.put(COLUMN_EVENTNAME, events.getEventName());
+//        values.put(COLUMN_LOCATION, events.getLocation());
+//        values.put(COLUMN_STARTTIME, events.getStartTime());
+//        values.put(COLUMN_ENDTIME, events.getEndTime());
+//        values.put(COLUMN_DATE, events.getDate());
+//        values.put(COLUMN_BIO, events.getBio());
+//        values.put(COLUMN_PHOTO, events.getPhoto());
+//        values.put(COLUMN_CLUBID, events.getClubID());
+//        values.put(COLUMN_ROOMNUMBER, events.getRoomNumber());
+//
+//        return db.update(TABLE_EVENTS, values, COLUMN_EVENTID + " = ?",
+//                new String[] {String.valueOf(events.getEventID())});
+//
+//    }
+//
+//    public int updateClub(Club club){
+//        SQLiteDatabase db = this.getWritableDatabase();
+//
+//        ContentValues values = new ContentValues();
+//        values.put(COLUMN_USER_ID, club.getUserID());
+//        values.put(COLUMN_FACULTYEMAIL, club.getFacultyEmail());
+//        values.put(COLUMN_PHOTO, club.getPhoto());
+//        values.put(COLUMN_CLUBNAME, club.getClubName());
+//        values.put(COLUMN_USERNAME, club.getUsername());
+//        values.put(COLUMN_PASSWORD, club.getPassword());
+//        values.put(COLUMN_EMAIL, club.getClubEmail());
+//        values.put(COLUMN_ROLE, club.getRole());
+//
+//        return db.update(TABLE_CLUB, values, COLUMN_CLUBID + " = ?",
+//                new String[] {String.valueOf(club.getClubID())});
+//    }
 
     public void deleteEvent(int id, String name){
         SQLiteDatabase db = this.getWritableDatabase();

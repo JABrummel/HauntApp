@@ -52,20 +52,20 @@ public class CreateEvent extends AppCompatActivity  {
     private Bitmap bp;
     private byte[] photo;
     private static final int PICK_IMAGE = 100;
-    final int CAT_COMPETITION =1;
-    final int CAT_FOOD =2;
-    final int CAT_ATHLETICS=3;
-    final int CAT_ACADEMICS=4;
-    final int CAT_ENTERTAINMENT=5;
-    final int CAT_LIVEPERFORMANCE=6;
-    final int CAT_STEAM=7;
-    final int CAT_LITART=8;
-    final int CAT_GIVEAWAYS=9;
-    final int CAT_MUSIC=10;
-    final int CAT_BOARDGAMES=11;
-    Vector<Integer> subCategories = new Vector<Integer>(); //all of the subcategories chose
-    int mainCategory; //chosen main category
-
+    final String CAT_COMPETITION ="a";
+    final String CAT_FOOD ="b";
+    final String CAT_ATHLETICS="c";
+    final String CAT_ACADEMICS="d";
+    final String CAT_ENTERTAINMENT="e";
+    final String CAT_LIVEPERFORMANCE="f";
+    final String CAT_STEAM="g";
+    final String CAT_LITART="h";
+    final String CAT_GIVEAWAYS="i";
+    final String CAT_MUSIC="j";
+    final String CAT_BOARDGAMES="k";
+    ArrayList<String> categories = new ArrayList<String>(); //all of the subcategories chose
+    String mainCategory; //chosen main category
+    String categoryString;
     int myYear;
     int myMonth;
     int myDay;
@@ -348,20 +348,14 @@ public class CreateEvent extends AppCompatActivity  {
         Log.i("eventview_looker", "in Create Event: " + photo);
         newEvent.setPhoto(photo);
 
-//        Cursor userData = db.getClub(userId, 0);
-//        while(userData.moveToNext()) {
-//            newEvent.setPhoto(userData.getBlob(4));
-//        }
+        categories.add(0, mainCategory);
 
-
-        long insert = db.addEvents(newEvent);
-        Log.i("CheckPrimaryKey", "eventId: " + insert);
-        for (int i = 0; i < subCategories.size(); i ++)
-        {
-            db.addEventCategories(insert, subCategories.get(i));
+        for(int i =0; i< categories.size(); i++) {
+            categoryString += categories.get(i);
         }
-        db.addEventCategories(insert, mainCategory);
-        System.out.println(newEvent);
+
+        newEvent.setCategories(categoryString);
+        db.addEvents(newEvent);
 
             Intent i = new Intent(this, ListedEvents.class);
             i.putExtra("userType", "club");
@@ -381,44 +375,44 @@ public class CreateEvent extends AppCompatActivity  {
         if(cb.isChecked())
         switch(checkboxId) {
             case R.id.cb_liveperformance:
-                subCategories.add(CAT_LIVEPERFORMANCE);
+                categories.add(CAT_LIVEPERFORMANCE);
                 break;
             case R.id.cb_steam:
-                subCategories.add(CAT_STEAM);
+                categories.add(CAT_STEAM);
                 break;
             case R.id.cb_art:
-                subCategories.add(CAT_LITART);
+                categories.add(CAT_LITART);
                 break;
             case R.id.cb_giveaways:
-                subCategories.add(CAT_GIVEAWAYS);
+                categories.add(CAT_GIVEAWAYS);
                 break;
             case R.id.cb_music:
-                subCategories.add(CAT_MUSIC);
+                categories.add(CAT_MUSIC);
                 break;
             case R.id.cb_boardgames:
-                subCategories.add(CAT_BOARDGAMES);
+                categories.add(CAT_BOARDGAMES);
                 break;
         }
 
         else
             switch(checkboxId) {
                 case R.id.cb_liveperformance:
-                    subCategories.remove(CAT_LIVEPERFORMANCE);
+                    categories.remove(CAT_LIVEPERFORMANCE);
                     break;
                 case R.id.cb_steam:
-                    subCategories.remove(CAT_STEAM);
+                    categories.remove(CAT_STEAM);
                     break;
                 case R.id.cb_art:
-                    subCategories.remove(CAT_LITART);
+                    categories.remove(CAT_LITART);
                     break;
                 case R.id.cb_giveaways:
-                    subCategories.remove(CAT_GIVEAWAYS);
+                    categories.remove(CAT_GIVEAWAYS);
                     break;
                 case R.id.cb_music:
-                    subCategories.remove(CAT_MUSIC);
+                    categories.remove(CAT_MUSIC);
                     break;
                 case R.id.cb_boardgames:
-                    subCategories.remove(CAT_BOARDGAMES);
+                    categories.remove(CAT_BOARDGAMES);
                     break;
             }
 

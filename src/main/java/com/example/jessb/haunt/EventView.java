@@ -35,21 +35,22 @@ public class EventView extends AppCompatActivity implements Serializable {
     String userType;
     String clubNameText;
     DatabaseHelper db;
-    ArrayList<Integer> categoryIds;
     int event_Id;
     int userId;
     int eventId;
-    final int CAT_COMPETITION =1;
-    final int CAT_FOOD =2;
-    final int CAT_ATHLETICS=3;
-    final int CAT_ACADEMICS=4;
-    final int CAT_ENTERTAINMENT=5;
-    final int CAT_LIVEPERFORMANCE=6;
-    final int CAT_STEAM=7;
-    final int CAT_LITART=8;
-    final int CAT_GIVEAWAYS=9;
-    final int CAT_MUSIC=10;
-    final int CAT_BOARDGAMES=11;
+    String mainCategory;
+    String categories;
+    final String CAT_COMPETITION ="a";
+    final String CAT_FOOD ="b";
+    final String CAT_ATHLETICS="c";
+    final String CAT_ACADEMICS="d";
+    final String CAT_ENTERTAINMENT="e";
+    final String CAT_LIVEPERFORMANCE="f";
+    final String CAT_STEAM="g";
+    final String CAT_LITART="h";
+    final String CAT_GIVEAWAYS="i";
+    final String CAT_MUSIC="j";
+    final String CAT_BOARDGAMES="k";
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -126,13 +127,13 @@ public class EventView extends AppCompatActivity implements Serializable {
     }
 
     protected void setEventCategories() {
-        categoryIds = db.getEventCategories(eventId);
+        categories = db.getCategories(mEvent.getEventName(), mEvent.getClubID());
 
         LinearLayout.LayoutParams lp = new LinearLayout.LayoutParams(100, 100);
 
-        for(int i=0; i<categoryIds.size(); i++) {
+        for(int i=0; i<categories.length(); i++) {
 
-            switch(categoryIds.get(i)) {
+            switch(categories.substring(i, i+1)) {
                 case CAT_COMPETITION : {
                     ImageView tv1 = new ImageView (this);
                     tv1.setImageResource(R.drawable.cat_trophy_checked);

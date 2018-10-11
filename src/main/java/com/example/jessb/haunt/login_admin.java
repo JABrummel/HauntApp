@@ -30,9 +30,9 @@ public class login_admin extends AppCompatActivity {
         String username = user.getText().toString();
         String password = pw.getText().toString();
 
-        if(username.equals("1") && password.equals("1")) {
+        if(username.equals("admin1") && password.equals("1")) {
             Intent i = new Intent(this, ListedEvents.class);
-            i.putExtra("user", "admin");
+            i.putExtra("userType", "admin");
             startActivity(i);
        }
        else checkEntries();
