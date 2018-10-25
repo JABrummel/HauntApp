@@ -6,6 +6,7 @@ import android.os.Build;
 import android.support.v7.app.AlertDialog;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
+import android.util.Log;
 import android.view.View;
 import android.widget.Button;
 import android.widget.ImageView;
@@ -32,7 +33,7 @@ public class ClubView extends AppCompatActivity {
         faculty = findViewById(R.id.tv_faculty);
         approveButton = findViewById(R.id.button_approve);
         deleteButton = findViewById(R.id.button_delete);
-        profilepic = findViewById(R.id.iv_clubphoto);
+        profilepic = findViewById(R.id.iv_profileimg);
         db = DatabaseHelper.getInstance(getApplicationContext());
         Intent i  = getIntent();
         mclub = (Club)i.getSerializableExtra("club_object");
@@ -40,8 +41,8 @@ public class ClubView extends AppCompatActivity {
         clubName.setText("Club Name: "+mclub.getClubName());
         clubBio.setText( mclub.getBio());
         faculty.setText(mclub.getFacultyEmail());
-
-        //profilepic.setImageBitmap(convertToBitmap(mclub.getPhoto()));
+        Log.i("clubview_looker", "" + mclub.getPhoto());
+        profilepic.setImageBitmap(convertToBitmap(mclub.getPhoto()));
 
         if(mclub.getApproved().equals("true")) {
             approveButton.setVisibility(View.GONE);
@@ -113,8 +114,7 @@ public class ClubView extends AppCompatActivity {
                 .setPositiveButton(android.R.string.yes, new DialogInterface.OnClickListener() {
                     public void onClick(DialogInterface dialog, int which) {
 
-
-                        int clubid = mclub.getUserID();
+                        mclub.setApproved("true");
                         db.updateApproval(mclub);
                         startActivity(i);
 
@@ -122,7 +122,9 @@ public class ClubView extends AppCompatActivity {
                 }).setNegativeButton(android.R.string.cancel, new DialogInterface.OnClickListener() {
             @Override
             public void onClick(DialogInterface dialog, int which) {
-                //do nothing
+                        mclub.setApproved("false");
+                        db.updateApproval(mclub);
+                         startActivity(i);
             }
         })
                 .setIcon(android.R.drawable.ic_dialog_alert)

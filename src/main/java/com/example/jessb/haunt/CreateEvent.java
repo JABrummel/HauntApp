@@ -286,7 +286,7 @@ public class CreateEvent extends AppCompatActivity  {
                 if(resultCode == RESULT_OK) {
                     Uri chosenImage = data.getData();
                     if (chosenImage != null) {
-                        bp = decodeUri(chosenImage, 300);
+                        bp = decodeUri(chosenImage, 200);
                         profImage.setImageBitmap(bp);
                     }
                 }

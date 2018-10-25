@@ -415,16 +415,15 @@ public class DatabaseHelper extends SQLiteOpenHelper {
         SQLiteDatabase db = this.getWritableDatabase();
 
         ContentValues values = new ContentValues();
-        values.put(COLUMN_USER_ID, club.getUserID());
         values.put(COLUMN_FACULTYEMAIL, club.getFacultyEmail());
         values.put(COLUMN_PHOTO, club.getPhoto());
         values.put(COLUMN_CLUBNAME, club.getClubName());
         values.put(COLUMN_USERNAME, club.getUsername());
         values.put(COLUMN_PASSWORD, club.getPassword());
-        values.put(COLUMN_EMAIL, club.getClubEmail());
+        values.put(COLUMN_CLUBEMAIL, club.getClubEmail());
         values.put(COLUMN_ROLE, club.getRole());
         values.put(COLUMN_BIO, club.getBio());
-        values.put(COLUMN_APPROVED, "denied");
+        values.put(COLUMN_APPROVED, club.getApproved());
 //return db.update(TABLE_EVENTS, values, COLUMN_EVENTID + " = ?",
 ////                new String[] {String.valueOf(events.getEventID())});
         return db.update(TABLE_CLUB, values, COLUMN_CLUBNAME + " = ?", new String[] {String.valueOf(club.getClubName())});
