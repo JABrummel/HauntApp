@@ -87,6 +87,7 @@ public class CreateEvent extends AppCompatActivity  {
     Spinner locationSpinner; //Drop down for buildings
     Events newEvent = new Events();
     int userId;
+    String campus;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -139,9 +140,11 @@ public class CreateEvent extends AppCompatActivity  {
             public void onCheckedChanged(RadioGroup group, int checkedId) {
                 if(checkedId == R.id.rb_marietta) {
                     locationSpinner.setAdapter(mariettaAdapter);
+                    campus = "marietta";
                 }
                 else {
                    locationSpinner.setAdapter(kennesawAdapter);
+                   campus="kennesaw";
                 }
             }
         });
@@ -343,6 +346,7 @@ public class CreateEvent extends AppCompatActivity  {
         newEvent.setEventName(eventNameValue);
         newEvent.setBio(eventBioValue);
         newEvent.setLocation(location);
+        newEvent.setCampus(campus);
         newEvent.setClubID(userId);
         getPhotoValue();
         Log.i("eventview_looker", "in Create Event: " + photo);

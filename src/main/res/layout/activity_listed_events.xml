@@ -6,16 +6,27 @@
     android:layout_height="match_parent"
     tools:context=".ListedEvents">
 
-    <TextView
-        android:id="@+id/textView"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_alignParentTop="true"
-        android:layout_centerHorizontal="true"
-        android:layout_marginTop="22dp"
-        android:text="Listed Events"
-        tools:layout_editor_absoluteX="162dp"
-        tools:layout_editor_absoluteY="16dp" />
+   <LinearLayout
+       android:layout_width="wrap_content"
+       android:layout_height="50dp"
+       android:orientation="horizontal">
+
+       <Button
+           android:id="@+id/button_listview"
+           android:layout_width="175dp"
+           android:layout_height="wrap_content"
+           android:background="@android:color/transparent"
+           android:onClick="pickview"
+           android:text="listview" />
+
+       <Button
+           android:id="@+id/button_map"
+           android:layout_width="175dp"
+           android:layout_height="wrap_content"
+           android:background="@android:color/transparent"
+           android:onClick="pickview"
+           android:text="mapview" />
+   </LinearLayout>
 
     <android.support.design.widget.FloatingActionButton
         android:id="@+id/button_add"
@@ -35,17 +46,53 @@
         android:layout_height="wrap_content"
         android:layout_alignParentBottom="true"
         android:layout_alignStart="@+id/button_add"
-        android:layout_marginBottom="77dp"
+        android:layout_marginBottom="139dp"
         android:backgroundTint="#FFDD74"
         android:clickable="true"
         app:srcCompat="@drawable/button_more" />
 
+    <android.support.design.widget.FloatingActionButton
+        android:id="@+id/button_logout"
+        android:layout_width="50dp"
+        android:layout_height="wrap_content"
+        android:layout_alignParentBottom="true"
+        android:layout_alignStart="@+id/button_add"
+        android:layout_marginBottom="77dp"
+        android:backgroundTint="#FFDD74"
+        android:clickable="true"
+        app:srcCompat="@android:drawable/ic_lock_power_off" />
+
     <ListView
         android:id="@+id/listView"
         android:layout_width="match_parent"
-        android:layout_height="match_parent"
+        android:layout_height="435dp"
         android:layout_alignParentStart="true"
         android:layout_alignParentTop="true"
-        android:layout_marginTop="57dp" />
+        android:layout_marginTop="57dp"
+        android:scrollbars="vertical" />
+
+    <LinearLayout
+        android:layout_width="wrap_content"
+        android:layout_height="50dp"
+        android:layout_alignParentBottom="true"
+        android:orientation="horizontal">
+
+        <Button
+            android:id="@+id/button_marietta"
+            android:layout_width="175dp"
+            android:layout_height="wrap_content"
+
+            android:background="@android:color/transparent"
+            android:onClick="pickcampus"
+            android:text="Marietta" />
+
+        <Button
+            android:id="@+id/button_kennesaw"
+            android:layout_width="175dp"
+            android:layout_height="wrap_content"
+            android:background="@android:color/transparent"
+            android:onClick="pickcampus"
+            android:text="Kennesaw" />
+    </LinearLayout>
 
 </RelativeLayout>

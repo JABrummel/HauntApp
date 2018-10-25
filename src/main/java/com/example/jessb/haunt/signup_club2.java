@@ -11,6 +11,7 @@ import android.os.Bundle;
 import android.util.Log;
 import android.view.View;
 import android.widget.Button;
+import android.widget.EditText;
 import android.widget.ImageView;
 
 import java.io.ByteArrayOutputStream;
@@ -25,6 +26,8 @@ public class signup_club2 extends AppCompatActivity {
     ImageView profImage;
     Button uploadButton;
     Uri imageUri;
+    EditText bioEt;
+    String bio;
     private DatabaseHelper db;
     private Bitmap bp;
     private byte[] photo;
@@ -39,6 +42,7 @@ public class signup_club2 extends AppCompatActivity {
         db = DatabaseHelper.getInstance(getApplicationContext());
         profImage = findViewById(R.id.iv_profphoto);
         uploadButton = findViewById(R.id.button_upload);
+        bioEt = findViewById(R.id.et_desc);
 
         uploadButton.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -108,13 +112,22 @@ public class signup_club2 extends AppCompatActivity {
     private void addClub() {
         getPhotoValue();
         club.setPhoto(photo);
+
+        bio = bioEt.getText().toString();
+        club.setBio(bio);
+        club.setApproved("false");
+        Log.i("eventview_looker", "bio: " + bio);
         Log.i("eventview_looker", "in signup: " + photo);
+        Log.i("eventview_looker", club.getClubName());
+        Log.i("eventview_looker", club.getClubEmail());
+        Log.i("eventview_looker", club.getFacultyEmail());
         db.addClub(club);
     }
 
     protected void goBack(View v) {}
 
     protected void createAccount(View v) {
+
         addClub();
         Intent intent = new Intent(signup_club2.this, UserType.class);
         startActivity(intent);

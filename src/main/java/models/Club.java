@@ -4,15 +4,40 @@ import java.io.Serializable;
 import java.sql.Blob;
 
 public class Club implements Serializable {
-    private String facultyEmail;
+
     private String clubEmail;
     private byte[] photo;
-    private int clubID;
     private int userID;
     private String clubName;
     private String username;
+    private String facultyEmail;
     private String password;
     private String role;
+    private String bio;
+    private String approved;
+
+    public Club() {}
+
+    public Club ( String fac, String clubn, byte[] photoimg, String un, String em,
+                 String pw, String role, String bio, String approved) {
+
+        facultyEmail = fac;
+        clubName = clubn;
+        photo = photoimg;
+        username = un;
+        password = pw;
+        this.role = role;
+        this.bio= bio;
+        this.approved = approved;
+        clubEmail = em;
+
+    }
+
+ //"CREATE TABLE " + TABLE_CLUB + "("
+    //            + COLUMN_CLUBID + " INTEGER PRIMARY KEY ," + COLUMN_FACULTYEMAIL + " TEXT,"
+    //            + COLUMN_CLUBNAME + " TEXT," + COLUMN_PHOTO + " BLOB," + COLUMN_USERNAME + " TEXT,"
+    //            + COLUMN_CLUBEMAIL + " TEXT," + COLUMN_PASSWORD + " TEXT," + COLUMN_ROLE + " TEXT,"
+    //            + COLUMN_BIO + " TEXT," + COLUMN_APPROVED + " TEXT" + ")";
 
     public String getFacultyEmail() {
         return facultyEmail;
@@ -30,13 +55,7 @@ public class Club implements Serializable {
         this.clubEmail = clubEmail;
     }
 
-    public int getClubID() {
-        return clubID;
-    }
 
-    public void setClubID(int clubID) {
-        this.clubID = clubID;
-    }
 
     public String getClubName() {
         return clubName;
@@ -85,5 +104,21 @@ public class Club implements Serializable {
 
     public void setRole(String role) {
         this.role = role;
+    }
+
+    public String getBio() {
+        return bio;
+    }
+
+    public void setBio(String bio) {
+        this.bio = bio;
+    }
+
+    public String getApproved() {
+        return approved;
+    }
+
+    public void setApproved(String a) {
+        approved = a;
     }
 }

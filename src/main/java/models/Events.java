@@ -6,6 +6,7 @@ public class Events implements Serializable {
     private int eventId;
     private String eventName;
     private String location;
+    private String campus;
     private String startTime;
     private String endTime;
     private String date;
@@ -17,10 +18,11 @@ public class Events implements Serializable {
 
     public Events() {}
 
-    public Events (int eventID, String eName, String locat, String starttime, String endtime,
+    public Events (int eventID, String eName, String locat, String campusName, String starttime, String endtime,
                    String dateStr, String biog, byte[] photoData, int  clubid) {
         eventName = eName;
         location = locat;
+        campus = campusName;
         startTime = starttime;
         endTime = endtime;
         date = dateStr;
@@ -30,10 +32,11 @@ public class Events implements Serializable {
         eventId = eventID;
 
     }
-    public Events(String eName, String locat, String starttime, String endtime,
+    public Events(String eName, String locat, String campusName, String starttime, String endtime,
                   String dateStr, String biog, byte[] photoData, int  clubid) {
         eventName = eName;
         location = locat;
+        campus = campusName;
         startTime = starttime;
         endTime = endtime;
         date = dateStr;
@@ -83,6 +86,14 @@ public class Events implements Serializable {
         this.endTime = endTime;
     }
 
+
+    public String getCampus() {
+        return campus;
+    }
+
+    public void setCampus(String data) {
+        campus = data;
+    }
 
     public String getDate() {
         return date;

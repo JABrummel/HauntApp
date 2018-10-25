@@ -56,18 +56,29 @@ public class login_club extends AppCompatActivity {
         EditText pw = findViewById(R.id.et_password);
         String username = user.getText().toString().trim();
         String password = pw.getText().toString().trim();
+        String clubApproved = "";
         if(db.checkClub(username, password)) {
             Cursor userCursor = db.getClub(username);
             int clubId = -1;
+
             while(userCursor.moveToNext()) {
 
                 clubId = userCursor.getInt(0);
+                clubApproved = userCursor.getString(9);
             }
            if(clubId > -1) {
-               Intent i = new Intent(this, ListedEvents.class);
-               i.putExtra("userType", "club");
-               i.putExtra("userId", clubId);
-               startActivity(i);
+                if (clubApproved.equals("true")) {
+                    Intent i = new Intent(this, ListedEvents.class);
+                    i.putExtra("userType", "club");
+                    i.putExtra("userId", clubId);
+                    startActivity(i);
+                }
+                else if(clubApproved.equals("false")) {
+                    pending();
+                }
+                else {
+                    notApproved();
+                }
            }
         } else checkEntries();
     }
@@ -81,6 +92,58 @@ public class login_club extends AppCompatActivity {
     protected void createAccount(View v) {
         Intent i = new Intent(this, signup_club.class);
         startActivity(i);
+    }
+
+    protected void pending() {
+        AlertDialog.Builder builder;
+        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.LOLLIPOP) {
+            builder = new AlertDialog.Builder(this, android.R.style.Theme_Material_Dialog_Alert);
+        } else {
+            builder = new AlertDialog.Builder(this);
+        }
+        builder.setTitle("Club is not approved yet")
+                .setMessage("Your club is currently waiting admin approval. Thank you for your patience.")
+                .setPositiveButton(android.R.string.yes, new DialogInterface.OnClickListener() {
+                    public void onClick(DialogInterface dialog, int which) {
+
+                    }
+                })
+                .setIcon(android.R.drawable.ic_dialog_alert)
+                .show();
+        Vibrator vibrator = (Vibrator) getSystemService(this.VIBRATOR_SERVICE);
+        // Vibrate for 500 milliseconds
+        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.O) {
+            vibrator.vibrate(VibrationEffect.createOneShot(500,VibrationEffect.DEFAULT_AMPLITUDE));
+        }else{
+            //deprecated in API 26
+            vibrator.vibrate(500);
+        }
+    }
+
+    protected void notApproved() {
+        AlertDialog.Builder builder;
+        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.LOLLIPOP) {
+            builder = new AlertDialog.Builder(this, android.R.style.Theme_Material_Dialog_Alert);
+        } else {
+            builder = new AlertDialog.Builder(this);
+        }
+        builder.setTitle("Club has been denied")
+                .setMessage("Your request for a club account has been denied by admin.")
+                .setPositiveButton(android.R.string.yes, new DialogInterface.OnClickListener() {
+                    public void onClick(DialogInterface dialog, int which) {
+
+                    }
+                })
+                .setIcon(android.R.drawable.ic_dialog_alert)
+                .show();
+        Vibrator vibrator = (Vibrator) getSystemService(this.VIBRATOR_SERVICE);
+        // Vibrate for 500 milliseconds
+        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.O) {
+            vibrator.vibrate(VibrationEffect.createOneShot(500,VibrationEffect.DEFAULT_AMPLITUDE));
+        }else{
+            //deprecated in API 26
+            vibrator.vibrate(500);
+        }
     }
     protected void checkEntries() {
         AlertDialog.Builder builder;
