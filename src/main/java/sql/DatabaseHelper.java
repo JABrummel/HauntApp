@@ -1,5 +1,6 @@
 package sql;
 
+
 import android.content.ContentValues;
 import android.content.Context;
 import android.database.Cursor;
@@ -238,27 +239,7 @@ public class DatabaseHelper extends SQLiteOpenHelper {
         return result;
     }
 
-//    public void addEventCategories(long id, int catId)
-//    {
-//        SQLiteDatabase db = this.getWritableDatabase();
-//
-//        ContentValues values = new ContentValues();
-//        values.put(COLUMN_EVENTID, id);
-//        values.put(COLUMN_CATEGORYID, catId);
-//
-//        db.insert(TABLE_EVENTCATEGORIES, null, values);
-//        db.close();
-//    }
-//
-//    public void addCategory(Category category){
-//        SQLiteDatabase db = this.getWritableDatabase();
-//
-//        ContentValues values = new ContentValues();
-//        values.put(COLUMN_PHOTO, category.getImage());
-//
-//        db.insert(TABLE_CATEGORY, null, values);
-//        db.close();
-//    }
+
 
     public void addLocation(Location location){
         SQLiteDatabase db = this.getWritableDatabase();
@@ -298,6 +279,20 @@ public class DatabaseHelper extends SQLiteOpenHelper {
                 + " WHERE " + COLUMN_CAMPUS + " = '" + c + "'";
         Cursor events = db.rawQuery(query, null);
         return events;
+    }
+
+    public Cursor filterEvents(String startTime, String endTime, String date, String location, String categories, String campus) {
+        SQLiteDatabase db = this.getReadableDatabase();
+        int startHour;
+        String startMin;
+        String endMin;
+        String endHour;
+        if(startTime!=null) {
+            startHour = Integer.parseInt(startTime.substring(0,2));
+
+        }
+        String query = "SELECT * FROM " + TABLE_EVENTS + " WHERE ";
+        return null;
     }
 
     public String getCategories(String eventN, int clubid) {
@@ -424,8 +419,7 @@ public class DatabaseHelper extends SQLiteOpenHelper {
         values.put(COLUMN_ROLE, club.getRole());
         values.put(COLUMN_BIO, club.getBio());
         values.put(COLUMN_APPROVED, club.getApproved());
-//return db.update(TABLE_EVENTS, values, COLUMN_EVENTID + " = ?",
-////                new String[] {String.valueOf(events.getEventID())});
+
         return db.update(TABLE_CLUB, values, COLUMN_CLUBNAME + " = ?", new String[] {String.valueOf(club.getClubName())});
     }
 

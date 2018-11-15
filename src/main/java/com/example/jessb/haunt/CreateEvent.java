@@ -192,15 +192,30 @@ public class CreateEvent extends AppCompatActivity  {
             @Override
             public void onTimeSet(TimePicker view, int hourOfDay, int minute) {
                 String currentTime;
-                if(minute > 10) {
-                    startTime.setText(hourOfDay + ":" + minute);
-                     currentTime = startTime.getText().toString();
+                String startTimeValue;
+                String min;
+                String hour;
+                if (minute < 10) {
+                    min = "0"+minute;
                 }
-                else {
-                    startTime.setText(hourOfDay + ":0" + minute);
-                    currentTime = startTime.getText().toString();
+                else min = "" +minute;
+
+                if(hourOfDay<10) {
+                    hour = "0"+hourOfDay;
                 }
-                newEvent.setStartTime(currentTime);
+                else hour = ""+hourOfDay;
+
+                startTimeValue = hour +":"+min;
+//                if(minute > 10) {
+//                    startTime.setText(hourOfDay + ":" + minute);
+//                     currentTime = startTime.getText().toString();
+//                }
+//                else {
+//                    startTime.setText(hourOfDay + ":0" + minute);
+//                    currentTime = startTime.getText().toString();
+//                }
+                startTime.setText(startTimeValue);
+                newEvent.setStartTime(startTimeValue);
             }
         };
 
@@ -223,15 +238,30 @@ public class CreateEvent extends AppCompatActivity  {
             public void onTimeSet(TimePicker view, int hourOfDay, int minute) {
 
                 String endTimeValue;
-                if(minute > 10) {
-                    endTime.setText(hourOfDay + ":" + minute);
-                    endTimeValue = endTime.getText().toString();
+                String min;
+                String hour;
+                if (minute < 10) {
+                    min = "0"+minute;
                 }
-                else {
-                    endTime.setText(hourOfDay + ":0" + minute);
-                    endTimeValue = endTime.getText().toString();
+                else min = "" +minute;
 
+                if(hourOfDay<10) {
+                    hour = "0"+hourOfDay;
                 }
+                else hour = ""+hourOfDay;
+
+                endTimeValue = hour +":"+min;
+
+//                if(minute > 10) {
+//                    endTime.setText(hourOfDay + ":" + minute);
+//                    endTimeValue = endTime.getText().toString();
+//                }
+//                else {
+//                    endTime.setText(hourOfDay + ":0" + minute);
+//                    endTimeValue = endTime.getText().toString();
+//
+//                }
+                endTime.setText(endTimeValue);
                 newEvent.setEndTime(endTimeValue);
 
             }
