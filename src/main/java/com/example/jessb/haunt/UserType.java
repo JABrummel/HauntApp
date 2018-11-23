@@ -12,6 +12,7 @@ import sql.DatabaseHelper;
 public class UserType extends AppCompatActivity {
 
     DatabaseHelper db;
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);

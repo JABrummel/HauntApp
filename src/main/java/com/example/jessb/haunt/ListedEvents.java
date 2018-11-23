@@ -1,29 +1,43 @@
 package com.example.jessb.haunt;
 
+import android.Manifest;
+import android.app.Dialog;
+import android.content.Context;
 import android.content.DialogInterface;
 import android.content.Intent;
+import android.content.pm.PackageManager;
 import android.database.Cursor;
+import android.location.LocationManager;
 import android.os.Build;
+import android.provider.Settings;
+import android.support.annotation.NonNull;
+import android.support.annotation.Nullable;
 import android.support.design.widget.FloatingActionButton;
+import android.support.v4.app.ActivityCompat;
+import android.support.v4.content.ContextCompat;
 import android.support.v7.app.AlertDialog;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
-import android.util.EventLog;
 import android.util.Log;
 import android.view.View;
 import android.widget.AdapterView;
 import android.widget.ArrayAdapter;
-import android.widget.Button;
 import android.widget.ListAdapter;
 import android.widget.ListView;
 import android.widget.Toast;
 
+import com.google.android.gms.common.ConnectionResult;
+import com.google.android.gms.common.GoogleApiAvailability;
+
 import java.io.Serializable;
 import java.util.ArrayList;
 
-import models.Club;
 import models.Events;
 import sql.DatabaseHelper;
+
+import static util.Constants.ERROR_DIALOG_REQUEST;
+import static util.Constants.PERMISSION_REQUEST_ENABLE_GPS;
+import static util.Constants.PERMISSION_REQUEST_ACCESS_FINE_LOCATION;
 
 public class ListedEvents extends AppCompatActivity implements Serializable {
 
@@ -33,6 +47,7 @@ public class ListedEvents extends AppCompatActivity implements Serializable {
     private ListView mListView;
     int userId;
     String userType;
+    private boolean mLocationPermissionGranted = false; //
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -41,6 +56,7 @@ public class ListedEvents extends AppCompatActivity implements Serializable {
         db = DatabaseHelper.getInstance(getApplicationContext());
         FloatingActionButton moreButton = findViewById(R.id.button_more);
         FloatingActionButton addButton = findViewById(R.id.button_add);
+        FloatingActionButton mapView = findViewById(R.id.map_btn);
         Intent lastActivity = getIntent();
          userType = lastActivity.getStringExtra("userType");
          userId = lastActivity.getIntExtra("userId", 0);
@@ -50,6 +66,12 @@ public class ListedEvents extends AppCompatActivity implements Serializable {
             @Override
             public void onClick(View v) {
                logout();
+            }
+        });
+        mapView.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                openMapView();
             }
         });
 
@@ -71,12 +93,29 @@ public class ListedEvents extends AppCompatActivity implements Serializable {
 
     }
 
+    @Override
+    protected void onResume() {
+        super.onResume();
+        if(checkMapServices())
+        {
+            if(!mLocationPermissionGranted){
+                getLocationPermission();
+            }
+        }
+    }
+
+    public void openMapView() {
+        Intent intent = new Intent(this, EventMapView.class);
+        startActivity(intent);
+    }
+
     protected void createEvent(){
         Intent newEvent = new Intent(this, CreateEvent.class);
         newEvent.putExtra("userType", "club");
         newEvent.putExtra("userId", userId);
         startActivity(newEvent);
     }
+
     private void populateEvents() {
         Log.d("Databasehelper", "populateEvents: Displaying data in view");
         Cursor data = db.getEvents();
@@ -152,5 +191,95 @@ public class ListedEvents extends AppCompatActivity implements Serializable {
         })
                 .setIcon(android.R.drawable.ic_dialog_alert)
                 .show();
+    }
+
+    /*Google Maps Permissions Stuff
+    * We need to ask the user for permissions to use GPS/Location because this is a democracy*/
+    private void buildAlertMessageNoGps() {
+        final AlertDialog.Builder builder = new AlertDialog.Builder(this);
+        builder.setMessage("This application requires GPS to work properly, do you want to enable it?")
+                .setCancelable(false)
+                .setPositiveButton("Yes", new DialogInterface.OnClickListener() {
+                    @Override
+                    public void onClick(DialogInterface dialog, int which) {
+                        Intent enableGpsIntent = new Intent(Settings.ACTION_LOCATION_SOURCE_SETTINGS);
+                        startActivityForResult(enableGpsIntent, PERMISSION_REQUEST_ENABLE_GPS);
+                    }
+                });
+        final AlertDialog alert = builder.create();
+        alert.show();
+    }
+
+    private boolean checkMapServices(){
+        if(isServicesOk()){
+            if(isMapsEnabled()){
+                return true;
+            }
+        }
+        return false;
+    }
+
+    public boolean isMapsEnabled(){
+        final LocationManager manager = (LocationManager) getSystemService(Context.LOCATION_SERVICE);
+
+        if(!manager.isProviderEnabled(LocationManager.GPS_PROVIDER)) {
+            buildAlertMessageNoGps();
+            return false;
+        }
+        return true;
+    }
+
+    private void getLocationPermission() {
+        /*Request Location Permission*/
+        if (ContextCompat.checkSelfPermission(this.getApplicationContext(), Manifest.permission.ACCESS_FINE_LOCATION) == PackageManager.PERMISSION_GRANTED){
+            mLocationPermissionGranted = true;
+        } else {
+            ActivityCompat.requestPermissions(this, new String[]{Manifest.permission.ACCESS_FINE_LOCATION}, PERMISSION_REQUEST_ACCESS_FINE_LOCATION);
+        }
+    }
+
+    public boolean isServicesOk(){
+        int available = GoogleApiAvailability.getInstance().isGooglePlayServicesAvailable(this);
+        if(available == ConnectionResult.SUCCESS)
+        {
+            Log.d("Service Permission", "Google play service is working");
+            return true;
+        } else if (GoogleApiAvailability.getInstance().isUserResolvableError(available)){
+            Log.d("Service Permssion", "An error occurred but it can be fixed");
+            Dialog dialog = GoogleApiAvailability.getInstance().getErrorDialog(this, available, ERROR_DIALOG_REQUEST);
+            dialog.show();
+        } else {
+            Toast.makeText(this, "You can't make map requests", Toast.LENGTH_SHORT).show();
+        }
+        return false;
+    }
+
+    @Override
+    public void onRequestPermissionsResult(int requestCode, @NonNull String[] permissions, @NonNull int[] grantResults) {
+        mLocationPermissionGranted = false;
+        switch(requestCode){
+            case PERMISSION_REQUEST_ACCESS_FINE_LOCATION: {
+                // If request is canceled, the result arrays are empty
+                if (grantResults.length > 0 && grantResults[0] == PackageManager.PERMISSION_GRANTED)
+                {
+                    mLocationPermissionGranted = true;
+                }
+            }
+        }
+    }
+
+    @Override
+    protected void onActivityResult(int requestCode, int resultCode, @Nullable Intent data) {
+        super.onActivityResult(requestCode, resultCode, data);
+        Log.d("Service Permission", "onActivityResult: called.");
+        switch (requestCode) {
+            case PERMISSION_REQUEST_ENABLE_GPS: {
+                if(mLocationPermissionGranted){
+                }
+                else{
+                    getLocationPermission();
+                }
+            }
+        }
     }
 }

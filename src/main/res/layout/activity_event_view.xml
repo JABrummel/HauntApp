@@ -108,4 +108,5 @@
         android:text="Delete Event"
         android:onClick="deleteEvent"/>
 
+
 </RelativeLayout>
