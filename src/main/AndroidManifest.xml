@@ -7,6 +7,13 @@
     <uses-permission android:name="android.permission.READ_PROFILE" />
     <uses-permission android:name="android.permission.READ_CONTACTS" />
     <uses-permission android:name="android.permission.VIBRATE" />
+    <!-- Needed for Google Maps API -->
+    <uses-feature
+        android:glEsVersion="0x00020000"
+        android:required="true" />
+
+    <uses-permission android:name="android.permission.ACCESS_FINE_LOCATION" />
+    <uses-permission android:name="android.permission.WRITE_EXTERNAL_STORAGE" />
 
     <application
         android:allowBackup="true"
@@ -30,10 +37,12 @@
         <activity android:name=".CreateEvent" />
         <activity android:name=".ListedEvents" />
         <activity android:name=".EventView" />
-        <activity android:name=".MapEvents" />
-        <activity android:name=".ClubList" />
-        <activity android:name=".ClubView" />
-        <activity android:name=".RequestList"></activity>
+
+        <meta-data
+            android:name="com.google.android.geo.API_KEY"
+            android:value="AIzaSyC1CppN_W2t1BTJ52uLH62ZvLgEfLLh_Bs" />
+
+        <activity android:name=".EventMapView"></activity>
     </application>
 
 </manifest>
