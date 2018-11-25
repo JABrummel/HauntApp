@@ -71,6 +71,16 @@
         android:layout_marginTop="57dp"
         android:scrollbars="vertical" />
 
+    <Button
+        android:id="@+id/button_filter"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_alignParentEnd="true"
+        android:layout_alignParentTop="true"
+        android:layout_marginTop="92dp"
+        android:onClick="goToFilter"
+        android:text="Filter" />
+
     <LinearLayout
         android:layout_width="wrap_content"
         android:layout_height="50dp"

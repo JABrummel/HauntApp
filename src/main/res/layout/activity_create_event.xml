@@ -263,7 +263,7 @@
                 android:id="@+id/upload_img"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:text="Upload Club Image" />
+                android:text="Upload Event Image" />
         </LinearLayout>
 
         <LinearLayout

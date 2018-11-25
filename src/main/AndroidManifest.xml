@@ -33,7 +33,8 @@
         <activity android:name=".MapEvents" />
         <activity android:name=".ClubList" />
         <activity android:name=".ClubView" />
-        <activity android:name=".RequestList"></activity>
+        <activity android:name=".RequestList" />
+        <activity android:name=".Filter"></activity>
     </application>
 
 </manifest>

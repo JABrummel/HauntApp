@@ -30,12 +30,12 @@ public class EventView extends AppCompatActivity implements Serializable {
     TextView location;
     TextView clubName;
     TextView time;
+    String userType, startTime, endTime, startDate, endDate, categoryList, campus;
     ImageView clubPhoto;
     LinearLayout iconHolder;
     Button exitButton;
     Button deleteButton;
     Events mEvent;
-    String userType;
     String clubNameText;
     DatabaseHelper db;
     int event_Id;
@@ -54,18 +54,29 @@ public class EventView extends AppCompatActivity implements Serializable {
     final String CAT_GIVEAWAYS="i";
     final String CAT_MUSIC="j";
     final String CAT_BOARDGAMES="k";
+    Intent lastActivity;
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_event_view);
         db = DatabaseHelper.getInstance(getApplicationContext());
-        Intent lastActivity = getIntent();
+        lastActivity = getIntent();
         userType = lastActivity.getStringExtra("userType");
         userId = lastActivity.getIntExtra("userId", 0);
         mEvent = (Events) lastActivity.getSerializableExtra("event_object");
         event_Id = lastActivity.getIntExtra("eventId", 0);
         Log.i("eventview_looker", "eventId" + event_Id);
         eventId = mEvent.getClubID();
+
+        if(lastActivity.hasExtra("filter")) {
+            startTime = lastActivity.getStringExtra("startTime");
+            endTime = lastActivity.getStringExtra("endTime");
+            startDate = lastActivity.getStringExtra("startDate");
+            endDate = lastActivity.getStringExtra("endDate");
+            categoryList = lastActivity.getStringExtra("categories");
+            campus = lastActivity.getStringExtra("campus");
+
+        }
         Cursor data = db.getClubName(eventId);
         if(data.moveToFirst()){
             int position = data.getColumnIndex("clubName");
@@ -97,10 +108,13 @@ public class EventView extends AppCompatActivity implements Serializable {
         eventName.setText(mEvent.getEventName());
         eventBio.setText("Event Description: " +mEvent.getBio());
         dateHolder.setText(mEvent.getDate());
-        time.setText(mEvent.getStartTime() + " - " + mEvent.getEndTime());
-        //clubName.setText("Hosted by: " + mEvent.getEventName());
+        String startTime = mEvent.getStartTime().substring(0,2) + ":" + mEvent.getStartTime().substring(2);
+        String endTime = mEvent.getEndTime().substring(0,2) + ":" + mEvent.getEndTime().substring(2);
+        time.setText(startTime + " - " + endTime);
         location.setText("Location: " +mEvent.getLocation());
-        dateHolder.setText(mEvent.getDate());
+        String eventDate = mEvent.getDate();
+        String formattedDate = eventDate.substring(4,6) + "/"+ eventDate.substring(6) +"/" + eventDate.substring(0,4);
+        dateHolder.setText(formattedDate);
         clubPhoto.setImageBitmap(convertToBitmap(mEvent.getPhoto()));
         Log.i("eventview_looker", "" + mEvent.getPhoto());
     }
@@ -114,6 +128,12 @@ public class EventView extends AppCompatActivity implements Serializable {
         Intent goBack = new Intent(this, ListedEvents.class);
         goBack.putExtra("userType", userType);
         goBack.putExtra("userId", userId);
+        goBack.putExtra("campus", campus);
+        goBack.putExtra("filter", true);
+        goBack.putExtra("endTime", endTime);
+        goBack.putExtra("startTime", startTime);
+        goBack.putExtra("endDate", endDate);
+        goBack.putExtra("startDate", startDate);
 
         startActivity(goBack);
     }

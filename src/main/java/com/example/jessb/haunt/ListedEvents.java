@@ -33,8 +33,9 @@ public class ListedEvents extends AppCompatActivity implements Serializable {
     ArrayList<Events> events = new ArrayList<Events>();
     private ListView mListView;
     int userId;
-    String userType;
-    Button marietta,kennesaw,listscreen,mapscreen;
+    Intent lastActivity;
+    String userType, startTime, endTime, startDate, endDate, categories, campus;
+    Button marietta,kennesaw,listscreen,mapscreen, filter;
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -44,20 +45,43 @@ public class ListedEvents extends AppCompatActivity implements Serializable {
         kennesaw = (Button)findViewById(R.id.button_kennesaw);
         listscreen = (Button)findViewById(R.id.button_listview);
         listscreen.setBackgroundColor(Color.LTGRAY);
+        filter=(Button)findViewById(R.id.button_filter);
         db = DatabaseHelper.getInstance(getApplicationContext());
         FloatingActionButton moreButton = findViewById(R.id.button_more);
         FloatingActionButton addButton = findViewById(R.id.button_add);
         FloatingActionButton logoutButton = findViewById(R.id.button_logout);
-        Intent lastActivity = getIntent();
+        lastActivity = getIntent();
          userType = lastActivity.getStringExtra("userType");
          userId = lastActivity.getIntExtra("userId", 0);
-        populateEvents();
+         if(lastActivity.hasExtra("filter")) {
+            startTime = lastActivity.getStringExtra("startTime");
+            endTime = lastActivity.getStringExtra("endTime");
+            startDate = lastActivity.getStringExtra("startDate");
+            endDate = lastActivity.getStringExtra("endDate");
+            categories = lastActivity.getStringExtra("categories");
+            campus = lastActivity.getStringExtra("campus");
+            filterEvents(startDate, endDate, startTime, endTime, categories, campus);
+         }
+         else{
+             populateEvents();
+         }
+
 
 
         logoutButton.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
                 logout();
+            }
+        });
+
+        filter.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                Intent i = new Intent(getApplicationContext(), Filter.class);
+                i.putExtra("userType", userType);
+                i.putExtra("userId", userId);
+                startActivity(i);
             }
         });
 
@@ -101,18 +125,81 @@ public class ListedEvents extends AppCompatActivity implements Serializable {
         startActivity(newEvent);
     }
 
+    protected void filterEvents(String dateStart, String dateEnd, String startTime, String endTime, String categories, String campus ) {
+        Cursor data = db.filterEvents(dateStart, dateEnd, startTime, endTime, categories, campus);
+        setListView(data);
+    }
+
     //Used to sort between campus events after buttonclick
     private void populateEvents(String campus) {
         Log.d("Databasehelper", "populateEvents: Displaying data in view");
         Cursor data = db.getEvents(campus);
-        ArrayList<String> eventData = new ArrayList<>();
+        setListView(data);
+    }
 
+    private void populateEvents() {
+        Log.d("Databasehelper", "populateEvents: Displaying data in view");
+        Cursor data = db.getEvents();
+        setListView(data);
+//        ArrayList<String> eventData = new ArrayList<>();
+//        Events tmp = new Events();
+//        while(data.moveToNext()){
+//            //get the value from column 1 (Event Name)
+//            //then add to the array list
+//            events.add(new Events(data.getString(1), data.getString(2),
+//                    data.getString(3), data.getString(4),data.getString(5),
+//                    data.getString(6), data.getString(7),data.getBlob(8), data.getInt(9)
+//                    ));
+//            eventData.add(data.getString(1));
+////
+//        }
+//        ListAdapter adapter = new ArrayAdapter<>(this, android.R.layout.simple_list_item_1, eventData);
+//        mListView.setAdapter(adapter);
+//
+//        mListView.setOnItemClickListener(new AdapterView.OnItemClickListener() {
+//            @Override
+//            public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
+//                String eventName = parent.getItemAtPosition(position).toString();
+//                int index = position;
+////
+//                Log.i("eventview_looker", "1. eventName: " + eventName);
+//                Cursor data = db.getEvent(eventName);
+//                int eventId = -1;
+//                while(data.moveToNext()){
+//                    eventId = data.getInt(0);
+//                }
+//                if(eventId > -1){
+//                    Log.i("eventview_looker", "2. Id is:" + eventId);
+//                    Intent intent = new Intent(ListedEvents.this, EventView.class);
+//
+//                    mevent = (Events)events.get(index);
+//                    Log.i("eventview_looker", "3. event being sent: " + mevent.getEventName());
+//
+//                    for(int i= 0; i< events.size(); i++) {
+//                        Log.i("eventview_looker", events.get(i).getEventName());
+//                    }
+//                    intent.putExtra("event_object", mevent);
+//                    intent.putExtra("userType", userType);
+//                    intent.putExtra("userId", userId);
+//                    intent.putExtra("eventId", index);
+//                    startActivity(intent);
+//                } else {
+//                    Toast.makeText(getApplicationContext(), "No ID associated with name", Toast.LENGTH_SHORT);
+//
+//                }
+//            }
+//        });
+    }
+
+    protected void setListView (Cursor data) {
+        ArrayList<String> eventData = new ArrayList<>();
+        Events tmp = new Events();
         while(data.moveToNext()){
             //get the value from column 1 (Event Name)
             //then add to the array list
             events.add(new Events(data.getString(1), data.getString(2),
-                    data.getString(3),  data.getString(4), data.getString(5),data.getString(6),
-                    data.getString(7), data.getBlob(8), data.getInt(9)
+                    data.getString(3), data.getString(4),data.getString(5),
+                    data.getString(6), data.getString(7),data.getBlob(8), data.getInt(9)
             ));
             eventData.add(data.getString(1));
 //
@@ -146,59 +233,16 @@ public class ListedEvents extends AppCompatActivity implements Serializable {
                     intent.putExtra("userType", userType);
                     intent.putExtra("userId", userId);
                     intent.putExtra("eventId", index);
-                    startActivity(intent);
-                } else {
-                    Toast.makeText(getApplicationContext(), "No ID associated with name", Toast.LENGTH_SHORT);
 
-                }
-            }
-        });
-    }
+                    if(lastActivity.hasExtra("filter")) {
+                        intent.putExtra("campus", campus);
+                        intent.putExtra("filter", true);
+                        intent.putExtra("endTime", endTime);
+                        intent.putExtra("startTime", startTime);
+                        intent.putExtra("endDate", endDate);
+                        intent.putExtra("startDate", startDate);
 
-    private void populateEvents() {
-        Log.d("Databasehelper", "populateEvents: Displaying data in view");
-        Cursor data = db.getEvents();
-        ArrayList<String> eventData = new ArrayList<>();
-        Events tmp = new Events();
-        while(data.moveToNext()){
-            //get the value from column 1 (Event Name)
-            //then add to the array list
-            events.add(new Events(data.getString(1), data.getString(2),
-                    data.getString(3), data.getString(4),data.getString(5),
-                    data.getString(6), data.getString(7),data.getBlob(8), data.getInt(9)
-                    ));
-            eventData.add(data.getString(1));
-//
-        }
-        ListAdapter adapter = new ArrayAdapter<>(this, android.R.layout.simple_list_item_1, eventData);
-        mListView.setAdapter(adapter);
-
-        mListView.setOnItemClickListener(new AdapterView.OnItemClickListener() {
-            @Override
-            public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
-                String eventName = parent.getItemAtPosition(position).toString();
-                int index = position;
-//
-                Log.i("eventview_looker", "1. eventName: " + eventName);
-                Cursor data = db.getEvent(eventName);
-                int eventId = -1;
-                while(data.moveToNext()){
-                    eventId = data.getInt(0);
-                }
-                if(eventId > -1){
-                    Log.i("eventview_looker", "2. Id is:" + eventId);
-                    Intent intent = new Intent(ListedEvents.this, EventView.class);
-
-                    mevent = (Events)events.get(index);
-                    Log.i("eventview_looker", "3. event being sent: " + mevent.getEventName());
-
-                    for(int i= 0; i< events.size(); i++) {
-                        Log.i("eventview_looker", events.get(i).getEventName());
                     }
-                    intent.putExtra("event_object", mevent);
-                    intent.putExtra("userType", userType);
-                    intent.putExtra("userId", userId);
-                    intent.putExtra("eventId", index);
                     startActivity(intent);
                 } else {
                     Toast.makeText(getApplicationContext(), "No ID associated with name", Toast.LENGTH_SHORT);
@@ -248,5 +292,13 @@ public class ListedEvents extends AppCompatActivity implements Serializable {
     }
 
     protected void pickview(View v) {}
+
+    protected void goToFilter(View v) {
+        Intent i = new Intent(this, Filter.class);
+        i.putExtra("userType", userType);
+        i.putExtra("userId", userId);
+        startActivity(i);
+    }
+
 
 }

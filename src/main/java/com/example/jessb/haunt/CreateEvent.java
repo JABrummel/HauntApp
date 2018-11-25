@@ -205,17 +205,14 @@ public class CreateEvent extends AppCompatActivity  {
                 }
                 else hour = ""+hourOfDay;
 
-                startTimeValue = hour +":"+min;
-//                if(minute > 10) {
-//                    startTime.setText(hourOfDay + ":" + minute);
-//                     currentTime = startTime.getText().toString();
-//                }
-//                else {
-//                    startTime.setText(hourOfDay + ":0" + minute);
-//                    currentTime = startTime.getText().toString();
-//                }
-                startTime.setText(startTimeValue);
+
+
+
+                startTimeValue = "" + hour + min;
                 newEvent.setStartTime(startTimeValue);
+                startTimeValue = "" + hour + ":" + min;
+                startTime.setText(startTimeValue);
+
             }
         };
 
@@ -250,19 +247,10 @@ public class CreateEvent extends AppCompatActivity  {
                 }
                 else hour = ""+hourOfDay;
 
-                endTimeValue = hour +":"+min;
-
-//                if(minute > 10) {
-//                    endTime.setText(hourOfDay + ":" + minute);
-//                    endTimeValue = endTime.getText().toString();
-//                }
-//                else {
-//                    endTime.setText(hourOfDay + ":0" + minute);
-//                    endTimeValue = endTime.getText().toString();
-//
-//                }
-                endTime.setText(endTimeValue);
+                endTimeValue = ""+hour +min;
                 newEvent.setEndTime(endTimeValue);
+                endTimeValue = hour +":"+min;
+                endTime.setText(endTimeValue);
 
             }
         };
@@ -288,8 +276,18 @@ public class CreateEvent extends AppCompatActivity  {
             @Override
             public void onDateSet(DatePicker view, int year, int month, int dayOfMonth) {
                 SimpleDateFormat format = new SimpleDateFormat("yyyy-MM-dd");
-                datePicked.setText(month+1 + "/" + dayOfMonth + "/" + year);
-                String date = datePicked.getText().toString();
+                month+=1;
+                String m = "" + month;
+                if(month<10) {
+                    m = "0"+month;
+                }
+                String day = "" + dayOfMonth;
+                if(dayOfMonth<10) {
+                    day = "0"+dayOfMonth;
+                }
+
+                datePicked.setText(m + "/" + day + "/" + year);
+                String date = (""+year+m+day);
                 newEvent.setDate(date);
             }
         };

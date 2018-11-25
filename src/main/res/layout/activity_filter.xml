@@ -1,0 +1,258 @@
+<?xml version="1.0" encoding="utf-8"?>
+<ScrollView xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    tools:context=".Filter">
+
+    <LinearLayout
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:orientation="vertical">
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_gravity="center_horizontal"
+            android:text="Filter"
+            android:textSize="25dp"
+            android:layout_marginTop="10dp"/>
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_gravity="center_horizontal"
+            android:text="You can shake your phone to clear the filter"
+            android:textSize="15dp"/>
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="10dp"
+            android:layout_gravity="center_horizontal"
+            android:text="Please choose a start and end date"/>
+
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="50dp"
+            android:orientation="horizontal"
+            android:layout_marginLeft="20dp">
+
+            <TextView
+                android:layout_width="0dp"
+                android:layout_weight="1"
+                android:id="@+id/tv_startDate"
+                android:layout_marginTop="20dp"
+                android:layout_height="match_parent"
+                android:hint="Start Date"/>
+            <TextView
+                android:layout_width="0dp"
+                android:layout_weight="1"
+                android:id="@+id/tv_endDate"
+                android:layout_marginTop="20dp"
+                android:layout_height="match_parent"
+                android:hint="End Date"/>
+
+        </LinearLayout>
+
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="15dp"
+            android:layout_gravity="center_horizontal"
+            android:text="Please choose a start and end date"/>
+
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginLeft="20dp"
+            android:orientation="horizontal">
+
+            <TextView
+                android:layout_width="0dp"
+                android:layout_weight="1"
+                android:id="@+id/tv_startTime"
+                android:layout_marginTop="20dp"
+                android:layout_height="match_parent"
+                android:hint="Start Time"/>
+
+            <TextView
+                android:layout_width="0dp"
+                android:layout_weight="1"
+                android:id="@+id/tv_endTime"
+                android:layout_marginTop="20dp"
+                android:layout_height="match_parent"
+                android:hint="End Time"/>
+
+        </LinearLayout>
+
+        <LinearLayout
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="10dp">
+
+            <RadioGroup
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:orientation="horizontal"
+                android:id="@+id/rgf_campus"
+                android:layout_marginTop="30dp"
+                android:layout_marginLeft="30dp">
+
+                <RadioButton
+                    android:id="@+id/rbf_marietta"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text="Marietta" />
+                <RadioButton
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:id="@+id/rbf_kennesaw"
+                    android:layout_marginLeft="70dp"
+                    android:text="Kennesaw"/>
+            </RadioGroup>
+
+        </LinearLayout>
+
+        <ImageView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_gravity="center"
+            android:layout_marginTop="20dp"
+            android:layout_marginBottom="10dp"
+            app:srcCompat="@drawable/button_selectcategories" />
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_gravity="center_horizontal"
+            android:text="We will show events that have any of the categories choose"/>
+
+        <CheckBox
+            android:layout_width="match_parent"
+            android:layout_marginLeft="30dp"
+            android:id="@+id/cbf_competition"
+            android:onClick="checkBoxClick"
+            android:text="Competition"
+            android:layout_marginTop="10dp"
+            android:button="@drawable/custom_rb_competition"
+            android:layout_height="wrap_content" />
+        <CheckBox
+            android:layout_width="match_parent"
+            android:id="@+id/cbf_food"
+            android:onClick="checkBoxClick"
+            android:layout_marginLeft="30dp"
+            android:layout_marginTop="10dp"
+            android:text="Food"
+            android:button="@drawable/custom_rb_food"
+            android:layout_height="wrap_content" />
+        <CheckBox
+            android:layout_width="match_parent"
+            android:id="@+id/cbf_athletics"
+            android:text="Athletics"
+            android:onClick="checkBoxClick"
+            android:layout_marginTop="10dp"
+            android:layout_marginLeft="30dp"
+            android:button="@drawable/custom_rb_athletics"
+            android:layout_height="wrap_content" />
+        <CheckBox
+            android:layout_width="match_parent"
+            android:id="@+id/cbf_academics"
+            android:layout_marginTop="10dp"
+            android:text="Academics"
+            android:onClick="checkBoxClick"
+            android:layout_marginLeft="30dp"
+            android:button="@drawable/custom_rb_academics"
+            android:layout_height="wrap_content" />
+        <CheckBox
+            android:layout_width="match_parent"
+            android:id="@+id/cbf_entertainment"
+            android:text="Entertainment"
+            android:onClick="checkBoxClick"
+            android:layout_marginTop="10dp"
+            android:layout_marginLeft="30dp"
+            android:button="@drawable/custom_rb_entertainment"
+            android:layout_height="wrap_content" />
+
+        <CheckBox
+            android:layout_width="match_parent"
+            android:id="@+id/cbf_liveperformance"
+            android:layout_marginLeft="30dp"
+            android:onClick="checkBoxClick"
+            android:text="Live Performance"
+            android:layout_marginTop="10dp"
+            android:button="@drawable/custom_cb_live"
+            android:layout_height="wrap_content" />
+        <CheckBox
+            android:layout_width="match_parent"
+            android:layout_marginLeft="30dp"
+            android:id="@+id/cb_steam"
+            android:onClick="checkBoxClick"
+            android:text="STEAM"
+            android:layout_marginTop="10dp"
+            android:button="@drawable/custom_cb_steam"
+            android:layout_height="wrap_content" />
+        <CheckBox
+            android:layout_width="match_parent"
+            android:id="@+id/cb_art"
+            android:onClick="checkBoxClick"
+            android:layout_marginLeft="30dp"
+            android:layout_marginTop="10dp"
+            android:text="Literature and Art"
+            android:button="@drawable/custom_cb_lit"
+            android:layout_height="wrap_content" />
+        <CheckBox
+            android:layout_width="match_parent"
+            android:id="@+id/cb_giveaways"
+            android:text="Giveaways"
+            android:onClick="checkBoxClick"
+            android:layout_marginTop="10dp"
+            android:layout_marginLeft="30dp"
+            android:button="@drawable/custom_cb_giveaways"
+            android:layout_height="wrap_content" />
+        <CheckBox
+            android:layout_width="match_parent"
+            android:id="@+id/cb_music"
+            android:layout_marginTop="10dp"
+            android:text="Music"
+            android:onClick="checkBoxClick"
+            android:layout_marginLeft="30dp"
+            android:button="@drawable/custom_cb_music"
+            android:layout_height="wrap_content" />
+        <CheckBox
+            android:layout_width="match_parent"
+            android:id="@+id/cb_boardgames"
+            android:text="Boardgames"
+            android:onClick="checkBoxClick"
+            android:layout_marginTop="10dp"
+            android:layout_marginLeft="30dp"
+            android:button="@drawable/custom_cb_boardgames"
+            android:layout_height="wrap_content" />
+
+        <LinearLayout
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:orientation="horizontal"
+            android:layout_marginTop="20dp"
+            android:layout_marginLeft="40dp">
+            <Button
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:onClick="buttonClick"
+                android:id="@+id/button_applyFilter"
+                android:text="Apply Filter"/>
+            <Button
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="Cancel"
+                android:id="@+id/button_cancelFilter"
+                android:onClick="buttonClick"
+                android:textColor="@android:color/darker_gray"
+                android:background="@android:color/transparent"/>
+
+        </LinearLayout>
+
+
+
+
+
+    </LinearLayout>
+
+</ScrollView>
