@@ -3,6 +3,7 @@ package com.example.jessb.haunt;
 import android.app.AlertDialog;
 import android.app.DatePickerDialog;
 import android.app.TimePickerDialog;
+import android.content.Context;
 import android.content.DialogInterface;
 import android.content.Intent;
 import android.graphics.Color;
@@ -17,6 +18,11 @@ import android.widget.DatePicker;
 import android.widget.RadioGroup;
 import android.widget.TextView;
 import android.widget.TimePicker;
+import android.hardware.Sensor;
+import android.hardware.SensorEvent;
+import android.hardware.SensorEventListener;
+import android.hardware.SensorManager;
+import android.widget.Toast;
 
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
@@ -45,6 +51,8 @@ public class Filter extends AppCompatActivity {
     final String CAT_MUSIC="j";
     final String CAT_BOARDGAMES="k";
 
+    private TextView tv;
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -60,6 +68,9 @@ public class Filter extends AppCompatActivity {
         cancel = findViewById(R.id.button_cancelFilter);
         selectedCampus = findViewById(R.id.rgf_campus);
         categories = new ArrayList<>();
+
+
+
 
 
         //creates the calendar dialog
@@ -226,6 +237,7 @@ public class Filter extends AppCompatActivity {
             }
         };
     }
+
 
     protected void checkBoxClick(View view) {
         int checkboxId = view.getId();

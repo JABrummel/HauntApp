@@ -1,9 +1,14 @@
 package com.example.jessb.haunt;
 
+import android.content.Context;
 import android.content.DialogInterface;
 import android.content.Intent;
 import android.database.Cursor;
 import android.graphics.Color;
+import android.hardware.Sensor;
+import android.hardware.SensorEvent;
+import android.hardware.SensorEventListener;
+import android.hardware.SensorManager;
 import android.os.Build;
 import android.support.design.widget.FloatingActionButton;
 import android.support.v7.app.AlertDialog;
@@ -36,6 +41,9 @@ public class ListedEvents extends AppCompatActivity implements Serializable {
     Intent lastActivity;
     String userType, startTime, endTime, startDate, endDate, categories, campus;
     Button marietta,kennesaw,listscreen,mapscreen, filter;
+    private SensorManager sm;
+    private float acelVal, lastAcel, movement; // CURRENT ACCELERATION VALUE AND GRAVITY
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -67,6 +75,14 @@ public class ListedEvents extends AppCompatActivity implements Serializable {
          }
 
 
+        sm = (SensorManager) getSystemService(Context.SENSOR_SERVICE);
+
+
+        sm.registerListener(sensorListener, sm.getDefaultSensor(Sensor.TYPE_ACCELEROMETER), SensorManager.SENSOR_DELAY_NORMAL);
+
+        acelVal=SensorManager.GRAVITY_EARTH;
+        lastAcel = SensorManager.GRAVITY_EARTH;
+        movement = 0.00f;
 
         logoutButton.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -191,6 +207,30 @@ public class ListedEvents extends AppCompatActivity implements Serializable {
 //        });
     }
 
+    private final SensorEventListener sensorListener = new SensorEventListener() {
+        @Override
+        public void onSensorChanged(SensorEvent sensorEvent) {
+            float xCor = sensorEvent.values[0];
+            float yCor = sensorEvent.values[1];
+            float zCor = sensorEvent.values[2];
+
+            lastAcel = acelVal;
+            acelVal = (float) Math.sqrt((double) (xCor*xCor + yCor*yCor + zCor*zCor));
+            float change = acelVal - lastAcel;
+            movement = movement * 0.9f + change;
+            if ( movement > 12) {
+                populateEvents();
+                Toast toast = Toast.makeText(getApplicationContext(), "Filter has been cleared", Toast.LENGTH_SHORT);
+                toast.show();
+
+            }
+        }
+
+        @Override
+        public void onAccuracyChanged(Sensor sensor, int accuracy) {
+
+        }
+    };
     protected void setListView (Cursor data) {
         ArrayList<String> eventData = new ArrayList<>();
         Events tmp = new Events();

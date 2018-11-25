@@ -21,7 +21,7 @@
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_gravity="center_horizontal"
-            android:text="You can shake your phone to clear the filter"
+            android:text="You can shake your phone to clear the filter when looking at results"
             android:textSize="15dp"/>
         <TextView
             android:layout_width="wrap_content"
