@@ -60,7 +60,7 @@
         android:layout_marginBottom="77dp"
         android:backgroundTint="#662D91"
         android:clickable="true"
-        app:srcCompat="@android:drawable/ic_lock_power_off" />
+        app:srcCompat="@drawable/button_log" />
 
     <ListView
         android:id="@+id/listView"
@@ -78,8 +78,9 @@
         android:layout_alignParentEnd="true"
         android:layout_alignParentTop="true"
         android:layout_marginTop="92dp"
+        android:background="#662D91"
         android:onClick="goToFilter"
-        android:text="Filter" />
+        android:drawableLeft="@drawable/button_filter"/>
 
     <LinearLayout
         android:layout_width="wrap_content"

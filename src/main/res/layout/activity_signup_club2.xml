@@ -55,32 +55,18 @@
     </LinearLayout>
 
 
-<LinearLayout
-    android:layout_width="wrap_content"
-    android:layout_height="wrap_content"
-    android:orientation="horizontal"
-    android:layout_marginTop="25dp"
-    android:layout_gravity="center_horizontal">
-
-    <Button
-        android:id="@+id/button_goBack"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:background="@android:color/white"
-        android:onClick="goBack"
-        android:text="Go Back"
-        android:textColor="@android:color/darker_gray" />
     <Button
         android:id="@+id/button_createacc"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_marginLeft="20dp"
         android:background="#662D91"
+        android:layout_gravity="right"
+        android:layout_marginRight = "20dp"
         android:onClick="createAccount"
         android:text="Create Account"
         android:padding="10dp"
         android:textColor="@android:color/white" />
 
-</LinearLayout>
 
 </LinearLayout>

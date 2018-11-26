@@ -23,6 +23,8 @@ public class ClubView extends AppCompatActivity {
     ImageView profilepic;
     Club mclub;
     DatabaseHelper db;
+    String userType;
+    int userId;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -36,6 +38,8 @@ public class ClubView extends AppCompatActivity {
         profilepic = findViewById(R.id.iv_profileimg);
         db = DatabaseHelper.getInstance(getApplicationContext());
         Intent i  = getIntent();
+        userType = i.getStringExtra("userType");
+        userId = i.getIntExtra("userId", 0);
         mclub = (Club)i.getSerializableExtra("club_object");
 
         clubName.setText("Club Name: "+mclub.getClubName());
@@ -131,4 +135,12 @@ public class ClubView extends AppCompatActivity {
                 .show();
 
     }
+
+    protected void goBack(View v) {
+        Intent go = new Intent(this, ClubList.class);
+        go.putExtra("userType", userType);
+        go.putExtra("userId", userId);
+        startActivity(go);
+    }
+
 }

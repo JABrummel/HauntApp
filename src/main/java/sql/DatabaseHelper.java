@@ -281,18 +281,28 @@ public class DatabaseHelper extends SQLiteOpenHelper {
         return events;
     }
 
-    public Cursor filterEvents(String startTime, String endTime, String date, String location, String categories, String campus) {
+    public Cursor filterEvents(String dateStart, String dateEnd, String startTime, String endTime, String categories, String campus) {
         SQLiteDatabase db = this.getReadableDatabase();
-        int startHour;
-        String startMin;
-        String endMin;
-        String endHour;
-        if(startTime!=null) {
-            startHour = Integer.parseInt(startTime.substring(0,2));
+        String query = "SELECT * FROM " + TABLE_EVENTS + " WHERE (" + COLUMN_CAMPUS + " = '" + campus + "' AND " + COLUMN_DATE + " >= '" + dateStart + "' AND "
+                + COLUMN_DATE + " <= '" + dateEnd + "' AND " + COLUMN_STARTTIME + " >= '" + startTime + "' AND "
+                + COLUMN_STARTTIME + " <= '" + endTime + "') ";
 
-        }
-        String query = "SELECT * FROM " + TABLE_EVENTS + " WHERE ";
-        return null;
+
+        if(categories!=null) {
+            query += "AND ( ";
+            for(int i =0; i<categories.length(); i++) {
+                if(i == categories.length()-1) {
+                    query += COLUMN_CATEGORIES + " LIKE '%" + categories.charAt(i) + "%')";
+                }
+                else {
+                    query += COLUMN_CATEGORIES + " LIKE '%" + categories.charAt(i) + "%' OR ";
+                }
+            }
+        } //end of categories
+
+
+        Cursor q = db.rawQuery(query, null);
+        return q;
     }
 
     public String getCategories(String eventN, int clubid) {

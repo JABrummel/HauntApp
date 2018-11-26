@@ -1,9 +1,12 @@
 package com.example.jessb.haunt;
 
+import android.app.AlertDialog;
+import android.content.DialogInterface;
 import android.content.Intent;
 import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
 import android.net.Uri;
+import android.os.Build;
 import android.provider.MediaStore;
 import android.support.annotation.Nullable;
 import android.support.v7.app.AppCompatActivity;
@@ -33,20 +36,22 @@ public class signup_club2 extends AppCompatActivity {
     private byte[] photo;
     private static final int PICK_IMAGE = 100;
     Club club;
-
+    Boolean issue = false;
+    String concern = "";
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
+
         setContentView(R.layout.activity_signup_club2);
         club = (Club) getIntent().getSerializableExtra("club_object");
         db = DatabaseHelper.getInstance(getApplicationContext());
         profImage = findViewById(R.id.iv_profphoto);
         uploadButton = findViewById(R.id.button_upload);
         bioEt = findViewById(R.id.et_desc);
-
         uploadButton.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
+
                 selectImage();
             }
         });
@@ -111,17 +116,40 @@ public class signup_club2 extends AppCompatActivity {
 
     private void addClub() {
         getPhotoValue();
+        if(photo == null ) {
+            issue = true;
+            concern += "\n Please select a photo";
+        }else
         club.setPhoto(photo);
 
         bio = bioEt.getText().toString();
-        club.setBio(bio);
+        if(bio.length()>0) {
+            club.setBio(bio);
+        }  else {
+            issue = true;
+            concern +="\n Please enter in a bio";
+        }
+
         club.setApproved("false");
-        Log.i("eventview_looker", "bio: " + bio);
-        Log.i("eventview_looker", "in signup: " + photo);
-        Log.i("eventview_looker", club.getClubName());
-        Log.i("eventview_looker", club.getClubEmail());
-        Log.i("eventview_looker", club.getFacultyEmail());
-        db.addClub(club);
+        if(!issue) {
+            db.addClub(club);
+        }else {
+            AlertDialog.Builder builder;
+            if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.LOLLIPOP) {
+                builder = new AlertDialog.Builder(this, android.R.style.Theme_Material_Dialog_Alert);
+            } else {
+                builder = new AlertDialog.Builder(this);
+            }
+            builder.setTitle("Missing information")
+                    .setMessage(concern)
+                    .setPositiveButton(android.R.string.yes, new DialogInterface.OnClickListener(){
+                        public void onClick(DialogInterface dialog, int which) {
+                            // continue with delete
+                        }
+                    })
+                    .setIcon(android.R.drawable.ic_dialog_alert)
+                    .show();
+        }
     }
 
     protected void goBack(View v) {
@@ -131,8 +159,11 @@ public class signup_club2 extends AppCompatActivity {
     protected void createAccount(View v) {
 
         addClub();
+
         Intent intent = new Intent(signup_club2.this, UserType.class);
-        startActivity(intent);
+        if(!issue){
+            startActivity(intent);
+        }
     }
 }
 
