@@ -1,5 +1,6 @@
 package sql;
 
+
 import android.content.ContentValues;
 import android.content.Context;
 import android.database.Cursor;
@@ -18,7 +19,7 @@ public class DatabaseHelper extends SQLiteOpenHelper {
 
     private static final String LOG = DatabaseHelper.class.getName();
     //DB version
-    private static final int DATABASE_VERSION = 12;
+    private static final int DATABASE_VERSION = 11;
 
     private static DatabaseHelper sInstance;
     private final Context ctx;
@@ -45,12 +46,15 @@ public class DatabaseHelper extends SQLiteOpenHelper {
     private static final String COLUMN_PASSWORD = "password";
     private static final String COLUMN_ROLE = "role";
 
+
     /*CLUB TABLE*/
     private static final String COLUMN_CLUBID = "clubID"; //ACCOUNT APPROVAL SHARES THIS
     private static final String COLUMN_CLUBNAME = "clubName";
     private static final String COLUMN_CLUBEMAIL = "clubEmail";
     private static final String COLUMN_FACULTYEMAIL = "facultyEmail";
     private static final String COLUMN_PHOTO = "photo";
+    private static final String COLUMN_APPROVED = "approved";
+    private static final String COLUMN_BIO = "bio";
     //USER COLUMNS
 
     /*EVENTS TABLE*/
@@ -60,8 +64,8 @@ public class DatabaseHelper extends SQLiteOpenHelper {
     private static final String COLUMN_STARTTIME = "startTime";
     private static final String COLUMN_ENDTIME = "endTime";
     private static final String COLUMN_DATE = "date";
-    private static final String COLUMN_BIO = "bio";
     private static final String COLUMN_CATEGORIES = "categories";
+    private static final String COLUMN_CAMPUS = "campus";
     //PHOTO COLUMN
     //CLUB ID
     private static final String COLUMN_ROOMNUMBER = "roomNumber";
@@ -83,10 +87,8 @@ public class DatabaseHelper extends SQLiteOpenHelper {
 
     /*LOCATION TABLE*/
     private static final String COLUMN_ADDRESS = "address";
-    private static final String COLUMN_LAT = "lat";
-    private static final String COLUMN_LONG = "long";
     private static final String COLUMN_NAME = "name";
-    private static final String COLUMN_CAMPUS = "campus";
+
 
     //endregion
 
@@ -98,11 +100,12 @@ public class DatabaseHelper extends SQLiteOpenHelper {
     private String CREATE_CLUB_TABLE = "CREATE TABLE " + TABLE_CLUB + "("
             + COLUMN_CLUBID + " INTEGER PRIMARY KEY ," + COLUMN_FACULTYEMAIL + " TEXT,"
             + COLUMN_CLUBNAME + " TEXT," + COLUMN_PHOTO + " BLOB," + COLUMN_USERNAME + " TEXT,"
-            + COLUMN_CLUBEMAIL + " TEXT," + COLUMN_PASSWORD + " TEXT," + COLUMN_ROLE + " TEXT"  + ")";
+            + COLUMN_CLUBEMAIL + " TEXT," + COLUMN_PASSWORD + " TEXT," + COLUMN_ROLE + " TEXT,"
+            + COLUMN_BIO + " TEXT," + COLUMN_APPROVED + " TEXT" + ")";
 
     private String CREATE_EVENTS_TABLE = "CREATE TABLE " + TABLE_EVENTS + "("
             + COLUMN_EVENTID + " INTEGER PRIMARY KEY ," + COLUMN_EVENTNAME + " TEXT,"
-            + COLUMN_LOCATION + " TEXT," + COLUMN_STARTTIME + " TEXT," + COLUMN_ENDTIME + " TEXT," + COLUMN_DATE + " INTEGER,"
+            + COLUMN_LOCATION + " TEXT," + COLUMN_CAMPUS + " TEXT," + COLUMN_STARTTIME + " TEXT," + COLUMN_ENDTIME + " TEXT," + COLUMN_DATE + " INTEGER,"
             + COLUMN_BIO + " TEXT,"  + COLUMN_PHOTO + " BLOB," + COLUMN_CLUBID + " INTEGER," + COLUMN_CATEGORIES + " TEXT" + ")";
 
     private String CREATE_EVENT_CATEGORIES_TABLE = "CREATE TABLE " + TABLE_EVENTCATEGORIES + "("
@@ -116,7 +119,7 @@ public class DatabaseHelper extends SQLiteOpenHelper {
             + COLUMN_REASON + " TEXT" + ")";
 
     private String CREATE_LOCATION_TABLE = "CREATE TABLE " + TABLE_LOCATION + "("
-            + COLUMN_LAT + " REAL," + COLUMN_LONG + " REAL," + COLUMN_NAME + " TEXT," + COLUMN_CAMPUS + " TEXT" + ")";
+            + COLUMN_ADDRESS + " TEXT," + COLUMN_NAME + " TEXT," + COLUMN_CAMPUS + " TEXT" + ")";
     //endregion
 
     public static synchronized DatabaseHelper getInstance(Context context){
@@ -168,36 +171,6 @@ public class DatabaseHelper extends SQLiteOpenHelper {
         db.execSQL(CREATE_ACCOUNT_APPROVAL_TABLE);
         db.execSQL(CREATE_LOCATION_TABLE);
 
-        db.execSQL("insert into Location(Lat, Long, Campus, Name) values (33.9411303, -84.52003239999999, 'Marietta', 'Joe Mack Wilson Student Center')");
-        db.execSQL("insert into Location(Lat, Long, Campus, Name) values (33.9363241, -84.5188288, 'Marietta', 'Architecture Building')");
-        db.execSQL("insert into Location(Lat, Long, Campus, Name) values (33.9488147, -84.53794549999998, 'Marietta', 'Atrium Building')");
-        db.execSQL("insert into Location(Lat, Long, Campus, Name) values (33.935805, -84.51957319999997, 'Marietta', 'Academic Building')");
-        db.execSQL("insert into Location(Lat, Long, Campus, Name) values (33.9357616, -84.51784550000002, 'Marietta', 'Gymnasium')");
-        db.execSQL("insert into Location(Lat, Long, Campus, Name) values (33.9488147, -84.53794549999998, 'Marietta', 'Recreation and Wellness Center')");
-        db.execSQL("insert into Location(Lat, Long, Campus, Name) values (33.935805, -84.51957319999997, 'Marietta', 'Lawrence V. Johnson Library')");
-        db.execSQL("insert into Location(Lat, Long, Campus, Name) values (33.9373077, -84.51784659999998, 'Marietta', 'Howell Residence Hall')");
-        db.execSQL("insert into Location(Lat, Long, Campus, Name) values (33.935805, -84.51957319999997, 'Marietta', 'Norton Residence Hall')");
-        db.execSQL("insert into Location(Lat, Long, Campus, Name) values (33.935805, -84.51957319999997, 'Marietta', 'Dining Hall')");
-        db.execSQL("insert into Location(Lat, Long, Campus, Name) values (33.935805, -84.51957319999997, 'Marietta', 'Mathematics Building')");
-        db.execSQL("insert into Location(Lat, Long, Campus, Name) values (33.935805, -84.51957319999997, 'Marietta', 'Design Building')");
-        db.execSQL("insert into Location(Lat, Long, Campus, Name) values (33.935805, -84.51957319999997, 'Marietta', 'Engineering Building')");
-        db.execSQL("insert into Location(Lat, Long, Campus, Name) values (34.0408354, -84.58376570000001,  'Kennesaw', 'Bailey Performance Hall')");
-        db.execSQL("insert into Location(Lat, Long, Campus, Name) values (34.0393855, -84.58174450000001, 'Kennesaw', 'Burruss Building')");
-        db.execSQL("insert into Location(Lat, Long, Campus, Name) values (34.0359521, -84.58358579999998, 'Kennesaw', 'Clendanin Building')");
-        db.execSQL("insert into Location(Lat, Long, Campus, Name) values (34.03685919999999, -84.5803692,  'Kennesaw', 'Convocation Center')");
-        db.execSQL("insert into Location(Lat, Long, Campus, Name) values (34.0392558, -84.5842156,  'Kennesaw', 'English Building')");
-        db.execSQL("insert into Location(Lat, Long, Campus, Name) values (34.0405587, -84.58113789999999,  'Kennesaw', 'Education Classroom Facility')");
-        db.execSQL("insert into Location(Lat, Long, Campus, Name) values (34.0409618, -84.58207190000002,  'Kennesaw', 'Prillaman Health Sciences')");
-        db.execSQL("insert into Location(Lat, Long, Campus, Name) values (34.0360297, -84.58436319999998, 'Kennesaw', 'Science Building')");
-        db.execSQL("insert into Location(Lat, Long, Campus, Name) values (34.0388569, -84.58550889999998, 'Kennesaw', 'Social Sciences Building')");
-        db.execSQL("insert into Location(Lat, Long, Campus, Name) values (34.0399061, -84.58174450000001, 'Kennesaw', 'The Commons')");
-        db.execSQL("insert into Location(Lat, Long, Campus, Name) values (34.0386329, -84.58306879999998, 'Kennesaw', 'Student Center/Bookstore')");
-        db.execSQL("insert into Location(Lat, Long, Campus, Name) values (34.0289333, -84.56762279999998, 'Kennesaw', '5/3 Bank KSU Stadium')");
-        db.execSQL("insert into Location(Lat, Long, Campus, Name) values (34.0382226, -84.58169090000001, 'Kennesaw', 'Campus Green')");
-        db.execSQL("insert into Location(Lat, Long, Campus, Name) values (34.0355723, -84.5819166, 'Kennesaw', 'Rec Fields')");
-        db.execSQL("insert into Location(Lat, Long, Campus, Name) values (34.044575, -84.5843223, 'Kennesaw', 'University Village')");
-
-        System.out.println("LOCATIONS INSERTED");
     }
 
     public void onUpgrade(SQLiteDatabase db, int oldVersion, int newVersion){
@@ -234,8 +207,11 @@ public class DatabaseHelper extends SQLiteOpenHelper {
         values.put(COLUMN_PHOTO, club.getPhoto());
         values.put(COLUMN_USERNAME, club.getUsername());
         values.put(COLUMN_CLUBEMAIL, club.getClubEmail());
+        values.put(COLUMN_FACULTYEMAIL, club.getFacultyEmail());
         values.put(COLUMN_PASSWORD, club.getPassword());
         values.put(COLUMN_ROLE, club.getRole());
+        values.put(COLUMN_BIO, club.getBio());
+        values.put(COLUMN_APPROVED, club.getApproved());
 
         db.insert(TABLE_CLUB, null, values);
         db.close();
@@ -247,6 +223,7 @@ public class DatabaseHelper extends SQLiteOpenHelper {
         ContentValues values = new ContentValues();
         values.put(COLUMN_EVENTNAME, events.getEventName());
         values.put(COLUMN_LOCATION, events.getLocation());
+        values.put(COLUMN_CAMPUS, events.getCampus());
         values.put(COLUMN_STARTTIME, events.getStartTime());
         values.put(COLUMN_ENDTIME, events.getEndTime());
         values.put(COLUMN_DATE, events.getDate());
@@ -262,27 +239,7 @@ public class DatabaseHelper extends SQLiteOpenHelper {
         return result;
     }
 
-//    public void addEventCategories(long id, int catId)
-//    {
-//        SQLiteDatabase db = this.getWritableDatabase();
-//
-//        ContentValues values = new ContentValues();
-//        values.put(COLUMN_EVENTID, id);
-//        values.put(COLUMN_CATEGORYID, catId);
-//
-//        db.insert(TABLE_EVENTCATEGORIES, null, values);
-//        db.close();
-//    }
-//
-//    public void addCategory(Category category){
-//        SQLiteDatabase db = this.getWritableDatabase();
-//
-//        ContentValues values = new ContentValues();
-//        values.put(COLUMN_PHOTO, category.getImage());
-//
-//        db.insert(TABLE_CATEGORY, null, values);
-//        db.close();
-//    }
+
 
     public void addLocation(Location location){
         SQLiteDatabase db = this.getWritableDatabase();
@@ -311,15 +268,31 @@ public class DatabaseHelper extends SQLiteOpenHelper {
 
     public Cursor getEvents(){
         SQLiteDatabase db = this.getWritableDatabase();
-        String query = "SELECT * FROM " + TABLE_EVENTS;
+        String query = "SELECT * FROM " + TABLE_EVENTS ;
         Cursor events = db.rawQuery(query, null);
         return events;
     }
-    public Cursor getLocations() {
+
+    public Cursor getEvents(String c){
         SQLiteDatabase db = this.getWritableDatabase();
-        String query = "SELECT * FROM " + TABLE_LOCATION;
-        Cursor locations = db.rawQuery(query, null);
-        return locations;
+        String query = "SELECT * FROM " + TABLE_EVENTS
+                + " WHERE " + COLUMN_CAMPUS + " = '" + c + "'";
+        Cursor events = db.rawQuery(query, null);
+        return events;
+    }
+
+    public Cursor filterEvents(String startTime, String endTime, String date, String location, String categories, String campus) {
+        SQLiteDatabase db = this.getReadableDatabase();
+        int startHour;
+        String startMin;
+        String endMin;
+        String endHour;
+        if(startTime!=null) {
+            startHour = Integer.parseInt(startTime.substring(0,2));
+
+        }
+        String query = "SELECT * FROM " + TABLE_EVENTS + " WHERE ";
+        return null;
     }
 
     public String getCategories(String eventN, int clubid) {
@@ -338,50 +311,11 @@ public class DatabaseHelper extends SQLiteOpenHelper {
     }
 
 
-//    private String CREATE_EVENT_CATEGORIES_TABLE = "CREATE TABLE " + TABLE_EVENTCATEGORIES + "("
-//            + COLUMN_EVENTID + " INTEGER," + COLUMN_CATEGORYNAME + " TEXT," + COLUMN_CATEGORYID + " INTEGER" + ")";
-
-//
-//    public ArrayList<Integer> getEventCategories(int eventId) {
-//        ArrayList<Integer> categoryId = new ArrayList<Integer>();
-//        String selectQuery =  "SELECT " + COLUMN_CATEGORYID + " FROM " + TABLE_EVENTCATEGORIES +
-//                " WHERE " + COLUMN_EVENTID + " = '" + eventId + "'";
-//        SQLiteDatabase db = this.getReadableDatabase();
-//        Cursor c = db.rawQuery(selectQuery, null);
-//
-//        if(c.moveToFirst()) {
-//            do {
-//                Integer i = c.getInt(c.getColumnIndex(COLUMN_CATEGORYID));
-//                categoryId.add(i);
-//            } while (c.moveToNext());
-//        }
-//        return categoryId;
-//    }
-
-    public List<Club> getAllClubs() {
-        List<Club> clubs = new ArrayList<>();
-        String selectQuery = "SELECT * FROM " + TABLE_CLUB;
-
-        Log.e(LOG, selectQuery);
-        SQLiteDatabase db = this.getReadableDatabase();
-        Cursor c = db.rawQuery(selectQuery, null);
-
-        if (c.moveToFirst()) {
-            do {
-                Club club = new Club();
-                club.setClubID(c.getInt((c.getColumnIndex(COLUMN_CLUBID))));
-                club.setUserID(c.getInt((c.getColumnIndex(COLUMN_USER_ID))));
-                club.setFacultyEmail(c.getString((c.getColumnIndex(COLUMN_FACULTYEMAIL))));
-                club.setClubEmail(c.getString((c.getColumnIndex(COLUMN_CLUBEMAIL))));
-                club.setClubName(c.getString((c.getColumnIndex(COLUMN_CLUBNAME))));
-                club.setUsername(c.getString((c.getColumnIndex(COLUMN_USERNAME))));
-//                club.setPhoto(c.getBlob((c.getColumnIndex(COLUMN_PHOTO)))); Gotta figure out how pictures are saved properly into DB more
-                club.setPassword(c.getString((c.getColumnIndex(COLUMN_EMAIL))));
-                club.setRole(c.getString((c.getColumnIndex(COLUMN_ROLE))));
-
-                clubs.add(club);
-            } while (c.moveToNext());
-        }
+    public Cursor getClubs(String approval) {
+        SQLiteDatabase db = this.getWritableDatabase();
+        String query = "SELECT * FROM " + TABLE_CLUB
+                + " WHERE " + COLUMN_APPROVED + " = '" + approval + "'";
+        Cursor clubs = db.rawQuery(query, null);
         return clubs;
     }
 
@@ -472,22 +406,22 @@ public class DatabaseHelper extends SQLiteOpenHelper {
 //
 //    }
 //
-//    public int updateClub(Club club){
-//        SQLiteDatabase db = this.getWritableDatabase();
-//
-//        ContentValues values = new ContentValues();
-//        values.put(COLUMN_USER_ID, club.getUserID());
-//        values.put(COLUMN_FACULTYEMAIL, club.getFacultyEmail());
-//        values.put(COLUMN_PHOTO, club.getPhoto());
-//        values.put(COLUMN_CLUBNAME, club.getClubName());
-//        values.put(COLUMN_USERNAME, club.getUsername());
-//        values.put(COLUMN_PASSWORD, club.getPassword());
-//        values.put(COLUMN_EMAIL, club.getClubEmail());
-//        values.put(COLUMN_ROLE, club.getRole());
-//
-//        return db.update(TABLE_CLUB, values, COLUMN_CLUBID + " = ?",
-//                new String[] {String.valueOf(club.getClubID())});
-//    }
+    public int updateApproval(Club club){
+        SQLiteDatabase db = this.getWritableDatabase();
+
+        ContentValues values = new ContentValues();
+        values.put(COLUMN_FACULTYEMAIL, club.getFacultyEmail());
+        values.put(COLUMN_PHOTO, club.getPhoto());
+        values.put(COLUMN_CLUBNAME, club.getClubName());
+        values.put(COLUMN_USERNAME, club.getUsername());
+        values.put(COLUMN_PASSWORD, club.getPassword());
+        values.put(COLUMN_CLUBEMAIL, club.getClubEmail());
+        values.put(COLUMN_ROLE, club.getRole());
+        values.put(COLUMN_BIO, club.getBio());
+        values.put(COLUMN_APPROVED, club.getApproved());
+
+        return db.update(TABLE_CLUB, values, COLUMN_CLUBNAME + " = ?", new String[] {String.valueOf(club.getClubName())});
+    }
 
     public void deleteEvent(int id, String name){
         SQLiteDatabase db = this.getWritableDatabase();
@@ -495,6 +429,15 @@ public class DatabaseHelper extends SQLiteOpenHelper {
                 COLUMN_CLUBID + " = '" + id + "'" + " AND " + COLUMN_EVENTNAME + " = '" + name + "'";
             db.execSQL(query);
             db.close();
+
+    }
+
+    public void deleteClub(String club){
+        SQLiteDatabase db = this.getWritableDatabase();
+        String query = "DELETE FROM " + TABLE_CLUB + " WHERE " +
+                COLUMN_CLUBNAME + " = '" + club + "'" ;
+        db.execSQL(query);
+        db.close();
 
     }
     //endregion
@@ -546,7 +489,7 @@ public class DatabaseHelper extends SQLiteOpenHelper {
     }
 
     public Cursor getClub(String username) {
-        String query = "SELECT " + COLUMN_CLUBID + " FROM " + TABLE_CLUB +
+        String query = "SELECT *"  + " FROM " + TABLE_CLUB +
                 " WHERE " + COLUMN_USERNAME + " = '" + username + "'";
         SQLiteDatabase db = this.getReadableDatabase();
         Cursor cursor = db.rawQuery(query, null);

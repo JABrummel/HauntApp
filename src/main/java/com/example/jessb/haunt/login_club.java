@@ -82,17 +82,17 @@ public class login_club extends AppCompatActivity {
            }
         } else checkEntries();
     }
-
+    protected void createAccount(View v) {
+        Intent i = new Intent(this, signup_club.class);
+        startActivity(i);
+    }
 
 
     protected void goBack(View v) {
         Intent i = new Intent(this, UserType.class);
         startActivity(i);
  }
-    protected void createAccount(View v) {
-        Intent i = new Intent(this, signup_club.class);
-        startActivity(i);
-    }
+
 
     protected void pending() {
         AlertDialog.Builder builder;
