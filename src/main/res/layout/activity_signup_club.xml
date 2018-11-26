@@ -122,7 +122,7 @@
         android:layout_alignParentEnd="true"
         android:layout_marginEnd="19dp"
         android:layout_marginBottom="30dp"
-        android:background="#FFDD74"
+        android:background="#662D91"
         android:onClick="nextScreen"
         android:text="Next"
         android:textColor="@android:color/white"

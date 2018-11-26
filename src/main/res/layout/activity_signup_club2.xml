@@ -1,17 +1,18 @@
 <?xml version="1.0" encoding="utf-8"?>
-<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    tools:context=".signup_club2">
+    tools:context=".signup_club2"
+    android:orientation="vertical">
 
     <ImageView
         android:id="@+id/imageView6"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_alignParentTop="true"
-        android:layout_centerHorizontal="true"
+        android:layout_gravity="center_horizontal"
         android:layout_marginTop="14dp"
         app:srcCompat="@drawable/logo_signup" />
 
@@ -19,65 +20,67 @@
         android:id="@+id/imageView7"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_below="@+id/imageView6"
-        android:layout_centerHorizontal="true"
+        android:layout_gravity="center_horizontal"
         app:srcCompat="@drawable/button_cluborg" />
 
     <EditText
         android:id="@+id/et_desc"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_alignParentBottom="true"
-        android:layout_centerHorizontal="true"
-        android:layout_marginBottom="221dp"
+        android:layout_marginTop="25dp"
+        android:layout_gravity="center_horizontal"
         android:ems="10"
         android:hint="Club Bio"
         android:inputType="textMultiLine" />
 
-    <ImageView
-        android:id="@+id/iv_profphoto"
-        android:layout_width="102dp"
-        android:layout_height="73dp"
-        android:layout_alignParentStart="true"
-        android:layout_alignParentTop="true"
-        android:layout_marginStart="38dp"
-        android:layout_marginTop="217dp"
-        app:srcCompat="@android:drawable/ic_menu_upload" />
-
-    <Button
-        android:id="@+id/button_upload"
+    <LinearLayout
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_alignParentTop="true"
-        android:layout_marginTop="234dp"
-        android:padding="10dp"
-        android:layout_toEndOf="@+id/iv_profphoto"
-        android:background="@android:color/white"
-        android:text="Upload Profile Picture" />
+        android:orientation="horizontal"
+        android:layout_marginTop="25dp">
+        <ImageView
+            android:id="@+id/iv_profphoto"
+            android:layout_width="102dp"
+            android:layout_height="73dp"
+            app:srcCompat="@android:drawable/ic_menu_upload" />
 
-    <Button
-        android:id="@+id/button_createacc"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_alignParentBottom="true"
-        android:layout_alignParentEnd="true"
-        android:layout_marginBottom="29dp"
-        android:layout_marginEnd="48dp"
-        android:background="#FFDD74"
-        android:onClick="createAccount"
-        android:text="Create Account"
-        android:padding="10dp"
-        android:textColor="@android:color/white" />
+        <Button
+            android:id="@+id/button_upload"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:padding="10dp"
+            android:background="@android:color/white"
+            android:text="Upload Profile Picture" />
+
+    </LinearLayout>
+
+
+<LinearLayout
+    android:layout_width="wrap_content"
+    android:layout_height="wrap_content"
+    android:orientation="horizontal"
+    android:layout_marginTop="25dp"
+    android:layout_gravity="center_horizontal">
 
     <Button
         android:id="@+id/button_goBack"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_alignParentStart="true"
-        android:layout_alignTop="@+id/button_createacc"
-        android:layout_marginStart="73dp"
         android:background="@android:color/white"
         android:onClick="goBack"
         android:text="Go Back"
         android:textColor="@android:color/darker_gray" />
-</RelativeLayout>
+    <Button
+        android:id="@+id/button_createacc"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginLeft="20dp"
+        android:background="#662D91"
+        android:onClick="createAccount"
+        android:text="Create Account"
+        android:padding="10dp"
+        android:textColor="@android:color/white" />
+
+</LinearLayout>
+
+</LinearLayout>

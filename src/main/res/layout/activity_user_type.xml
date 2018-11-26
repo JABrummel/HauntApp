@@ -14,7 +14,7 @@
         android:layout_alignParentBottom="true"
         android:layout_centerHorizontal="true"
         android:layout_marginBottom="104dp"
-        android:background="#FFDD74"
+        android:background="#662D91"
         android:onClick="changeScreen"
         android:text="Student"
         android:textColor="@android:color/white" />
@@ -26,7 +26,7 @@
         android:layout_alignParentBottom="true"
         android:layout_centerHorizontal="true"
         android:layout_marginBottom="228dp"
-        android:background="#FFDD74"
+        android:background="#662D91"
         android:onClick="changeScreen"
         android:text="College Admin"
         android:textColor="@android:color/white" />
@@ -38,7 +38,7 @@
         android:layout_alignParentBottom="true"
         android:layout_centerHorizontal="true"
         android:layout_marginBottom="166dp"
-        android:background="#FFDD74"
+        android:background="#662D91"
         android:onClick="changeScreen"
         android:text="Club/Organization"
         android:textColor="@android:color/white" />

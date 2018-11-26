@@ -31,7 +31,7 @@
     <android.support.design.widget.FloatingActionButton
         android:id="@+id/button_add"
         android:layout_width="51dp"
-        android:backgroundTint="#FFDD74"
+        android:backgroundTint="#662D91"
         android:layout_height="wrap_content"
         android:layout_alignParentBottom="true"
         android:layout_alignParentEnd="true"
@@ -47,7 +47,7 @@
         android:layout_alignParentBottom="true"
         android:layout_alignStart="@+id/button_add"
         android:layout_marginBottom="139dp"
-        android:backgroundTint="#FFDD74"
+        android:backgroundTint="#662D91"
         android:clickable="true"
         app:srcCompat="@drawable/button_more" />
 
@@ -58,7 +58,7 @@
         android:layout_alignParentBottom="true"
         android:layout_alignStart="@+id/button_add"
         android:layout_marginBottom="77dp"
-        android:backgroundTint="#FFDD74"
+        android:backgroundTint="#662D91"
         android:clickable="true"
         app:srcCompat="@android:drawable/ic_lock_power_off" />
 

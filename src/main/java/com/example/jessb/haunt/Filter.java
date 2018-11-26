@@ -331,6 +331,7 @@ public class Filter extends AppCompatActivity {
         switch(id){
             case R.id.button_cancelFilter : {
                 startActivity(i);
+                break;
 
             }
             case R.id.button_applyFilter: {
@@ -389,6 +390,7 @@ public class Filter extends AppCompatActivity {
                     i.putExtra("filter", true);
                     startActivity(i);
                 }
+                break;
 
             }
         }

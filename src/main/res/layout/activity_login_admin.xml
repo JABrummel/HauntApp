@@ -1,17 +1,17 @@
 <?xml version="1.0" encoding="utf-8"?>
-<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
+    android:orientation="vertical"
     tools:context=".login_admin">
 
     <ImageView
         android:id="@+id/imageView3"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_alignParentTop="true"
-        android:layout_centerHorizontal="true"
+        android:layout_gravity="center_horizontal"
         android:layout_marginTop="35dp"
         android:contentDescription="Sign in logo"
         app:srcCompat="@drawable/logo_signin" />
@@ -20,17 +20,14 @@
         android:id="@+id/imageView4"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_alignParentTop="true"
-        android:layout_centerHorizontal="true"
-        android:layout_marginTop="192dp"
+        android:layout_gravity="center_horizontal"
         app:srcCompat="@drawable/button_collegeadmin" />
 
     <EditText
         android:id="@+id/et_username"
         android:layout_width="wrap_content"
         android:layout_height="40dp"
-        android:layout_centerHorizontal="true"
-        android:layout_below="@id/imageView4"
+        android:layout_gravity="center_horizontal"
         android:layout_marginTop="40dp"
         android:ems="10"
         android:hint="Username"
@@ -40,35 +37,40 @@
         android:id="@+id/et_password"
         android:layout_width="wrap_content"
         android:layout_height="40dp"
-        android:layout_centerHorizontal="true"
-        android:layout_below="@id/et_username"
+        android:layout_gravity="center_horizontal"
         android:layout_marginTop="40dp"
         android:ems="10"
         android:hint="Password"
         android:inputType="textPassword" />
 
-    <Button
-        android:id="@+id/button_goBack"
+    <LinearLayout
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_alignParentBottom="true"
-        android:layout_alignStart="@+id/imageView4"
-        android:layout_marginBottom="66dp"
-        android:background="@android:color/white"
-        android:onClick="goBack"
-        android:text="Go Back"
-        android:textColor="@android:color/darker_gray" />
+        android:layout_marginTop="90dp"
+        android:layout_marginLeft="60dp">
+        <Button
+            android:id="@+id/button_goBack"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_gravity="center_horizontal"
+            android:background="@android:color/white"
+            android:onClick="goBack"
+            android:text="Go Back"
+            android:textColor="@android:color/darker_gray" />
 
-    <Button
-        android:id="@+id/button_login"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_alignParentEnd="true"
-        android:layout_alignTop="@+id/button_goBack"
-        android:layout_marginEnd="93dp"
-        android:background="#FFDD74"
-        android:text="Login"
-        android:onClick="login"
-        android:textColor="@android:color/white" />
+        <Button
+            android:id="@+id/button_login"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_gravity="center_horizontal"
+            android:background="#662D91"
+            android:layout_marginLeft="20dp"
+            android:text="Login"
+            android:onClick="login"
+            android:textColor="@android:color/white" />
 
-</RelativeLayout>
+</LinearLayout>
+
+
+
+</LinearLayout>

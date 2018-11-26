@@ -20,7 +20,7 @@
         <TextView
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:layout_gravity="center_horizontal"
+            android:layout_marginLeft="10dp"
             android:text="You can shake your phone to clear the filter when looking at results"
             android:textSize="15dp"/>
         <TextView
@@ -122,7 +122,7 @@
         <TextView
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:layout_gravity="center_horizontal"
+             android:layout_marginLeft="10dp"
             android:text="We will show events that have any of the categories choose"/>
 
         <CheckBox
@@ -232,21 +232,25 @@
             android:orientation="horizontal"
             android:layout_marginTop="20dp"
             android:layout_marginLeft="40dp">
-            <Button
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:onClick="buttonClick"
-                android:id="@+id/button_applyFilter"
-                android:text="Apply Filter"/>
+
             <Button
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:text="Cancel"
                 android:id="@+id/button_cancelFilter"
                 android:onClick="buttonClick"
-                android:textColor="@android:color/darker_gray"
-                android:background="@android:color/transparent"/>
-
+                android:background="@android:color/white"
+                android:textColor="@android:color/darker_gray"/>
+            <Button
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:background="#662D91"
+                android:layout_marginLeft="30dp"
+                android:textColor="@android:color/white"
+                android:onClick="buttonClick"
+                android:paddingHorizontal="5dp"
+                android:id="@+id/button_applyFilter"
+                android:text="Apply Filter"/>
         </LinearLayout>
 
 

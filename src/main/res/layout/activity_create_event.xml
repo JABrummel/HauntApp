@@ -284,7 +284,7 @@
                 android:layout_height="wrap_content"
                 android:layout_marginTop="20dp"
                 android:layout_marginLeft="20dp"
-                android:background="#FFDD74"
+                android:background="#662D91"
                 android:text="Save"
                 android:onClick="save"
                 android:textColor="@android:color/white"/>
