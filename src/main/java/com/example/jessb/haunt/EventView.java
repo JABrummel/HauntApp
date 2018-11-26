@@ -69,12 +69,14 @@ public class EventView extends AppCompatActivity implements Serializable {
         eventId = mEvent.getClubID();
 
         if(lastActivity.hasExtra("filter")) {
-            startTime = lastActivity.getStringExtra("startTime");
-            endTime = lastActivity.getStringExtra("endTime");
-            startDate = lastActivity.getStringExtra("startDate");
-            endDate = lastActivity.getStringExtra("endDate");
-            categoryList = lastActivity.getStringExtra("categories");
-            campus = lastActivity.getStringExtra("campus");
+            if(lastActivity.getBooleanExtra("filter", false)) {
+                startTime = lastActivity.getStringExtra("startTime");
+                endTime = lastActivity.getStringExtra("endTime");
+                startDate = lastActivity.getStringExtra("startDate");
+                endDate = lastActivity.getStringExtra("endDate");
+                categoryList = lastActivity.getStringExtra("categories");
+                campus = lastActivity.getStringExtra("campus");
+            }
 
         }
         Cursor data = db.getClubName(eventId);
@@ -128,12 +130,15 @@ public class EventView extends AppCompatActivity implements Serializable {
         Intent goBack = new Intent(this, ListedEvents.class);
         goBack.putExtra("userType", userType);
         goBack.putExtra("userId", userId);
-        goBack.putExtra("campus", campus);
-        goBack.putExtra("filter", true);
-        goBack.putExtra("endTime", endTime);
-        goBack.putExtra("startTime", startTime);
-        goBack.putExtra("endDate", endDate);
-        goBack.putExtra("startDate", startDate);
+
+        if(lastActivity.getBooleanExtra("filter", false)) {
+            goBack.putExtra("campus", campus);
+            goBack.putExtra("filter", true);
+            goBack.putExtra("endTime", endTime);
+            goBack.putExtra("startTime", startTime);
+            goBack.putExtra("endDate", endDate);
+            goBack.putExtra("startDate", startDate);
+        }
 
         startActivity(goBack);
     }

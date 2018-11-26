@@ -20,6 +20,7 @@ import android.view.View;
 import android.widget.AdapterView;
 import android.widget.ArrayAdapter;
 import android.widget.Button;
+import android.widget.ImageView;
 import android.widget.ListAdapter;
 import android.widget.ListView;
 import android.widget.Toast;
@@ -40,7 +41,8 @@ public class ListedEvents extends AppCompatActivity implements Serializable {
     int userId;
     Intent lastActivity;
     String userType, startTime, endTime, startDate, endDate, categories, campus;
-    Button marietta,kennesaw,listscreen,mapscreen, filter;
+    Button marietta,kennesaw,listscreen,mapscreen;
+    ImageView filter;
     private SensorManager sm;
     private float acelVal, lastAcel, movement; // CURRENT ACCELERATION VALUE AND GRAVITY
 
@@ -53,7 +55,7 @@ public class ListedEvents extends AppCompatActivity implements Serializable {
         kennesaw = (Button)findViewById(R.id.button_kennesaw);
         listscreen = (Button)findViewById(R.id.button_listview);
         listscreen.setBackgroundColor(Color.LTGRAY);
-        filter=(Button)findViewById(R.id.button_filter);
+        filter =  (ImageView) findViewById(R.id.button_filter);
         db = DatabaseHelper.getInstance(getApplicationContext());
         FloatingActionButton moreButton = findViewById(R.id.button_more);
         FloatingActionButton addButton = findViewById(R.id.button_add);
@@ -62,13 +64,15 @@ public class ListedEvents extends AppCompatActivity implements Serializable {
          userType = lastActivity.getStringExtra("userType");
          userId = lastActivity.getIntExtra("userId", 0);
          if(lastActivity.hasExtra("filter")) {
-            startTime = lastActivity.getStringExtra("startTime");
-            endTime = lastActivity.getStringExtra("endTime");
-            startDate = lastActivity.getStringExtra("startDate");
-            endDate = lastActivity.getStringExtra("endDate");
-            categories = lastActivity.getStringExtra("categories");
-            campus = lastActivity.getStringExtra("campus");
-            filterEvents(startDate, endDate, startTime, endTime, categories, campus);
+             if(lastActivity.getBooleanExtra("filter", false)) {
+                 startTime = lastActivity.getStringExtra("startTime");
+                 endTime = lastActivity.getStringExtra("endTime");
+                 startDate = lastActivity.getStringExtra("startDate");
+                 endDate = lastActivity.getStringExtra("endDate");
+                 categories = lastActivity.getStringExtra("categories");
+                 campus = lastActivity.getStringExtra("campus");
+                 filterEvents(startDate, endDate, startTime, endTime, categories, campus);
+             }
          }
          else{
              populateEvents();
