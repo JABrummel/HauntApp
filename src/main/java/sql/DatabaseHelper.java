@@ -285,7 +285,7 @@ public class DatabaseHelper extends SQLiteOpenHelper {
         SQLiteDatabase db = this.getReadableDatabase();
         String query = "SELECT * FROM " + TABLE_EVENTS + " WHERE (" + COLUMN_CAMPUS + " = '" + campus + "' AND " + COLUMN_DATE + " >= '" + dateStart + "' AND "
                 + COLUMN_DATE + " <= '" + dateEnd + "' AND " + COLUMN_STARTTIME + " >= '" + startTime + "' AND "
-                + COLUMN_ENDTIME + " <= '" + endTime + "') ";
+                + COLUMN_STARTTIME + " <= '" + endTime + "') ";
 
 
         if(categories!=null) {

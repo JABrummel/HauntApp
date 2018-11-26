@@ -1,7 +1,9 @@
 package com.example.jessb.haunt;
 
+import android.app.AlertDialog;
 import android.app.DatePickerDialog;
 import android.app.TimePickerDialog;
+import android.content.DialogInterface;
 import android.content.Intent;
 import android.database.Cursor;
 import android.graphics.Bitmap;
@@ -9,6 +11,7 @@ import android.graphics.BitmapFactory;
 import android.graphics.Color;
 import android.graphics.drawable.ColorDrawable;
 import android.net.Uri;
+import android.os.Build;
 import android.support.annotation.Nullable;
 import android.support.v7.app.AppCompatActivity;
 import android.util.Log;
@@ -47,6 +50,7 @@ public class CreateEvent extends AppCompatActivity  {
     EditText eventName;
     EditText eventBio;
     EditText roomNumber;
+    Boolean selectedImage = false;
     Button uploadButton;
     ImageView profImage;
     private Bitmap bp;
@@ -73,7 +77,7 @@ public class CreateEvent extends AppCompatActivity  {
     int endHour;
     int startMin;
     int endMin;
-    String building;
+    String building, startTimeValue, endTimeValue, date;
     RadioGroup selectedCampus; //Kennesaw vs Marietta
     RadioGroup mainCategories; //The 5 main categories
     DatePickerDialog.OnDateSetListener dateSetListener; //listener for sellecting the date
@@ -192,7 +196,6 @@ public class CreateEvent extends AppCompatActivity  {
             @Override
             public void onTimeSet(TimePicker view, int hourOfDay, int minute) {
                 String currentTime;
-                String startTimeValue;
                 String min;
                 String hour;
                 if (minute < 10) {
@@ -234,7 +237,7 @@ public class CreateEvent extends AppCompatActivity  {
             @Override
             public void onTimeSet(TimePicker view, int hourOfDay, int minute) {
 
-                String endTimeValue;
+
                 String min;
                 String hour;
                 if (minute < 10) {
@@ -275,7 +278,7 @@ public class CreateEvent extends AppCompatActivity  {
         dateSetListener = new DatePickerDialog.OnDateSetListener() {
             @Override
             public void onDateSet(DatePicker view, int year, int month, int dayOfMonth) {
-                SimpleDateFormat format = new SimpleDateFormat("yyyy-MM-dd");
+
                 month+=1;
                 String m = "" + month;
                 if(month<10) {
@@ -287,7 +290,7 @@ public class CreateEvent extends AppCompatActivity  {
                 }
 
                 datePicked.setText(m + "/" + day + "/" + year);
-                String date = (""+year+m+day);
+                date = (""+year+m+day);
                 newEvent.setDate(date);
             }
         };
@@ -296,6 +299,7 @@ public class CreateEvent extends AppCompatActivity  {
         uploadButton.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
+                selectedImage = true;
                 selectImage();
             }
         });
@@ -371,14 +375,12 @@ public class CreateEvent extends AppCompatActivity  {
         String eventBioValue = eventBio.getText().toString();
         String roomNumberValue = roomNumber.getText().toString();
         String location = roomNumberValue + " " + building;
+
         newEvent.setEventName(eventNameValue);
         newEvent.setBio(eventBioValue);
         newEvent.setLocation(location);
         newEvent.setCampus(campus);
         newEvent.setClubID(userId);
-        getPhotoValue();
-        Log.i("eventview_looker", "in Create Event: " + photo);
-        newEvent.setPhoto(photo);
 
         categories.add(0, mainCategory);
 
@@ -387,13 +389,36 @@ public class CreateEvent extends AppCompatActivity  {
         }
 
         newEvent.setCategories(categoryString);
-        db.addEvents(newEvent);
+        if(eventNameValue.length()<0 || eventBioValue.length()<0 || campus.length()<0 ||
+                eventName.length()<0 || categoryString.length()<0 || date.length()<0 || startTimeValue.length() <0
+                || endTimeValue.length()<0 || selectedImage == false) {
 
+            AlertDialog.Builder builder;
+            if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.LOLLIPOP) {
+                builder = new AlertDialog.Builder(this, android.R.style.Theme_Material_Dialog_Alert);
+            } else {
+                builder = new AlertDialog.Builder(this);
+            }
+            builder.setTitle("Missing information")
+                    .setMessage("Please make sure to select all information")
+                    .setPositiveButton(android.R.string.yes, new DialogInterface.OnClickListener(){
+                        public void onClick(DialogInterface dialog, int which) {
+                            // continue with delete
+                        }
+                    })
+                    .setIcon(android.R.drawable.ic_dialog_alert)
+                    .show();
+
+        }else {
+            getPhotoValue();
+            newEvent.setPhoto(photo);
+            db.addEvents(newEvent);
             Intent i = new Intent(this, ListedEvents.class);
             i.putExtra("userType", "club");
             i.putExtra("userId", userId);
 
         startActivity(i);}
+    }
 
 
 

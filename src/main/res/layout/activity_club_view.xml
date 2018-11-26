@@ -60,6 +60,9 @@
         android:layout_alignParentEnd="true"
         android:layout_marginBottom="20dp"
         android:layout_marginEnd="61dp"
+        android:background="#662D91"
+        android:padding="5dp"
+        android:textColor="#FFFFFF"
         android:text="Delete Club" />
 
     <Button
@@ -67,6 +70,19 @@
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_alignTop="@+id/button_delete"
+        android:background="#662D91"
+        android:textColor="#FFFFFF"
+        android:padding="5dp"
         android:layout_toStartOf="@+id/tv_clubname"
         android:text="Approve Club" />
+
+    <Button
+        android:id="@+id/button_exit"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_alignParentStart="true"
+        android:layout_alignParentTop="true"
+        android:onClick="goBack"
+        android:background="@android:color/transparent"
+        android:text="X" />
 </RelativeLayout>
