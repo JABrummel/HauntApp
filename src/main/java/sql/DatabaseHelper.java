@@ -18,7 +18,7 @@ public class DatabaseHelper extends SQLiteOpenHelper {
 
     private static final String LOG = DatabaseHelper.class.getName();
     //DB version
-    private static final int DATABASE_VERSION = 8;
+    private static final int DATABASE_VERSION = 12;
 
     private static DatabaseHelper sInstance;
     private final Context ctx;
@@ -83,6 +83,8 @@ public class DatabaseHelper extends SQLiteOpenHelper {
 
     /*LOCATION TABLE*/
     private static final String COLUMN_ADDRESS = "address";
+    private static final String COLUMN_LAT = "lat";
+    private static final String COLUMN_LONG = "long";
     private static final String COLUMN_NAME = "name";
     private static final String COLUMN_CAMPUS = "campus";
 
@@ -114,7 +116,7 @@ public class DatabaseHelper extends SQLiteOpenHelper {
             + COLUMN_REASON + " TEXT" + ")";
 
     private String CREATE_LOCATION_TABLE = "CREATE TABLE " + TABLE_LOCATION + "("
-            + COLUMN_ADDRESS + " TEXT," + COLUMN_NAME + " TEXT," + COLUMN_CAMPUS + " TEXT" + ")";
+            + COLUMN_LAT + " REAL," + COLUMN_LONG + " REAL," + COLUMN_NAME + " TEXT," + COLUMN_CAMPUS + " TEXT" + ")";
     //endregion
 
     public static synchronized DatabaseHelper getInstance(Context context){
@@ -166,6 +168,36 @@ public class DatabaseHelper extends SQLiteOpenHelper {
         db.execSQL(CREATE_ACCOUNT_APPROVAL_TABLE);
         db.execSQL(CREATE_LOCATION_TABLE);
 
+        db.execSQL("insert into Location(Lat, Long, Campus, Name) values (33.9411303, -84.52003239999999, 'Marietta', 'Joe Mack Wilson Student Center')");
+        db.execSQL("insert into Location(Lat, Long, Campus, Name) values (33.9363241, -84.5188288, 'Marietta', 'Architecture Building')");
+        db.execSQL("insert into Location(Lat, Long, Campus, Name) values (33.9488147, -84.53794549999998, 'Marietta', 'Atrium Building')");
+        db.execSQL("insert into Location(Lat, Long, Campus, Name) values (33.935805, -84.51957319999997, 'Marietta', 'Academic Building')");
+        db.execSQL("insert into Location(Lat, Long, Campus, Name) values (33.9357616, -84.51784550000002, 'Marietta', 'Gymnasium')");
+        db.execSQL("insert into Location(Lat, Long, Campus, Name) values (33.9488147, -84.53794549999998, 'Marietta', 'Recreation and Wellness Center')");
+        db.execSQL("insert into Location(Lat, Long, Campus, Name) values (33.935805, -84.51957319999997, 'Marietta', 'Lawrence V. Johnson Library')");
+        db.execSQL("insert into Location(Lat, Long, Campus, Name) values (33.9373077, -84.51784659999998, 'Marietta', 'Howell Residence Hall')");
+        db.execSQL("insert into Location(Lat, Long, Campus, Name) values (33.935805, -84.51957319999997, 'Marietta', 'Norton Residence Hall')");
+        db.execSQL("insert into Location(Lat, Long, Campus, Name) values (33.935805, -84.51957319999997, 'Marietta', 'Dining Hall')");
+        db.execSQL("insert into Location(Lat, Long, Campus, Name) values (33.935805, -84.51957319999997, 'Marietta', 'Mathematics Building')");
+        db.execSQL("insert into Location(Lat, Long, Campus, Name) values (33.935805, -84.51957319999997, 'Marietta', 'Design Building')");
+        db.execSQL("insert into Location(Lat, Long, Campus, Name) values (33.935805, -84.51957319999997, 'Marietta', 'Engineering Building')");
+        db.execSQL("insert into Location(Lat, Long, Campus, Name) values (34.0408354, -84.58376570000001,  'Kennesaw', 'Bailey Performance Hall')");
+        db.execSQL("insert into Location(Lat, Long, Campus, Name) values (34.0393855, -84.58174450000001, 'Kennesaw', 'Burruss Building')");
+        db.execSQL("insert into Location(Lat, Long, Campus, Name) values (34.0359521, -84.58358579999998, 'Kennesaw', 'Clendanin Building')");
+        db.execSQL("insert into Location(Lat, Long, Campus, Name) values (34.03685919999999, -84.5803692,  'Kennesaw', 'Convocation Center')");
+        db.execSQL("insert into Location(Lat, Long, Campus, Name) values (34.0392558, -84.5842156,  'Kennesaw', 'English Building')");
+        db.execSQL("insert into Location(Lat, Long, Campus, Name) values (34.0405587, -84.58113789999999,  'Kennesaw', 'Education Classroom Facility')");
+        db.execSQL("insert into Location(Lat, Long, Campus, Name) values (34.0409618, -84.58207190000002,  'Kennesaw', 'Prillaman Health Sciences')");
+        db.execSQL("insert into Location(Lat, Long, Campus, Name) values (34.0360297, -84.58436319999998, 'Kennesaw', 'Science Building')");
+        db.execSQL("insert into Location(Lat, Long, Campus, Name) values (34.0388569, -84.58550889999998, 'Kennesaw', 'Social Sciences Building')");
+        db.execSQL("insert into Location(Lat, Long, Campus, Name) values (34.0399061, -84.58174450000001, 'Kennesaw', 'The Commons')");
+        db.execSQL("insert into Location(Lat, Long, Campus, Name) values (34.0386329, -84.58306879999998, 'Kennesaw', 'Student Center/Bookstore')");
+        db.execSQL("insert into Location(Lat, Long, Campus, Name) values (34.0289333, -84.56762279999998, 'Kennesaw', '5/3 Bank KSU Stadium')");
+        db.execSQL("insert into Location(Lat, Long, Campus, Name) values (34.0382226, -84.58169090000001, 'Kennesaw', 'Campus Green')");
+        db.execSQL("insert into Location(Lat, Long, Campus, Name) values (34.0355723, -84.5819166, 'Kennesaw', 'Rec Fields')");
+        db.execSQL("insert into Location(Lat, Long, Campus, Name) values (34.044575, -84.5843223, 'Kennesaw', 'University Village')");
+
+        System.out.println("LOCATIONS INSERTED");
     }
 
     public void onUpgrade(SQLiteDatabase db, int oldVersion, int newVersion){
@@ -282,6 +314,12 @@ public class DatabaseHelper extends SQLiteOpenHelper {
         String query = "SELECT * FROM " + TABLE_EVENTS;
         Cursor events = db.rawQuery(query, null);
         return events;
+    }
+    public Cursor getLocations() {
+        SQLiteDatabase db = this.getWritableDatabase();
+        String query = "SELECT * FROM " + TABLE_LOCATION;
+        Cursor locations = db.rawQuery(query, null);
+        return locations;
     }
 
     public String getCategories(String eventN, int clubid) {

@@ -48,6 +48,7 @@ public class ListedEvents extends AppCompatActivity implements Serializable {
     int userId;
     String userType;
     private boolean mLocationPermissionGranted = false; //
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -58,8 +59,8 @@ public class ListedEvents extends AppCompatActivity implements Serializable {
         FloatingActionButton addButton = findViewById(R.id.button_add);
         FloatingActionButton mapView = findViewById(R.id.map_btn);
         Intent lastActivity = getIntent();
-         userType = lastActivity.getStringExtra("userType");
-         userId = lastActivity.getIntExtra("userId", 0);
+        userType = lastActivity.getStringExtra("userType");
+        userId = lastActivity.getIntExtra("userId", 0);
         populateEvents();
 
         moreButton.setOnClickListener(new View.OnClickListener() {
@@ -106,6 +107,8 @@ public class ListedEvents extends AppCompatActivity implements Serializable {
 
     public void openMapView() {
         Intent intent = new Intent(this, EventMapView.class);
+        intent.putExtra("userType", "club");
+        intent.putExtra("userId", userId);
         startActivity(intent);
     }
 

@@ -2,7 +2,24 @@ package models;
 
 public class Location {
     private int locationID;
+    private String address;
+    private String name;
+    private String campus;
+    private double Long;
+    private double Lat;
 
+    public Location(double aLong, double lat, String name, String campus) {
+        this.name = name;
+        this.campus = campus;
+        Long = aLong;
+        Lat = lat;
+    }
+
+    public Location(String address, String name, String campus) {
+        this.address = address;
+        this.name = name;
+        this.campus = campus;
+    }
     public int getLocationID() {
         return locationID;
     }
@@ -11,9 +28,21 @@ public class Location {
         this.locationID = locationID;
     }
 
-    private String address;
-    private String name;
-    private String campus;
+    public double getLong() {
+        return Long;
+    }
+
+    public void setLong(double aLong) {
+        Long = aLong;
+    }
+
+    public double getLat() {
+        return Lat;
+    }
+
+    public void setLat(double lat) {
+        Lat = lat;
+    }
 
     public String getAddress() {
         return address;
