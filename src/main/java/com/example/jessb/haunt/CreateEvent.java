@@ -480,9 +480,9 @@ public class CreateEvent extends AppCompatActivity  {
         }
 
         newEvent.setCategories(categoryString);
-        if(eventNameValue.length()<0 || eventBioValue.length()<0 || campus.length()<0 ||
-                eventName.length()<0 || categoryString.length()<0 || date.length()<0 || startTimeValue.length() <0
-                || endTimeValue.length()<0 || selectedImage == false) {
+        if(eventNameValue== null || eventBioValue== null || campus== null ||
+                eventName== null|| categoryString== null || date== null || startTimeValue== null
+                || endTimeValue== null) {
 
             AlertDialog.Builder builder;
             if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.LOLLIPOP) {

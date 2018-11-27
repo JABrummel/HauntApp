@@ -49,6 +49,7 @@ import static util.Constants.PERMISSION_REQUEST_ACCESS_FINE_LOCATION;
 public class ListedEvents extends AppCompatActivity implements Serializable {
 
     DatabaseHelper db;
+    Boolean filterOn = false;
     Events mevent = new Events();
     Intent lastActivity;
     ArrayList<Events> events = new ArrayList<Events>();
@@ -80,13 +81,17 @@ public class ListedEvents extends AppCompatActivity implements Serializable {
         userType = lastActivity.getStringExtra("userType");
         userId = lastActivity.getIntExtra("userId", 0);
         if(lastActivity.hasExtra("filter")) {
-            startTime = lastActivity.getStringExtra("startTime");
-            endTime = lastActivity.getStringExtra("endTime");
-            startDate = lastActivity.getStringExtra("startDate");
-            endDate = lastActivity.getStringExtra("endDate");
-            categories = lastActivity.getStringExtra("categories");
-            campus = lastActivity.getStringExtra("campus");
-            filterEvents(startDate, endDate, startTime, endTime, categories, campus);
+            if(lastActivity.getBooleanExtra("filter", false) == true) {
+                filterOn = true;
+                startTime = lastActivity.getStringExtra("startTime");
+                endTime = lastActivity.getStringExtra("endTime");
+                startDate = lastActivity.getStringExtra("startDate");
+                endDate = lastActivity.getStringExtra("endDate");
+                categories = lastActivity.getStringExtra("categories");
+                campus = lastActivity.getStringExtra("campus");
+                filterEvents(startDate, endDate, startTime, endTime, categories, campus);
+            }
+            else populateEvents();
         }
         else{
             populateEvents();
@@ -311,13 +316,16 @@ public class ListedEvents extends AppCompatActivity implements Serializable {
                     intent.putExtra("userId", userId);
                     intent.putExtra("eventId", index);
 
-                    if(lastActivity.hasExtra("filter")) {
-                        intent.putExtra("campus", campus);
-                        intent.putExtra("filter", true);
-                        intent.putExtra("endTime", endTime);
-                        intent.putExtra("startTime", startTime);
-                        intent.putExtra("endDate", endDate);
-                        intent.putExtra("startDate", startDate);
+                    if(filterOn) {
+
+                            intent.putExtra("campus", campus);
+                            intent.putExtra("filter", true);
+                            intent.putExtra("endTime", endTime);
+                            intent.putExtra("startTime", startTime);
+                            intent.putExtra("endDate", endDate);
+
+                            intent.putExtra("startDate", startDate);
+                            intent.putExtra("categories", categories);
 
                     }
                     startActivity(intent);

@@ -46,7 +46,7 @@ public class EventMapView extends AppCompatActivity implements OnMapReadyCallbac
     private MapView mMapView;
     GoogleMap mMap;
     DatabaseHelper db;
-    Button mariettaBtn, kennesawBtn;
+    Button mariettaBtn, kennesawBtn, listButton;
     LatLng marietta = new LatLng(33.9376219, -84.52017189999998); //Atrium Building Coords
     LatLng kennesaw = new LatLng(34.0381707, -84.58174450000001); //Kennesaw Campus Green Coords
     float zoom = 16.0f; //Determines the zoom on the MapView. The value goes from 2 - 21 (2 being super zoomed out like God, where 21 is able to see the freckles on a redhead child)
@@ -62,17 +62,28 @@ public class EventMapView extends AppCompatActivity implements OnMapReadyCallbac
         setContentView(R.layout.activity_map_view);
         mMapView = findViewById(R.id.map_view);
         lastActivity = getIntent();
+        final Intent goToList = new Intent(this, ListedEvents.class);
         db = DatabaseHelper.getInstance(getApplicationContext());
-        FloatingActionButton moreButton = findViewById(R.id.button_more);
+        FloatingActionButton moreButton = findViewById(R.id.button_logout);
         FloatingActionButton addButton = findViewById(R.id.button_add);
         mariettaBtn = findViewById(R.id.marietta_btn);
         kennesawBtn = findViewById(R.id.kennesaw_btn);
+        listButton = findViewById(R.id.button_listview);
 
 
         userType = lastActivity.getStringExtra("userType");
         userId = lastActivity.getIntExtra("userId", 0);
 
         initGoogleMap(savedInstanceState);
+
+        listButton.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                goToList.putExtra("userType", userType);
+                goToList.putExtra("userId", userId);
+                startActivity(goToList);
+            }
+        });
 
         moreButton.setOnClickListener(new View.OnClickListener() {
             @Override

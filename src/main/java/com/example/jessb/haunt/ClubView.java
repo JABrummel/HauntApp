@@ -90,6 +90,8 @@ public class ClubView extends AppCompatActivity {
 
                         String clubName = mclub.getClubName();
                         db.deleteClub(clubName);
+                        i.putExtra("userType", userType);
+                        i.putExtra("userId", userId);
                         startActivity(i);
 
 
