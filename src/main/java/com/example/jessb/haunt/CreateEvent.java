@@ -83,11 +83,11 @@ public class CreateEvent extends AppCompatActivity  {
     DatePickerDialog.OnDateSetListener dateSetListener; //listener for sellecting the date
     TimePickerDialog.OnTimeSetListener startTimeSetListener; //listener for selecting start time
     TimePickerDialog.OnTimeSetListener endTimeSetListener; //listener for selecting end time
-    List<String> mariettaLocations = new ArrayList(Arrays.asList("J-Building", "Academic Building", "Joe Mack Wilson Student Center",
-     "Gym", "Recreation and Wellness Center", "Lawrence V Johnson Library", "Norton Hall", "Howell Hall",
-    "Stingers", "Q Building", "Architecture Building", "Design Building", "Mathematics Building"));
-    List <String>kennesawLocations = new ArrayList(Arrays.asList("The Commons", "Sturgis Library", "Kennesaw Hall", "Siegal Student Recreation",
-    "Convocation Center", "Bailey Performance Center", "Arboretum"));
+    List<String> mariettaLocations = new ArrayList(Arrays.asList("Atrium Building", "Academic Building", "Joe Mack Wilson Student Center",
+     "Gymnasium", "Recreation and Wellness Center", "Lawrence V Johnson Library", "Norton Hall", "Howell Hall",
+    "Stingers", "Engineering Building", "Architecture Building", "Design Building", "Mathematics Building"));
+    List<String> kennesawLocations = new ArrayList(Arrays.asList("The Commons", "Campus Green", "Convocation Center", "Student Center/Bookstore",
+    "University Village", "Bailey Performance Hall", "5/3 Bank KSU Stadium"));
     Spinner locationSpinner; //Drop down for buildings
     Events newEvent = new Events();
     int userId;
@@ -128,6 +128,97 @@ public class CreateEvent extends AppCompatActivity  {
             public void onItemSelected(AdapterView<?> parent, View view, int position, long id) {
                 // On selecting a spinner item
                 building = parent.getItemAtPosition(position).toString();
+                switch(building){
+                    case "Atrium Building": {
+                        newEvent.setLat(33.9488147);
+                        newEvent.setLong( -84.53794549999998);
+                        break;
+                    }
+                    case "Academic Building": {
+                        newEvent.setLat(33.935805);
+                        newEvent.setLong(-84.51957319999997);
+                        break;
+                    }
+                    case "Joe Mack Wilson Student Center": {
+                        newEvent.setLat(33.9411303);
+                        newEvent.setLong( -84.52003239999999);
+                        break;
+                    }
+                    case "Gymnasium": {
+                        newEvent.setLat(33.9357616);
+                        newEvent.setLong( -84.51784550000002);
+                        break;
+                    }
+                    case "Recreation and Wellness Center": {
+                        newEvent.setLat(33.9488147);
+                        newEvent.setLong( -84.53794549999998);
+                        break;
+                    }
+                    case "Lawrence V. Johnson Library": {
+                        newEvent.setLat(33.935805);
+                        newEvent.setLong(-84.51957319999997);
+                        break;
+                    }
+                    case "Howell Residence Hall": {
+                        newEvent.setLat(33.9373077);
+                        newEvent.setLong(  -84.51784659999998);
+                        break;
+                    }
+                    case "Norton Residence Hall": {
+                        newEvent.setLat(33.935805);
+                        newEvent.setLong( -84.51957319999997);
+                        break;
+                    }
+                    case "Stingers": {
+                        newEvent.setLat(33.9488147);
+                        newEvent.setLong( -84.53794549999998);
+                        break;
+                    }
+                    case "Mathematics Building": {
+                        newEvent.setLat(33.935805);
+                        newEvent.setLong(-84.51957319999997);
+                        break;
+                    }
+                    case "Design Building": {
+                        newEvent.setLat(33.9373077);
+                        newEvent.setLong(  -84.51784659999998);
+                        break;
+                    }
+                    case "Engineering Building": {
+                        newEvent.setLat(33.935805);
+                        newEvent.setLong( -84.51957319999997);
+                        break;
+                    }
+                    case "The Commons":
+                        newEvent.setLat(34.0399061);
+                        newEvent.setLong(-84.58174450000001);
+                        break;
+                    case "Student Center/Bookstore":
+                        newEvent.setLat(34.0386329);
+                        newEvent.setLong(-84.58306879999998);
+                        break;
+                    case "Campus Green":
+                        newEvent.setLat(34.0382226);
+                        newEvent.setLong(-84.58169090000001);
+                        break;
+                    case "Convocation Center":
+                        newEvent.setLat(34.03685919999999);
+                        newEvent.setLong(-84.5803692);
+                        break;
+                    case "University Village":
+                        newEvent.setLat(34.044575);
+                        newEvent.setLong(-84.5843223);
+                        break;
+                    case "Bailey Performance Hall":
+                        newEvent.setLat(34.0408354);
+                        newEvent.setLong(-84.58376570000001);
+                        break;
+                    case "5/3 Bank KSU Stadium":
+                        newEvent.setLat(34.0289333);
+                        newEvent.setLong(-84.56762279999998);
+                        break;
+
+                }
 
                 // Showing selected spinner item
                 Toast.makeText(parent.getContext(), "Selected: " + building, Toast.LENGTH_LONG).show();

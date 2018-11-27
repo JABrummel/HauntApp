@@ -119,6 +119,7 @@ public class ClubView extends AppCompatActivity {
                     public void onClick(DialogInterface dialog, int which) {
 
                         mclub.setApproved("true");
+                        i.putExtra("userType", userType);
                         db.updateApproval(mclub);
                         startActivity(i);
 
@@ -126,9 +127,10 @@ public class ClubView extends AppCompatActivity {
                 }).setNegativeButton(android.R.string.cancel, new DialogInterface.OnClickListener() {
             @Override
             public void onClick(DialogInterface dialog, int which) {
-                        mclub.setApproved("false");
-                        db.updateApproval(mclub);
-                         startActivity(i);
+//                        mclub.setApproved("false");
+//                        i.putExtra("userType", userType);
+//                        db.updateApproval(mclub);
+//                        startActivity(i);
             }
         })
                 .setIcon(android.R.drawable.ic_dialog_alert)

@@ -27,6 +27,8 @@ import com.google.android.gms.maps.GoogleMap;
 import com.google.android.gms.maps.MapView;
 import com.google.android.gms.maps.OnMapReadyCallback;
 import com.google.android.gms.maps.model.LatLng;
+import com.google.android.gms.maps.model.Marker;
+import com.google.android.gms.maps.model.MarkerOptions;
 
 import java.io.IOException;
 import java.util.ArrayList;
@@ -44,8 +46,6 @@ public class EventMapView extends AppCompatActivity implements OnMapReadyCallbac
     GoogleMap mMap;
     DatabaseHelper db;
     Button mariettaBtn, kennesawBtn;
-    EditText club_et, startdate_et, enddate_et, starttime_et, endtime_et;
-    Toolbar mToolbar;
     LatLng marietta = new LatLng(33.9376219,-84.52017189999998); //Atrium Building Coords
     LatLng kennesaw = new LatLng(34.0381707,-84.58174450000001); //Kennesaw Campus Green Coords
     float zoom = 16.0f; //Determines the zoom on the MapView. The value goes from 2 - 21 (2 being super zoomed out like God, where 21 is able to see the freckles on a redhead child)
@@ -53,7 +53,6 @@ public class EventMapView extends AppCompatActivity implements OnMapReadyCallbac
     int userId;
     Events mEvents = new Events();
     ArrayList<Events> events = new ArrayList<Events>();
-    ArrayList<Location> locations = new ArrayList<Location>();
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -62,21 +61,10 @@ public class EventMapView extends AppCompatActivity implements OnMapReadyCallbac
         mMapView = findViewById(R.id.map_view);
         Intent lastActivity = getIntent();
         db = DatabaseHelper.getInstance(getApplicationContext());
-        populateEvents();
-//        mToolbar = findViewById(R.id.map_toolbar);
-//        setSupportActionBar(mToolbar);
-//        ActionBar actionbar = getSupportActionBar();
-//        actionbar.setDisplayHomeAsUpEnabled(true);
-//        actionbar.setHomeAsUpIndicator(R.drawable.ic_menu);
         FloatingActionButton moreButton = findViewById(R.id.button_more);
         FloatingActionButton addButton = findViewById(R.id.button_add);
         mariettaBtn = findViewById(R.id.marietta_btn);
         kennesawBtn = findViewById(R.id.kennesaw_btn);
-//        club_et = findViewById(R.id.organization_name_et);
-//        startdate_et = findViewById(R.id.start_date_et);
-//        enddate_et = findViewById(R.id.end_date_et);
-//        starttime_et = findViewById(R.id.start_time_et);
-//        endtime_et = findViewById(R.id.end_time_et);
 
 
         userType = lastActivity.getStringExtra("userType");
@@ -169,6 +157,7 @@ public class EventMapView extends AppCompatActivity implements OnMapReadyCallbac
     @Override
     public void onMapReady(GoogleMap map) {
         mMap = map;
+        populateEvents();
         if (ActivityCompat.checkSelfPermission(getApplicationContext(), Manifest.permission.ACCESS_FINE_LOCATION)
                 != PackageManager.PERMISSION_GRANTED
                 && ActivityCompat.checkSelfPermission(getApplicationContext(), Manifest.permission.ACCESS_COARSE_LOCATION)
@@ -176,6 +165,7 @@ public class EventMapView extends AppCompatActivity implements OnMapReadyCallbac
             return;
         }
         map.setMyLocationEnabled(true);
+        addMarkersToMap();
         map.moveCamera(CameraUpdateFactory.newLatLngZoom(marietta, zoom));
 
     }
@@ -232,30 +222,28 @@ public class EventMapView extends AppCompatActivity implements OnMapReadyCallbac
     private void populateEvents() {
         Log.d("DatabaseHelper", "populateevents: Display Data On Map");
         Cursor eventCursor = db.getEvents();
-        Cursor locationCursor = db.getLocations();
-        ArrayList<String> eventData = new ArrayList<>();
-        ArrayList<String> addressName = new ArrayList<>();
-        ArrayList<Double> eventLat = new ArrayList<>();
-        ArrayList<Double> eventLong = new ArrayList<>();
         Events tmp = new Events();
-        if (eventCursor != null && locationCursor.getCount() > 0) {
+        if (eventCursor != null && eventCursor.getCount() > 0) {
             while (eventCursor.moveToNext()) {
                 events.add(new Events(eventCursor.getString(1), eventCursor.getString(2),
                         eventCursor.getString(3), eventCursor.getString(4), eventCursor.getString(5),
-                        eventCursor.getString(6), eventCursor.getBlob(7), eventCursor.getInt(8)
+                        eventCursor.getString(6), eventCursor.getString(7), eventCursor.getBlob(8), eventCursor.getInt(9),
+                        eventCursor.getDouble(10), eventCursor.getDouble(11)
                 ));
-                eventData.add(eventCursor.getString(1));
-                addressName.add(eventCursor.getString(2));
             }
         }
-        if (locationCursor != null && locationCursor.getCount() > 0) {
-            while (locationCursor.moveToNext()) {
-                locations.add(new Location(locationCursor.getDouble(0), locationCursor.getDouble(1),
-                        locationCursor.getString(2), locationCursor.getString(3)));
-                eventLat.add(locationCursor.getDouble(2));
-                eventLong.add(locationCursor.getDouble(3));
-            }
+    }
+
+    private void addMarkersToMap() {
+        for (int i = 0; i < events.size(); i++)
+        {
+            LatLng EVENT = new LatLng(events.get(i).getLat(), events.get(i).getLong());
+            Marker marker = mMap.addMarker(new MarkerOptions()
+                    .position(EVENT)
+                    .title(events.get(i).getEventName())
+                    .snippet(events.get(i).getBio()));
         }
+
     }
 
 

@@ -12,6 +12,8 @@ public class Events implements Serializable {
     private String date;
     private String bio;
     private String categories;
+    private Double Lat;
+    private Double Long;
     private byte[] photo;
     private int clubID;
     private int roomNumber;
@@ -19,7 +21,7 @@ public class Events implements Serializable {
     public Events() {}
 
     public Events (int eventID, String eName, String locat, String campusName, String starttime, String endtime,
-                   String dateStr, String biog, byte[] photoData, int  clubid) {
+                   String dateStr, String biog, byte[] photoData, int clubid) {
         eventName = eName;
         location = locat;
         campus = campusName;
@@ -33,7 +35,7 @@ public class Events implements Serializable {
 
     }
     public Events(String eName, String locat, String campusName, String starttime, String endtime,
-                  String dateStr, String biog, byte[] photoData, int  clubid) {
+                  String dateStr, String biog, byte[] photoData, int clubid) {
         eventName = eName;
         location = locat;
         campus = campusName;
@@ -45,6 +47,22 @@ public class Events implements Serializable {
         clubID = clubid;
 
     };
+    public Events(String eName, String locat, String campusName, String starttime, String endtime,
+                  String dateStr, String biog, byte[] photoData, int clubid, Double mLat, Double mLong) {
+        eventName = eName;
+        location = locat;
+        campus = campusName;
+        startTime = starttime;
+        endTime = endtime;
+        date = dateStr;
+        bio = biog;
+        photo = photoData;
+        clubID = clubid;
+        Lat = mLat;
+        Long = mLong;
+
+    };
+
 
     public int getEventID() {
         return eventId;
@@ -138,4 +156,20 @@ public class Events implements Serializable {
     public String getCategories() {return categories;}
 
     public void setCategories(String cat) { categories = cat;}
+
+    public Double getLat() {
+        return Lat;
+    }
+
+    public void setLat(Double lat) {
+        Lat = lat;
+    }
+
+    public Double getLong() {
+        return Long;
+    }
+
+    public void setLong(Double aLong) {
+        Long = aLong;
+    }
 }
