@@ -83,7 +83,7 @@ public class EventView extends AppCompatActivity implements Serializable {
             clubNameText = data.getString(position);
         }
 
-        Log.i("eventview_looker", mEvent.getEventName());
+
         eventName = (TextView)findViewById(R.id.tv_eventName);
         eventBio = (TextView)findViewById(R.id.tv_bio);
         dateHolder = (TextView)findViewById(R.id.tv_date);

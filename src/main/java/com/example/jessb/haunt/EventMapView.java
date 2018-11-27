@@ -20,6 +20,7 @@ import android.view.View;
 import android.widget.Button;
 import android.support.v7.widget.Toolbar;
 import android.widget.EditText;
+import android.widget.Toast;
 
 import com.google.android.gms.maps.CameraUpdate;
 import com.google.android.gms.maps.CameraUpdateFactory;
@@ -40,18 +41,19 @@ import sql.DatabaseHelper;
 
 import static util.Constants.MAPVIEW_BUNDLE_KEY;
 
-public class EventMapView extends AppCompatActivity implements OnMapReadyCallback {
+public class EventMapView extends AppCompatActivity implements OnMapReadyCallback, GoogleMap.OnInfoWindowClickListener {
 
     private MapView mMapView;
     GoogleMap mMap;
     DatabaseHelper db;
     Button mariettaBtn, kennesawBtn;
-    LatLng marietta = new LatLng(33.9376219,-84.52017189999998); //Atrium Building Coords
-    LatLng kennesaw = new LatLng(34.0381707,-84.58174450000001); //Kennesaw Campus Green Coords
+    LatLng marietta = new LatLng(33.9376219, -84.52017189999998); //Atrium Building Coords
+    LatLng kennesaw = new LatLng(34.0381707, -84.58174450000001); //Kennesaw Campus Green Coords
     float zoom = 16.0f; //Determines the zoom on the MapView. The value goes from 2 - 21 (2 being super zoomed out like God, where 21 is able to see the freckles on a redhead child)
     String userType;
     int userId;
-    Events mEvents = new Events();
+    Intent lastActivity;
+    Events mevent = new Events();
     ArrayList<Events> events = new ArrayList<Events>();
 
     @Override
@@ -59,7 +61,7 @@ public class EventMapView extends AppCompatActivity implements OnMapReadyCallbac
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_map_view);
         mMapView = findViewById(R.id.map_view);
-        Intent lastActivity = getIntent();
+        lastActivity = getIntent();
         db = DatabaseHelper.getInstance(getApplicationContext());
         FloatingActionButton moreButton = findViewById(R.id.button_more);
         FloatingActionButton addButton = findViewById(R.id.button_add);
@@ -78,11 +80,11 @@ public class EventMapView extends AppCompatActivity implements OnMapReadyCallbac
                 logout();
             }
         });
-        if(userType.equals("student") || userType.equals("admin")) {
+        if (userType.equals("student") || userType.equals("admin")) {
             addButton.hide();
         }
 
-        if(userType.equals("club")) {
+        if (userType.equals("club")) {
             addButton.setOnClickListener(new View.OnClickListener() {
                 @Override
                 public void onClick(View v) {
@@ -167,6 +169,7 @@ public class EventMapView extends AppCompatActivity implements OnMapReadyCallbac
         map.setMyLocationEnabled(true);
         addMarkersToMap();
         map.moveCamera(CameraUpdateFactory.newLatLngZoom(marietta, zoom));
+        mMap.setOnInfoWindowClickListener(this);
 
     }
 
@@ -202,7 +205,7 @@ public class EventMapView extends AppCompatActivity implements OnMapReadyCallbac
                         Intent i = new Intent(EventMapView.this, UserType.class);
                         startActivity(i);
                     }
-                }).setNegativeButton(android.R.string.cancel, new DialogInterface.OnClickListener(){
+                }).setNegativeButton(android.R.string.cancel, new DialogInterface.OnClickListener() {
             public void onClick(DialogInterface dialog, int which) {
                 //do nothing
             }
@@ -212,7 +215,7 @@ public class EventMapView extends AppCompatActivity implements OnMapReadyCallbac
                 .show();
     }
 
-    protected void createEvent(){
+    protected void createEvent() {
         Intent newEvent = new Intent(this, CreateEvent.class);
         newEvent.putExtra("userType", "club");
         newEvent.putExtra("userId", userId);
@@ -228,15 +231,14 @@ public class EventMapView extends AppCompatActivity implements OnMapReadyCallbac
                 events.add(new Events(eventCursor.getString(1), eventCursor.getString(2),
                         eventCursor.getString(3), eventCursor.getString(4), eventCursor.getString(5),
                         eventCursor.getString(6), eventCursor.getString(7), eventCursor.getBlob(8), eventCursor.getInt(9),
-                        eventCursor.getDouble(10), eventCursor.getDouble(11)
+                        eventCursor.getDouble(11), eventCursor.getDouble(12)
                 ));
             }
         }
     }
 
     private void addMarkersToMap() {
-        for (int i = 0; i < events.size(); i++)
-        {
+        for (int i = 0; i < events.size(); i++) {
             LatLng EVENT = new LatLng(events.get(i).getLat(), events.get(i).getLong());
             Marker marker = mMap.addMarker(new MarkerOptions()
                     .position(EVENT)
@@ -246,5 +248,32 @@ public class EventMapView extends AppCompatActivity implements OnMapReadyCallbac
 
     }
 
+    public void onInfoWindowClick(Marker marker) {
 
+        String markerName = marker.getTitle();
+        Cursor data = db.getEvent(markerName);
+        int eventId = -1;
+        while (data.moveToNext()) {
+            eventId = data.getInt(0);
+        }
+        if (eventId > -1) {
+            Intent intent = new Intent(EventMapView.this, EventView.class);
+
+            intent.putExtra("event_object", events.get(eventId - 1));
+            intent.putExtra("userType", userType);
+            intent.putExtra("userId", userId);
+            intent.putExtra("eventId", eventId -1);
+            intent.putExtra("campus", events.get(eventId - 1).getCampus());
+            intent.putExtra("endTime", events.get(eventId - 1).getEndTime());
+            intent.putExtra("startTime", events.get(eventId - 1).getStartTime());
+            intent.putExtra("endDate", events.get(eventId - 1).getDate());
+            intent.putExtra("startDate", events.get(eventId - 1).getDate());
+
+            startActivity(intent);
+        } else {
+            Toast.makeText(getApplicationContext(), "No ID associated with name", Toast.LENGTH_SHORT);
+
+
+        }
+    }
 }
