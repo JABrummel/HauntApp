@@ -153,7 +153,7 @@ public class login_club extends AppCompatActivity {
             builder = new AlertDialog.Builder(this);
         }
         builder.setTitle("Invalid Entry")
-                .setMessage("Username or Password is incorrect")
+                .setMessage("Username or Password is incorrect, or you club has been deleted by admin.")
                 .setPositiveButton(android.R.string.yes, new DialogInterface.OnClickListener() {
                     public void onClick(DialogInterface dialog, int which) {
 
