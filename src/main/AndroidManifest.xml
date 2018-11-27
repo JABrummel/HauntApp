@@ -47,7 +47,7 @@
 
         <meta-data
             android:name="com.google.android.geo.API_KEY"
-            android:value="AIzaSyC1CppN_W2t1BTJ52uLH62ZvLgEfLLh_Bs" />
+            android:value="" />
 
         <activity android:name=".EventMapView"></activity>
     </application>
